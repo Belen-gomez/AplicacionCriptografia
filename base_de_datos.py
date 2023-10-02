@@ -1,23 +1,26 @@
 """
 Json store master
 """
+
 import json
+import os
+
+#JSON_FILES_PATH = os.path.join(os.path.dirname(__file__), "../../../../JsonFiles/")
 #from uc3m_logistics.exception.order_management_exception import OrderManagementException
 
 
-class JsonStoreMaster:
+class BaseDeDatos:
     """
     Json store master
     """
-    _FILE_PATH = ""
-    _ID_FIELD = ""
+    _FILE_PATH = "/DATOS/BELÉN/3º UNI/Criptografía/Practica_1/Criptografia/registro_usuarios.json"
+    _ID_FIELD = "Correo"
     _data_list = []
     __ERROR_MESSAGE_PATH = "Wrong file or file path"
     __ERROR_JSON_DECODE = "JSON Decode Error - Wrong JSON Format"
 
     def __init__(self) -> None:
         self.load_store()
-    
     
     def save_store(self) -> None:
         """
@@ -59,5 +62,6 @@ class JsonStoreMaster:
         add item
         """
         self.load_store()
-        self._data_list.append(item.__dict__)
+        self._data_list.append(item)
         self.save_store()
+
