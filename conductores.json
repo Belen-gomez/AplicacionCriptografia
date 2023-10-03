@@ -1,0 +1,172 @@
+[
+  {
+    "id": 1,
+    "nombre": "Rafael Navarro",
+    "contador": 2,
+    "matricula": "A1Sc6dYol+nZSFydgsCOiFfmAJUGh/AGi2MbGVaO0U4=",
+    "salt": "vPPQmEl1to3chS/spQxyzw==",
+    "consumo": 5.86,
+    "ruta_origen": "C\u00f3rdoba",
+    "ruta_destino": "Santander"
+  },
+  {
+    "id": 2,
+    "nombre": "Diego Guerrero",
+    "contador": 4,
+    "matricula": "PqPPoo8Al/E6klTuB+gq4cXrZEbybm563ca+mMjbfmU=",
+    "salt": "t3ZMJP5sV00KC73iag8QSw==",
+    "consumo": 6.4,
+    "ruta_origen": "C\u00f3rdoba",
+    "ruta_destino": "Valladolid"
+  },
+  {
+    "id": 3,
+    "nombre": "Roc\u00edo Ortiz",
+    "contador": 3,
+    "matricula": "Bs3UqsQINFegOMUZGk+n00HANAM3IYVOikfj1i2rUhI=",
+    "salt": "bzvyb4q8OKXSQjPEWsGobw==",
+    "consumo": 6.01,
+    "ruta_origen": "Barcelona",
+    "ruta_destino": "Sevilla"
+  },
+  {
+    "id": 4,
+    "nombre": "Diego Ramos",
+    "contador": 1,
+    "matricula": "5RNDsdu7UFA4D22SDFapnvoOePjnHolFaUkBD8OHCJ0=",
+    "salt": "vzTYS1489LUpi0TT/9+XZQ==",
+    "consumo": 5.47,
+    "ruta_origen": "Oviedo",
+    "ruta_destino": "Santander"
+  },
+  {
+    "id": 5,
+    "nombre": "Elena Rodr\u00edguez",
+    "contador": 1,
+    "matricula": "rF4xXOI5kQM1yxDmrpBKhIPPbodKIsi8uNGh54oQ7M0=",
+    "salt": "6BkIMafQiN0H6fpfN++4Pw==",
+    "consumo": 7.33,
+    "ruta_origen": "Valencia",
+    "ruta_destino": "C\u00f3rdoba"
+  },
+  {
+    "id": 6,
+    "nombre": "Gemma Gim\u00e9nez",
+    "contador": 4,
+    "matricula": "nG174B3+utHOMnmUnQDnYP4VnEHXUy3J39bND3VbZpQ=",
+    "salt": "MSedmWWo8KYZNiHvT3oR4Q==",
+    "consumo": 7.55,
+    "ruta_origen": "Alicante",
+    "ruta_destino": "Lisboa"
+  },
+  {
+    "id": 7,
+    "nombre": "Rub\u00e9n Arias",
+    "contador": 5,
+    "matricula": "MJPc8Xmn3ZYR4kNd879PLIleOsBlVwfqoy8+ug4cKdU=",
+    "salt": "DVtq+v4rxo03Y/kStqd5uw==",
+    "consumo": 5.11,
+    "ruta_origen": "Salamanca",
+    "ruta_destino": "Madrid"
+  },
+  {
+    "id": 8,
+    "nombre": "Carmen Cort\u00e9s",
+    "contador": 6,
+    "matricula": "inYFFnASCsW/HhIGwnzfOcFO0hvSqaMcxGxKgphNnAM=",
+    "salt": "nxeLsYfR86i7kzJA5SqLUQ==",
+    "consumo": 7.56,
+    "ruta_origen": "Alicante",
+    "ruta_destino": "Porto"
+  },
+  {
+    "id": 9,
+    "nombre": "Luc\u00eda D\u00edaz",
+    "contador": 2,
+    "matricula": "/84iqhY0T8IWEB0Bmc67XQy9x5NJ5sTLVyRfRUj6z3g=",
+    "salt": "Fx3eKqhp4tOdeolaaEswcQ==",
+    "consumo": 6.39,
+    "ruta_origen": "C\u00f3rdoba",
+    "ruta_destino": "Bilbao"
+  },
+  {
+    "id": 10,
+    "nombre": "Juan Castro",
+    "contador": 6,
+    "matricula": "g+2+VpUo2U6r67nT8HBY2kaeIr4RWqA04O2TX1VQ3e8=",
+    "salt": "/0mAdW1l9FRUU/s4Fe6OvA==",
+    "consumo": 5.02,
+    "ruta_origen": "Santander",
+    "ruta_destino": "Vigo"
+  },
+  {
+    "id": 11,
+    "nombre": "Luis P\u00e9rez",
+    "contador": 2,
+    "matricula": "ZNUjlv1APcgJQLcjIOZQfaZQoE6XiSAJVa/0MJbloIA=",
+    "salt": "7ojJvFNlAN7VqFwe2VuzyA==",
+    "consumo": 5.95,
+    "ruta_origen": "Salamanca",
+    "ruta_destino": "Gij\u00f3n"
+  },
+  {
+    "id": 12,
+    "nombre": "Elena Ortiz",
+    "contador": 6,
+    "matricula": "V4XFxR45CToyO6jKGk5HOPl5dUYscMgFblyF2kacxcw=",
+    "salt": "s0TOXduUpsSaN6+t/r2gGw==",
+    "consumo": 5.73,
+    "ruta_origen": "Bilbao",
+    "ruta_destino": "Granada"
+  },
+  {
+    "id": 13,
+    "nombre": "Sandra Fuentes",
+    "contador": 5,
+    "matricula": "DxxDZxuQBIbhnPoOnaa2MKVFUWq11VgZh6k+xBp5gq0=",
+    "salt": "TCbdlnnSbI3nimxMQ/ZRaQ==",
+    "consumo": 5.86,
+    "ruta_origen": "Oviedo",
+    "ruta_destino": "Lisboa"
+  },
+  {
+    "id": 14,
+    "nombre": "Laura \u00c1lvarez",
+    "contador": 1,
+    "matricula": "j4GdwukJH1Nh0zz101+RtJj7wvOpXjZK4zE73iRhni8=",
+    "salt": "vycZVdxDCQzFX7uI+gWW1Q==",
+    "consumo": 5.52,
+    "ruta_origen": "Graz",
+    "ruta_destino": "Lisboa"
+  },
+  {
+    "id": 15,
+    "nombre": "Isabel D\u00edaz",
+    "contador": 1,
+    "matricula": "nbfYYg+3WakJUkPF/y+NfvOBAfciaDjnn5m3lCHSqQ0=",
+    "salt": "rvxL5Y027nPHVL/gcZ2lFQ==",
+    "consumo": 6.56,
+    "ruta_origen": "Santander",
+    "ruta_destino": "Madrid"
+  },
+  {
+    "id": 16,
+    "nombre": "Beatriz Garc\u00eda",
+    "contador": 3,
+    "matricula": "7yqG5+NHh2h43m7MmTPEwH2xRxURdgUBCci3HC+czfc=",
+    "salt": "XLGgUnudblVs08eF/17SLQ==",
+    "consumo": 6.25,
+    "ruta_origen": "Salamanca",
+    "ruta_destino": "Valencia"
+  },
+  {
+    "id": 17,
+    "nombre": "Ana Navarro",
+    "contador": 2,
+    "matricula": "AdxfY4JQ2NzezBzEXqagF4eqyXxJugoFNPWv4f+WgMc=",
+    "salt": "h6BdtaNyWlayrusnWQ40EA==",
+    "consumo": 6.74,
+    "ruta_origen": "Porto",
+    "ruta_destino": "Bilbao"
+  }
+]

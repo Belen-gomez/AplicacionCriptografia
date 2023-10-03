@@ -1,0 +1,17 @@
+[
+  {
+    "Correo": "belen@gmail.com",
+    "Contrasenia_derivada": "Q+WAcRzHMXdNpOQkg1FgvkDZZv5qsy4wGEqvBp1nmK4=",
+    "Salt": "KjQFrBtXSal0vKmskMCv3A=="
+  },
+  {
+    "Correo": "celia@gmail.com",
+    "Contrasenia_derivada": "ZM+A1Xp8qUK7VvEIel7VjbJ806USJlkTlx3msPs7eKw=",
+    "Salt": "j+P25VUdS17L+THrzBGzEw=="
+  },
+  {
+    "Correo": "supercelia@gmail.com",
+    "Contrasenia_derivada": "dqJJFYWK4MmAuxD6ecbFTQAwkL2AOE3HrY0Mdsoj3MQ=",
+    "Salt": "a+n4Dbz+C2oD44M1Fcgz6Q=="
+  }
+]

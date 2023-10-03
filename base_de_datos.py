@@ -13,13 +13,14 @@ class BaseDeDatos:
     """
     Json store master
     """
-    _FILE_PATH = "/DATOS/BELÉN/3º UNI/Criptografía/Practica_1/Criptografia/registro_usuarios.json"
-    _ID_FIELD = "Correo"
+    
     _data_list = []
     __ERROR_MESSAGE_PATH = "Wrong file or file path"
     __ERROR_JSON_DECODE = "JSON Decode Error - Wrong JSON Format"
 
     def __init__(self) -> None:
+        self.FILE_PATH = ""
+        self.ID_FIELD = ""
         self.load_store()
     
     def save_store(self) -> None:
@@ -27,7 +28,7 @@ class BaseDeDatos:
         save store
         """
         try:
-            with open(self._FILE_PATH, "w", encoding="utf-8", newline="") as file:
+            with open(self.FILE_PATH, "w", encoding="utf-8", newline="") as file:
                 json.dump(self._data_list, file, indent=2)
         except FileNotFoundError as ex:
             #raise OrderManagementException(self.__ERROR_MESSAGE_PATH) from ex
@@ -39,7 +40,7 @@ class BaseDeDatos:
         """
         item_found = None
         for item in self._data_list:
-            if item[self._ID_FIELD] == data_to_find:
+            if item[self.ID_FIELD] == data_to_find:
                 item_found = item
         return item_found
 
@@ -48,7 +49,7 @@ class BaseDeDatos:
         load store
         """
         try:
-            with open(self._FILE_PATH, "r", encoding="utf-8", newline="") as file:
+            with open(self.FILE_PATH, "r", encoding="utf-8", newline="") as file:
                 self._data_list = json.load(file)
         except FileNotFoundError:
             # file is not found , so  init my data_list
