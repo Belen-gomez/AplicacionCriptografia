@@ -1,9 +1,8 @@
 import random
 import os
 import string
-import base64
-from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+
 
 ciudades = ["madrid", "barcelona", "lisboa", "oporto", "valencia", "sevilla", "zaragoza", "malaga", "lisboa", "porto", "bilbao", "vigo", "granada", "alicante", "cordoba", "valladolid", "gijon", "oviedo", "salamanca", "santander", "graz"]
 apellidos = ["Garcia","Fernandez","Gonzalez","Lopez","Martinez","Rodriguez","Sanchez","Perez","Gomez","Martin","Jimenez","Ruiz","Hernandez","Diaz","Moreno","Alvarez","Romero","Alonso","Navarro","Torres","Dominguez","Vazquez","Ramos","Cabrera","Soto","Reyes","Iglesias","Ortega","Morales","Castro","Silva","Cortes","Pascual","Guerrero","Vega","Flores","Vidal","Molina","Arias","Santos","Cruz","Pena","Mendoza", "Aguilar","Serrano","Ortiz","Gimenez","Fuentes"]
@@ -55,3 +54,4 @@ class Conductor:
         num = random.randint(0, len(apellidos)-1)
         apellido = apellidos[num]
         return nombre +" "+ apellido
+    

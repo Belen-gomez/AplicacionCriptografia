@@ -16,6 +16,7 @@ import base64
 from conductor import Conductor
 import random
 from comunicacion import Comunicacion
+import time
 
 
 def ComprobarCorreo(correo):
@@ -139,8 +140,9 @@ if contactar == "s":
     conductor = input("¿Con cuál de ellos quieres contactar? (Introduce su nombre completo)").lower()
 
     print("Se ha enviado un mensaje al conductor", conductor, "con tu petición de viaje. En breve se pondrá en contacto contigo")
-
-    Comunicacion(conductor, nombre)
+    time.sleep(5)
+    conversacion = Comunicacion(conductor, nombre)
+    conversacion.enviar_mensaje()
 
 
 else:
