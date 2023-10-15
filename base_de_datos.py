@@ -17,10 +17,10 @@ class BaseDeDatos:
     _data_list = []
     __ERROR_MESSAGE_PATH = "Wrong file or file path"
     __ERROR_JSON_DECODE = "JSON Decode Error - Wrong JSON Format"
+    __FILE_PATH = ""
+    __ID_FIELD = ""
 
     def __init__(self) -> None:
-        self.FILE_PATH = ""
-        self.ID_FIELD = ""
         self.load_store()
     
     def save_store(self) -> None:
@@ -54,9 +54,9 @@ class BaseDeDatos:
         except FileNotFoundError:
             # file is not found , so  init my data_list
             self._data_list = []
-        except json.JSONDecodeError as ex:
+        """except json.JSONDecodeError as ex:
             #raise OrderManagementException(self.__ERROR_JSON_DECODE) from ex
-            print("JSONDecodeError")
+            print("JSONDecodeError")"""
 
     def add_item(self, item: any) -> None:
         """
