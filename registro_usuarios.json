@@ -25,5 +25,11 @@
     "Correo": "b@gmail.com",
     "Contrasenia_derivada": "Q\u00df\u001e\u00c1\u001e@\u00ce\u00c0\u0090\u0016c\u0083,\u00d5Zzm\u0010\u00e9\u0014\u0081\u0017\u00d1\u00b2#\u00e0\u00c1n#\u0084\u00cb'",
     "Salt": "\u00a5\u00a7\u00a3\u007f#\u00d9\u00ac\u00e5\u00b1#\u001f\u0090\u00fe1!\u00a1"
+  },
+  {
+    "Nombre": "luis",
+    "Correo": "luis@gmail.com",
+    "Contrasenia_derivada": "\t\u00a3\u00b6c\u001e\u0005,\u00ae\u00e4\u00d1\u00b25\u00e5`\u00e9\u00bc\u0003\u009d\u00c8\u00da\u00a5\u00bf\u001e\u00e0=\u0087o&e\u00ab\u00a2\u009d",
+    "Salt": "\u001fG\u0090R;jH\u00fd,`k\u0004\u000f\u0000H\u00db"
   }
 ]

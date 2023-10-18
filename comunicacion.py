@@ -7,14 +7,22 @@ from cryptography.hazmat.primitives import padding
 import random
 import string
 from usuario import Usuario
-from matricula import Matricula
+from conductor import Conductor
 
 class Comunicacion:
     
-    def __init__(self, conductor: str, usuario: str):
-        self.conductor = conductor
-        self.usuario = usuario
+    def __init__(self, nombre_conductor, id, correo, nombre_usuario):
+         self.usuario = self.crear_usuario(correo, nombre_usuario)
+         self.conductor = self.crear_conductor(nombre_conductor, id)
 
+    def crear_usuario(self, correo, nombre_usuario):
+        usuario = Usuario(correo, nombre_usuario)
+        return usuario
+    
+    def crear_conductor(self, nombre_conductor, id):
+        conductor=Conductor(nombre_conductor, id)
+        return conductor
+    
     def enviar_mensaje(self):
         os.system("cls")
         time.sleep(5)
@@ -23,9 +31,20 @@ class Comunicacion:
         print("Seguro que conmigo te lo pasas genial!!")
         time.sleep(2)
         print("Para reservar el viaje necesito saber donde recogerte. Cuando lo sepa te mandaré mi matrícula para que me reconozcas")
-        self.cifrado_simetrico()
+        clave_cifrada, iv = self.conductor.cifrado_simetrico(self.usuario._public_key)
+        self.usuario.cifrado_simetrico(clave_cifrada, iv)
+
+        direccion_cifrada = self.usuario.cifrar_direccion()
+
+        #el conductor descifra el mensaje
+        self.conductor.descifrar_direccion(direccion_cifrada)
+        print("Ahora te voy a enviar mi matricula")
+        matricula_cifrada = self.conductor.cifrar_matricula()
+        self.usuario.descifrar_matricula(matricula_cifrada)
         
-    def cifrado_simetrico(self):
+        print("¡Ya estamos listos para irnos!")
+        
+    """def cifrado_simetrico(self):
         key = os.urandom(32)
         key_hmac = os.urandom(32)
         iv = os.urandom(16)
@@ -59,7 +78,7 @@ class Comunicacion:
         print("He recibido tu direccion correctamente")
         print("Ahora te voy a enviar mi matrícula cifrada con la clave simétrica")
 
-        matricula_cifrada, mac_matricula= Matricula().cifrar_matricula(key, iv, key_hmac)
+        matricula_cifrada, mac_matricula= Conductor().cifrar_matricula(key, iv, key_hmac)
         print("Esta es mi matricula cifrada", matricula_cifrada)
 
         #el usuario descifra la matricula. Hay que ver lo de la clave
@@ -77,7 +96,7 @@ class Comunicacion:
         h.update(matricula_cifrada)
 
         # Verifica el MAC. Si el MAC no coincide, se lanzará una excepción.
-        h.verify(mac_matricula)
+        h.verify(mac_matricula)"""
 
         
 

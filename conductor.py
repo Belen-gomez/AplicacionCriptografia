@@ -1,57 +1,82 @@
+from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
+from cryptography.hazmat.primitives import hashes, hmac
+from cryptography.hazmat.primitives import padding
+from cryptography.hazmat.primitives.asymmetric import padding
 import random
-import os
 import string
-from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
-
-
-ciudades = ["madrid", "barcelona", "lisboa", "oporto", "valencia", "sevilla", "zaragoza", "malaga", "lisboa", "porto", "bilbao", "vigo", "granada", "alicante", "cordoba", "valladolid", "gijon", "oviedo", "salamanca", "santander", "graz"]
-apellidos = ["Garcia","Fernandez","Gonzalez","Lopez","Martinez","Rodriguez","Sanchez","Perez","Gomez","Martin","Jimenez","Ruiz","Hernandez","Diaz","Moreno","Alvarez","Romero","Alonso","Navarro","Torres","Dominguez","Vazquez","Ramos","Cabrera","Soto","Reyes","Iglesias","Ortega","Morales","Castro","Silva","Cortes","Pascual","Guerrero","Vega","Flores","Vidal","Molina","Arias","Santos","Cruz","Pena","Mendoza", "Aguilar","Serrano","Ortiz","Gimenez","Fuentes"]
-nombres = ["Antonio", "Maria", "Manuel", "Carmen", "Jose", "Ana", "Javier", "Isabel", "Francisco", "Laura", "Miguel", "Raquel", "David", "Elena", "Carlos", "Beatriz", "Juan", "Natalia", "Pedro", "Sandra", "Luis", "Lucia", "Fernando", "Rocio", "Angel", "Silvia", "Diego", "Pilar", "Jose Luis", "Cristina", "Ruben", "Marta", "Pablo", "Patricia", "Manuela", "Teresa", "Jose Manuel", "Rosa", "Andres", "Sara", "Joaquin", "Gemma", "Rafael", "Nuria", "Enrique", "Lorena", "Victor", "Ines"]
+from cryptography.hazmat.primitives.asymmetric import rsa
+import time
+import os
 
 class Conductor:
-    def __init__(self, id):
+    def __init__(self, nombre, id):
+        self.nombre = nombre
         self.id = id
-        self.nombre = self.nombre_completo()
-        self.contador = random.randint(1, 6)
-        ''' self.matricula = self.matricula_encode()[0]
-        self.salt = self.matricula_encode()[1] '''
-        self.consumo = random.uniform(5, 8).__round__(2)
-        self.ruta_origen = self.ruta_origen()
-        self.ruta_destino = self.ruta_destino()
+        self._public_key = None
+        self.__private_key = self.key()
+        self.__clave_simetrica = None
+        self.iv = None
 
-    ''' def matricula_encode(self):
+    def key(self):
+        private_key = rsa.generate_private_key(
+            public_exponent=65537,
+            key_size=2048,
+        )
+        self._public_key = private_key.public_key()
+
+        return private_key
+    
+    def cifrado_simetrico(self, public_key_usuario):
+        key = os.urandom(32)
+        key_hmac = os.urandom(32)
+        iv = os.urandom(16)
+        print("--------- SISTEMA ---------")
+        print("Generando clave simétrica, esto puede tomar unos segundos...")
+        time.sleep(5)
+        print("--------- FIN ---------")
+
+        ciphertext = public_key_usuario.encrypt(key,
+            padding.OAEP(
+            mgf=padding.MGF1(algorithm=hashes.SHA256()),
+            algorithm=hashes.SHA256(),
+            label=None
+        ))
+        self.__clave_simetrica = key
+        self.iv = iv
+        return ciphertext, iv
+        
+    def descifrar_direccion(self, direccion_cifrada):
+        cipher = Cipher(algorithms.AES(self.__clave_simetrica), modes.CBC(self.iv))
+        decryptor = cipher.decryptor()
+        direccion_descifrada = decryptor.update(direccion_cifrada) + decryptor.finalize()
+
+        # Quitamos el padding
+        from cryptography.hazmat.primitives import padding
+        unpadder = padding.PKCS7(128).unpadder()
+        direccion = unpadder.update(direccion_descifrada) + unpadder.finalize()
+        print(direccion)
+        print("He recibido correctamente tu dirección")
+
+    def cifrar_matricula(self):
         digitos = ''.join(random.choice(string.digits) for _ in range(4))
         letras = ''.join(random.choice('BCDFGHJKLMNPQRSTVWXYZ') for _ in range(3))
         matricula = digitos + letras
-        salt = os.urandom(16)
-        # derive
-        kdf = PBKDF2HMAC(
-            algorithm=hashes.SHA256(),
-            length=32,
-            salt=salt,
-            iterations=480000,
-        )
-        matricula_derivada = kdf.derive(matricula.encode("utf-8"))
+        from cryptography.hazmat.primitives import padding
+        padder = padding.PKCS7(128).padder()
+        matricula_bytes = matricula.encode()
+        matricula_rellenada = padder.update(matricula_bytes) + padder.finalize()
 
-        return base64.b64encode(matricula_derivada).decode('utf-8'),  base64.b64encode(salt).decode('utf-8') '''
+        # Ciframos la matrícula con la clave simétrica
+        cipher = Cipher(algorithms.AES(self.__clave_simetrica), modes.CBC(self.iv))
+        encryptor = cipher.encryptor()
+        ct = encryptor.update(matricula_rellenada) + encryptor.finalize()
 
+        #h = hmac.HMAC(key_hmac, hashes.SHA256())
 
-    def ruta_origen(self):
-        num = random.randint(0, len(ciudades)-1)
-        return ciudades[num]
+        # Autentica el texto cifrado
+        #h.update(ct)
 
-    def ruta_destino(self):
-        num = random.randint(0, len(ciudades)-1)
-        destino = ciudades[num]
-        while destino == self.ruta_origen:
-            num = random.randint(0, len(ciudades)-1)
-            destino = ciudades[num]
-        return destino
-    
-    def nombre_completo(self):
-        num = random.randint(0, len(nombres)-1)
-        nombre = nombres[num]
-        num = random.randint(0, len(apellidos)-1)
-        apellido = apellidos[num]
-        return nombre +" "+ apellido
-    
+        # Obtiene el MAC (Mensaje de Autenticación de Código)
+        #mac = h.finalize()
+
+        return ct#, mac

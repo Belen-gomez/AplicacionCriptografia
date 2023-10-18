@@ -13,10 +13,10 @@ from excepciones import Excepcion
 import getpass
 import re
 import base64
-from conductor import Conductor
 import random
 from comunicacion import Comunicacion
 import time
+from generadordatos import GeneradorDatos
 
 
 def ComprobarCorreo(correo):
@@ -73,7 +73,7 @@ def Registro():
     nuevo_usuario={"Nombre": nombre, "Correo": correo, "Contrasenia_derivada": key.decode('latin-1'), "Salt": salt.decode('latin-1')}
     bd.add_item(nuevo_usuario)
 
-    return nombre
+    return nombre, correo
 
 def InicioSesion():
     print("Inicio de sesion")
@@ -96,7 +96,7 @@ def InicioSesion():
         raise Excepcion("Fallo en el inicio de sesion")
     print("Inicio de sesion correcto")
 
-    return usuario["Nombre"]
+    return usuario["Nombre"], usuario["Correo"]
 
 
 
@@ -110,17 +110,17 @@ except:
 conductores = BaseDeConductores()
 
 for i in range(1, random.randint(1, 25)):
-    conductor = Conductor(i)
+    conductor = GeneradorDatos(i)
     conductores.add_item(conductor.__dict__)
 
 while True:
     print("¡Bienvenido a Hailo")
     a = input("¿Tienes ya una cuenta? (S/N)")
     if a == "S":
-        nombre = InicioSesion()
+        nombre, correo_usuario = InicioSesion()
         break
     elif a == "N":
-        nombre = Registro()
+        nombre, correo_usuario = Registro()
         break
 
 print("¡Bienvenido a Hailo", nombre, "!")
@@ -138,10 +138,13 @@ for item in conductores_ruta:
 contactar = input("¿Quieres contactar con alguno de estos conductores? (S/N)").lower()
 if contactar == "s":
     conductor = input("¿Con cuál de ellos quieres contactar? (Introduce su nombre completo)").lower()
-
+    for item in conductores_ruta:
+        if item["nombre"].lower() == conductor:
+            id = item["id"]
+    
     print("Se ha enviado un mensaje al conductor", conductor, "con tu petición de viaje. En breve se pondrá en contacto contigo")
     time.sleep(5)
-    conversacion = Comunicacion(conductor, nombre)
+    conversacion = Comunicacion(conductor, id, correo_usuario, nombre)
     conversacion.enviar_mensaje()
 
 
