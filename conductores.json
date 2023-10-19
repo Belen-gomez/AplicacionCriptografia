@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "nombre": "Jose Alvarez",
+    "contador": 6,
+    "consumo": 5.0,
+    "ruta_origen": "madrid",
+    "ruta_destino": "valencia",
+    "public_key": null
+  },
+  {
+    "id": 2,
+    "nombre": "Jose Luis Fernandez",
+    "contador": 3,
+    "consumo": 6.77,
+    "ruta_origen": "valladolid",
+    "ruta_destino": "cordoba",
+    "public_key": null
+  },
+  {
+    "id": 3,
+    "nombre": "Gemma Fernandez",
+    "contador": 4,
+    "consumo": 5.45,
+    "ruta_origen": "oporto",
+    "ruta_destino": "alicante",
+    "public_key": null
+  },
+  {
+    "id": 4,
+    "nombre": "Laura Rodriguez",
+    "contador": 5,
+    "consumo": 5.06,
+    "ruta_origen": "madrid",
+    "ruta_destino": "oporto",
+    "public_key": null
+  }
+]

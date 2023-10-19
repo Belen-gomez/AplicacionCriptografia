@@ -12,6 +12,7 @@ class Usuario:
        self.__private_key = self.key()
        self.__clave_simetrica = None
        self.iv = None
+       self.key_hmac = None
 
     def key(self):
         private_key = rsa.generate_private_key(
@@ -22,7 +23,7 @@ class Usuario:
 
         return private_key
     
-    def cifrado_simetrico(self, clave_cifrada, iv):
+    def cifrado_simetrico(self, clave_cifrada, iv, key_hmac):
         key = self.__private_key.decrypt(
                 clave_cifrada,
                 padding.OAEP(
@@ -33,6 +34,7 @@ class Usuario:
         )
         self.__clave_simetrica = key
         self.iv = iv
+        self.key_hmac = key_hmac
         
     def cifrar_direccion(self):
         direccion = input("¿Donde te recojo? ")
@@ -51,18 +53,22 @@ class Usuario:
         ct = encryptor.update(direccion_rellenada) + encryptor.finalize()
 
         # Crea una instancia de HMAC con SHA256 y la clave generada
-        #h = hmac.HMAC(key_hmac, hashes.SHA256())
+        h = hmac.HMAC(self.key_hmac, hashes.SHA256())
 
         # Autentica el texto cifrado
-        #h.update(ct)
+        h.update(ct)
 
         # Obtiene el MAC (Mensaje de Autenticación de Código)
-        #mac = h.finalize()
+        mac = h.finalize()
 
 
-        return ct#, mac
+        return ct, mac
     
-    def descifrar_matricula(self, matricula_cifrada):
+    def descifrar_matricula(self, matricula_cifrada, mac_matricula):
+        h = hmac.HMAC(self.key_hmac, hashes.SHA256())
+        h.update(matricula_cifrada)
+        h.verify(mac_matricula)
+
         cipher = Cipher(algorithms.AES(self.__clave_simetrica), modes.CBC(self.iv))
         decryptor = cipher.decryptor()
         matricula_descifrado = decryptor.update(matricula_cifrada) + decryptor.finalize()

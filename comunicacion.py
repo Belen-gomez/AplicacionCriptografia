@@ -26,21 +26,21 @@ class Comunicacion:
     def enviar_mensaje(self):
         os.system("cls")
         time.sleep(5)
-        print("¡Hola soy", self.conductor, "y te voy a llevar tu destino!")
+        print("¡Hola soy", self.conductor.nombre, "y te voy a llevar tu destino!")
         input("¿Qué tal estás?")
         print("Seguro que conmigo te lo pasas genial!!")
         time.sleep(2)
         print("Para reservar el viaje necesito saber donde recogerte. Cuando lo sepa te mandaré mi matrícula para que me reconozcas")
-        clave_cifrada, iv = self.conductor.cifrado_simetrico(self.usuario._public_key)
-        self.usuario.cifrado_simetrico(clave_cifrada, iv)
+        clave_cifrada, iv, key_hmac = self.conductor.cifrado_simetrico(self.usuario._public_key)
+        self.usuario.cifrado_simetrico(clave_cifrada, iv, key_hmac)
 
-        direccion_cifrada = self.usuario.cifrar_direccion()
+        direccion_cifrada, mac_direccion = self.usuario.cifrar_direccion()
 
         #el conductor descifra el mensaje
-        self.conductor.descifrar_direccion(direccion_cifrada)
+        self.conductor.descifrar_direccion(direccion_cifrada, mac_direccion)
         print("Ahora te voy a enviar mi matricula")
-        matricula_cifrada = self.conductor.cifrar_matricula()
-        self.usuario.descifrar_matricula(matricula_cifrada)
+        matricula_cifrada, mac_matricula = self.conductor.cifrar_matricula()
+        self.usuario.descifrar_matricula(matricula_cifrada, mac_matricula)
         
         print("¡Ya estamos listos para irnos!")
         

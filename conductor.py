@@ -16,6 +16,7 @@ class Conductor:
         self.__private_key = self.key()
         self.__clave_simetrica = None
         self.iv = None
+        self.key_hmac = None
 
     def key(self):
         private_key = rsa.generate_private_key(
@@ -43,9 +44,14 @@ class Conductor:
         ))
         self.__clave_simetrica = key
         self.iv = iv
-        return ciphertext, iv
+        self.key_hmac = key_hmac
+        return ciphertext, iv, key_hmac
         
-    def descifrar_direccion(self, direccion_cifrada):
+    def descifrar_direccion(self, direccion_cifrada, mac_direccion):
+        h = hmac.HMAC(self.key_hmac, hashes.SHA256())
+        h.update(direccion_cifrada)
+        h.verify(mac_direccion)
+
         cipher = Cipher(algorithms.AES(self.__clave_simetrica), modes.CBC(self.iv))
         decryptor = cipher.decryptor()
         direccion_descifrada = decryptor.update(direccion_cifrada) + decryptor.finalize()
@@ -56,6 +62,7 @@ class Conductor:
         direccion = unpadder.update(direccion_descifrada) + unpadder.finalize()
         print(direccion)
         print("He recibido correctamente tu dirección")
+
 
     def cifrar_matricula(self):
         digitos = ''.join(random.choice(string.digits) for _ in range(4))
@@ -71,12 +78,12 @@ class Conductor:
         encryptor = cipher.encryptor()
         ct = encryptor.update(matricula_rellenada) + encryptor.finalize()
 
-        #h = hmac.HMAC(key_hmac, hashes.SHA256())
+        h = hmac.HMAC(self.key_hmac, hashes.SHA256())
 
         # Autentica el texto cifrado
-        #h.update(ct)
+        h.update(ct)
 
         # Obtiene el MAC (Mensaje de Autenticación de Código)
-        #mac = h.finalize()
+        mac = h.finalize()
 
-        return ct#, mac
+        return ct, mac
