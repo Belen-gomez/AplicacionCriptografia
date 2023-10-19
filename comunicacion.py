@@ -31,8 +31,8 @@ class Comunicacion:
         print("Seguro que conmigo te lo pasas genial!!")
         time.sleep(2)
         print("Para reservar el viaje necesito saber donde recogerte. Cuando lo sepa te mandaré mi matrícula para que me reconozcas")
-        clave_cifrada, iv, key_hmac = self.conductor.cifrado_simetrico(self.usuario._public_key)
-        self.usuario.cifrado_simetrico(clave_cifrada, iv, key_hmac)
+        clave_cifrada, iv, clave_hmc = self.usuario.cifrado_simetrico(self.conductor._public_key)
+        self.conductor.cifrado_simetrico(clave_cifrada, iv, clave_hmc)
 
         direccion_cifrada, mac_direccion = self.usuario.cifrar_direccion()
 

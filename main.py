@@ -37,12 +37,12 @@ def Registro():
         res = ComprobarCorreo(correo)
     
     telefono = input("Introducir telefono: ")
-    contraseña = getpass.getpass("Introducir contraseña: ")
-    contraseña_2 = getpass.getpass("Repite la contraseña: ")
-    while contraseña != contraseña_2:
+    contrasenia = getpass.getpass("Introducir contraseña: ")
+    contrasenia_2 = getpass.getpass("Repite la contraseña: ")
+    while contrasenia != contrasenia_2:
         print("Las contraseñas no coinciden")
-        contraseña = getpass.getpass("Vuelve a introducir contraseña: ")
-        contraseña_2 = getpass.getpass("Repite la contraseña: ")
+        contrasenia = getpass.getpass("Vuelve a introducir contraseña: ")
+        contrasenia_2 = getpass.getpass("Repite la contraseña: ")
 
     # Guardar la contraseña en una base de datos con el correo y el salt
     salt = os.urandom(16)
@@ -53,7 +53,7 @@ def Registro():
         salt=salt,
         iterations=480000,
     )
-    key = kdf.derive(bytes(contraseña.encode("utf-8")))
+    key = kdf.derive(bytes(contrasenia.encode("utf-8")))
     # verify
     kdf = PBKDF2HMAC(
         algorithm=hashes.SHA256(),
@@ -62,7 +62,7 @@ def Registro():
         iterations=480000,
     )
    
-    if (kdf.verify(contraseña.encode("utf-8"), key)) is not None:
+    if (kdf.verify(contrasenia.encode("utf-8"), key)) is not None:
         raise Excepcion("Fallo en el registro")
     
     bd = BaseDeUsuarios()
@@ -78,7 +78,7 @@ def Registro():
 def InicioSesion():
     print("Inicio de sesion")
     correo = input("Introducir correo: ")
-    contraseña = getpass.getpass("Introducir contraseña: ")
+    contrasenia = getpass.getpass("Introducir contraseña: ")
     bd = BaseDeUsuarios()
     usuario = bd.find_data(correo)
     if usuario is None:
@@ -92,7 +92,7 @@ def InicioSesion():
         salt=salt.encode('latin-1'),
         iterations=480000,
     )
-    if (kdf.verify(bytes(contraseña.encode("latin-1")), key.encode('latin-1'))) is not None:
+    if (kdf.verify(bytes(contrasenia.encode("latin-1")), key.encode('latin-1'))) is not None:
         raise Excepcion("Fallo en el inicio de sesion")
     print("Inicio de sesion correcto")
 

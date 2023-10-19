@@ -1,6 +1,7 @@
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.primitives import hashes, hmac
-
+import os
+import time
 from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives.asymmetric import rsa
 
@@ -11,8 +12,8 @@ class Usuario:
        self._public_key = None
        self.__private_key = self.key()
        self.__clave_simetrica = None
-       self.iv = None
-       self.key_hmac = None
+       self.__iv = None
+       self.__key_hmac = None
 
     def key(self):
         private_key = rsa.generate_private_key(
@@ -23,21 +24,48 @@ class Usuario:
 
         return private_key
     
-    def cifrado_simetrico(self, clave_cifrada, iv, key_hmac):
-        key = self.__private_key.decrypt(
-                clave_cifrada,
+    def cifrado_simetrico(self, public_key_conductor):
+        key = os.urandom(32)
+        key_hmac = os.urandom(32)
+        iv = os.urandom(16)
+        print("--------- SISTEMA ---------")
+        print("Generando clave simétrica, esto puede tomar unos segundos...")
+        time.sleep(5)
+        print("--------- FIN ---------")
+
+        ciphertext = public_key_conductor.encrypt(key,
                 padding.OAEP(
                 mgf=padding.MGF1(algorithm=hashes.SHA256()),
                 algorithm=hashes.SHA256(),
                 label=None
-            )
-        )
+            ))
+        ciphertext_iv = public_key_conductor.encrypt(iv,
+              padding.OAEP(
+                  mgf=padding.MGF1(algorithm=hashes.SHA256()),
+                  algorithm=hashes.SHA256(),
+                  label=None
+              ))
+        ciphertext_hmac = public_key_conductor.encrypt(key_hmac,
+                  padding.OAEP(
+                      mgf=padding.MGF1(algorithm=hashes.SHA256()),
+                      algorithm=hashes.SHA256(),
+                      label=None
+                  ))
         self.__clave_simetrica = key
-        self.iv = iv
-        self.key_hmac = key_hmac
+        self.__iv = iv
+        self.__key_hmac = key_hmac
+        return ciphertext, ciphertext_iv, ciphertext_hmac
         
     def cifrar_direccion(self):
         direccion = input("¿Donde te recojo? ")
+        # Crea una instancia de HMAC con SHA256 y la clave generada
+        h = hmac.HMAC(self.__key_hmac, hashes.SHA256())
+
+        # Autentica el texto cifrado
+        h.update(direccion)
+
+        # Obtiene el MAC (Mensaje de Autenticación de Código)
+        mac = h.finalize()
         from cryptography.hazmat.primitives import padding
         padder = padding.PKCS7(128).padder()
 
@@ -48,28 +76,17 @@ class Usuario:
         direccion_rellenada = padder.update(direccion_bytes) + padder.finalize()
 
         # Ciframos la dirección con la clave del usuario
-        cipher = Cipher(algorithms.AES(self.__clave_simetrica), modes.CBC(self.iv))
+        cipher = Cipher(algorithms.AES(self.__clave_simetrica), modes.CBC(self.__iv))
         encryptor = cipher.encryptor()
         ct = encryptor.update(direccion_rellenada) + encryptor.finalize()
-
-        # Crea una instancia de HMAC con SHA256 y la clave generada
-        h = hmac.HMAC(self.key_hmac, hashes.SHA256())
-
-        # Autentica el texto cifrado
-        h.update(ct)
-
-        # Obtiene el MAC (Mensaje de Autenticación de Código)
-        mac = h.finalize()
 
 
         return ct, mac
     
     def descifrar_matricula(self, matricula_cifrada, mac_matricula):
-        h = hmac.HMAC(self.key_hmac, hashes.SHA256())
-        h.update(matricula_cifrada)
-        h.verify(mac_matricula)
 
-        cipher = Cipher(algorithms.AES(self.__clave_simetrica), modes.CBC(self.iv))
+
+        cipher = Cipher(algorithms.AES(self.__clave_simetrica), modes.CBC(self.__iv))
         decryptor = cipher.decryptor()
         matricula_descifrado = decryptor.update(matricula_cifrada) + decryptor.finalize()
 
@@ -77,4 +94,7 @@ class Usuario:
         from cryptography.hazmat.primitives import padding
         unpadder = padding.PKCS7(128).unpadder()
         matricula = unpadder.update(matricula_descifrado) + unpadder.finalize()
+        h = hmac.HMAC(self.__key_hmac, hashes.SHA256())
+        h.update(matricula_cifrada)
+        h.verify(mac_matricula)
         print("matricula", matricula)
