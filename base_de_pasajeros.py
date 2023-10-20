@@ -6,7 +6,7 @@ from base_de_datos import BaseDeDatos
 #from uc3m_logistics.exception.order_management_exception import OrderManagementException
 
 
-class BaseDeConductores(BaseDeDatos):
+class BaseDePasajeros(BaseDeDatos):
     """
     Json store master
     """
@@ -14,27 +14,27 @@ class BaseDeConductores(BaseDeDatos):
     _data_list = []
     __ERROR_MESSAGE_PATH = "Wrong file or file path"
     __ERROR_JSON_DECODE = "JSON Decode Error - Wrong JSON Format"
-    FILE_PATH = "/DATOS/BELÉN/3º UNI/Criptografía/Practica_1/Criptografia/conductores.json"
     ID_FIELD = "id"
 
-    def __innit__(self):
-        super(BaseDeDatos, self).__innit__()
+    def __init__(self):
+        super(BaseDeDatos, self).__init__()
+        self.FILE_PATH = None
 
-    def find_data_ruta(self, origen, destino: any) -> any:
+    def find_data_correo(self, correo: any) -> any:
         """
         find data
         """
         item_found = []
         for item in self._data_list:
-            if item["ruta_origen"] == origen and item["ruta_destino"] == destino and item["contador"] > 0:
+            if item["Correo"] == correo :
                 item_found.append(item)
         return item_found
     
-    def find_data_id(self, id: any) -> any:
+    '''def find_data_id(self, id: any) -> any:
         """
         find data
         """
         for item in self._data_list:
             if item["id"] == id:   
                 return item
-        return None
+        return None '''

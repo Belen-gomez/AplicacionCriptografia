@@ -8,6 +8,9 @@ from cryptography.hazmat.primitives.asymmetric import rsa
 import time
 import os
 from cryptography.hazmat.primitives import padding as pd
+from cryptography.hazmat.primitives import serialization
+import json
+from base_de_pasajeros import BaseDePasajeros
 
 class Conductor:
     def __init__(self, nombre, id):
@@ -20,10 +23,16 @@ class Conductor:
         self.__key_hmac = None
 
     def key(self):
-        private_key = rsa.generate_private_key(
+        path = "conductores/" + str(self.id) + "/key.pem"
+        with open(path, "rb") as key_file:
+            private_key = serialization.load_pem_private_key(
+                key_file.read(),
+                password=None,
+            )
+        ''' private_key = rsa.generate_private_key(
             public_exponent=65537,
             key_size=2048,
-        )
+        )'''
         self._public_key = private_key.public_key()
 
         return private_key
@@ -58,7 +67,7 @@ class Conductor:
         self.__key_hmac = key_hmac
 
         
-    def descifrar_direccion(self, direccion_cifrada, mac_direccion):
+    def descifrar_direccion(self, direccion_cifrada, mac_direccion, correo_usuario):
         cipher = Cipher(algorithms.AES(self.__clave_simetrica), modes.CBC(self.__iv))
         decryptor = cipher.decryptor()
         direccion_descifrada = decryptor.update(direccion_cifrada) + decryptor.finalize()
@@ -69,11 +78,23 @@ class Conductor:
         h = hmac.HMAC(self.__key_hmac, hashes.SHA256())
         h.update(direccion)
         h.verify(mac_direccion)
-        print(direccion)
         print("He recibido correctamente tu dirección")
-
+        
+        path = "conductores/" + str(self.id) + "/pasajeros.json"
+        pasajero = {"Correo": correo_usuario, "Direccion": direccion_cifrada.decode("latin-1")}
+        pasajeros = BaseDePasajeros()
+        pasajeros.FILE_PATH = path
+        pasajeros.load_store()
+        pasajeros.add_item(pasajero)
+        pasajeros.save_store()
+        time.sleep(1)
+        print("Ya estás apuntado para el viaje")
 
     def cifrar_matricula(self):
+        print("--------- SISTEMA ---------")
+        print("Cifrando matricula")
+        time.sleep(2)
+        print("--------- FIN ---------")
         digitos = ''.join(random.choice(string.digits) for _ in range(4))
         letras = ''.join(random.choice('BCDFGHJKLMNPQRSTVWXYZ') for _ in range(3))
         matricula = digitos + letras

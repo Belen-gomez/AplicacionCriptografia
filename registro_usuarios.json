@@ -1,35 +1,16 @@
 [
   {
-    "Correo": "belen@gmail.com",
-    "Contrasenia_derivada": "\u00b9\r\u0084\rO\u00fc\u00e9~0\u00b3\u000b\u00f1\u00f4?J\u000b\u00a5x\u00b2=\u00c7l\u000e\u00e2,\u00ff\u00be\u00e2f\\/r",
-    "Salt": "\"&k\u0086\u0085)\u00a3\u00a92\u0015g\u0019\u001f\u00ad#e"
+    "Nombre": "Belen Gomez",
+    "Correo": "bga78a@gmail.com",
+    "Telefono": "666666666",
+    "Contrasenia_derivada": "\u0001~\u00d8*\u001ao,K/\u00f0\u009fG\u001e\u00ebq\u00f7)\teL\u00fat*u\u0090\u00f0?\u00161f\u0007\u00b3",
+    "Salt": "h\u00f1\u00ca\u008b:/\u00e4\bc\u00b5\u009e\u0098\u00bb\u00b4\u00f8\u00ba"
   },
   {
+    "Nombre": "Celia Patricio",
     "Correo": "celia@gmail.com",
-    "Contrasenia_derivada": "{/\u00f0\u00ea\u00f2\u00999B0\u00b0\u00f2X\u00b9\u008bt\u00bezb\u00b8\u00e9\u009b\u00e7\u008d\u00fat\u0091\u00df\u008d\u00cd\u00cf\u00cdx",
-    "Salt": "-X\b\u00cc\u008e\u00ae\u0080q\u0088i\u0092\u00ad\u0096\u00f2R\u0017"
-  },
-  {
-    "Correo": "pepe@gmail.com",
-    "Contrasenia_derivada": "\u009f[+\u00b1\\\u00c8\u00ea\u00d1J\u00dd\u00a3\u00a3\u00e5wI\u0094\u00cc\u0007\u0016\u00d8\u0096\u00d7\u00d3S\u00cc\u00f5\u008cG/Z<N",
-    "Salt": "tp]\n\u00a4\u00ab\u00935\u0082#\u000f\u009b\u00f3\u00d720"
-  },
-  {
-    "Nombre": "belen",
-    "Correo": "beleng@gmail.com",
-    "Contrasenia_derivada": "\u00f4m\u00d0\u00cf'Q\u00ddsz\u008fj&0]\u001dc>d\u00b0[&\u00c4\u00d1NB}#\u009f\u00df\u00bb\f\u0095",
-    "Salt": "\u00bft\u00f5\u00d4\u007fjG\u001f\u00acR\u00c8\u0012\u0090\u009e%\u000f"
-  },
-  {
-    "Nombre": "belen",
-    "Correo": "b@gmail.com",
-    "Contrasenia_derivada": "Q\u00df\u001e\u00c1\u001e@\u00ce\u00c0\u0090\u0016c\u0083,\u00d5Zzm\u0010\u00e9\u0014\u0081\u0017\u00d1\u00b2#\u00e0\u00c1n#\u0084\u00cb'",
-    "Salt": "\u00a5\u00a7\u00a3\u007f#\u00d9\u00ac\u00e5\u00b1#\u001f\u0090\u00fe1!\u00a1"
-  },
-  {
-    "Nombre": "luis",
-    "Correo": "luis@gmail.com",
-    "Contrasenia_derivada": "\t\u00a3\u00b6c\u001e\u0005,\u00ae\u00e4\u00d1\u00b25\u00e5`\u00e9\u00bc\u0003\u009d\u00c8\u00da\u00a5\u00bf\u001e\u00e0=\u0087o&e\u00ab\u00a2\u009d",
-    "Salt": "\u001fG\u0090R;jH\u00fd,`k\u0004\u000f\u0000H\u00db"
+    "Telefono": "666666666",
+    "Contrasenia_derivada": "\u001eE\f\u009c\u00dd\u00c6<\u00faw\u00eb\u0002wj\u0086\u00de\f\u00cd\u0088G\u00bb\u00ff\u008c\u009d\u00a2h\u00d0P\u00ef\u00cd\u00c6\u009a\u0001",
+    "Salt": "\u0092?\u00db\n\u0091D.\u008as\u00e55\u00caj\u00a7\u007fa"
   }
 ]

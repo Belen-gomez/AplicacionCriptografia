@@ -4,6 +4,7 @@ import os
 import time
 from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives.asymmetric import rsa
+from cryptography.hazmat.primitives import serialization
 
 class Usuario:
     def __init__(self, correo, nombre):
@@ -16,10 +17,16 @@ class Usuario:
        self.__key_hmac = None
 
     def key(self):
-        private_key = rsa.generate_private_key(
+        path = "usuarios/" + self.correo + "/key.pem"
+        with open(path, "rb") as key_file:
+            private_key = serialization.load_pem_private_key(
+                key_file.read(),
+                password=None,
+            )
+        ''' private_key = rsa.generate_private_key(
             public_exponent=65537,
             key_size=2048,
-        )
+        )'''
         self._public_key = private_key.public_key()
 
         return private_key
@@ -28,10 +35,6 @@ class Usuario:
         key = os.urandom(32)
         key_hmac = os.urandom(32)
         iv = os.urandom(16)
-        print("--------- SISTEMA ---------")
-        print("Generando clave simétrica, esto puede tomar unos segundos...")
-        time.sleep(5)
-        print("--------- FIN ---------")
 
         ciphertext = public_key_conductor.encrypt(key,
                 padding.OAEP(
@@ -58,19 +61,22 @@ class Usuario:
         
     def cifrar_direccion(self):
         direccion = input("¿Donde te recojo? ")
+        print("--------- SISTEMA ---------")
+        print("Cifrando direccion")
+        time.sleep(2)
+        print("--------- FIN ---------")
         # Crea una instancia de HMAC con SHA256 y la clave generada
         h = hmac.HMAC(self.__key_hmac, hashes.SHA256())
-
         # Autentica el texto cifrado
-        h.update(direccion)
+        # Asegúrate de que 'direccion' es una cadena de bytes
+        direccion_bytes = direccion.encode()
+
+        h.update(direccion_bytes)
 
         # Obtiene el MAC (Mensaje de Autenticación de Código)
         mac = h.finalize()
         from cryptography.hazmat.primitives import padding
         padder = padding.PKCS7(128).padder()
-
-        # Asegúrate de que 'direccion' es una cadena de bytes
-        direccion_bytes = direccion.encode()
 
         # Rellena los datos
         direccion_rellenada = padder.update(direccion_bytes) + padder.finalize()
@@ -84,8 +90,6 @@ class Usuario:
         return ct, mac
     
     def descifrar_matricula(self, matricula_cifrada, mac_matricula):
-
-
         cipher = Cipher(algorithms.AES(self.__clave_simetrica), modes.CBC(self.__iv))
         decryptor = cipher.decryptor()
         matricula_descifrado = decryptor.update(matricula_cifrada) + decryptor.finalize()
@@ -95,6 +99,6 @@ class Usuario:
         unpadder = padding.PKCS7(128).unpadder()
         matricula = unpadder.update(matricula_descifrado) + unpadder.finalize()
         h = hmac.HMAC(self.__key_hmac, hashes.SHA256())
-        h.update(matricula_cifrada)
+        h.update(matricula)
         h.verify(mac_matricula)
         print("matricula", matricula)
