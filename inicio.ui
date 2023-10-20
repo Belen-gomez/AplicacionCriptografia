@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>425</width>
+    <width>455</width>
     <height>545</height>
    </rect>
   </property>
@@ -16,14 +16,15 @@
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>-10</x>
-     <y>-20</y>
+     <x>0</x>
+     <y>-40</y>
      <width>481</width>
      <height>621</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(255, 255, 255);</string>
+    <string notr="true">background-color: rgb(173, 175, 225);
+color:rgb(39, 7, 69)</string>
    </property>
    <property name="text">
     <string/>
@@ -39,8 +40,9 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(173, 175, 225);
-font: 11pt &quot;Segoe UI&quot;;</string>
+    <string notr="true">background-color: rgb(39, 7, 69);
+font: 11pt &quot;Segoe UI&quot;;
+color: rgb(255,255,255)</string>
    </property>
    <property name="text">
     <string>Inicia Sesión</string>
@@ -97,20 +99,57 @@ color: rgb(39, 7, 69);</string>
     <string>¿Todavía no has empezado esta aventura?</string>
    </property>
   </widget>
-  <widget class="QLabel" name="label_5">
+  <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>20</x>
-     <y>0</y>
-     <width>381</width>
-     <height>361</height>
+     <x>0</x>
+     <y>100</y>
+     <width>471</width>
+     <height>91</height>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">image: url(:/main/Captura de Pantalla 2023-10-19 a las 10.02.20 - copia.png)</string>
+    <string notr="true">background-color: rgb(255, 255, 255);
+gridline-color: rgb(39, 7, 69);
+border-color: rgb(39, 7, 69);
+font: 800 24pt &quot;Rockwell Nova Extra Bold&quot;;</string>
    </property>
    <property name="text">
     <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_5">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>120</y>
+     <width>231</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:rgb(39, 7, 69);
+font: 800 30pt &quot;Rockwell Nova Extra Bold&quot;;</string>
+   </property>
+   <property name="text">
+    <string>HAILO</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_6">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>170</y>
+     <width>371</width>
+     <height>131</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">color:rgb(39, 7, 69);
+font: 800 20pt &quot;Rockwell Nova Extra Bold&quot;;</string>
+   </property>
+   <property name="text">
+    <string>¿Viajamos juntos?</string>
    </property>
   </widget>
  </widget>
