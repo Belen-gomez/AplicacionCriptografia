@@ -136,23 +136,23 @@ def InicioSesion():
     print("Inicio de sesion correcto")
     cambio_token = random.randint(1, 10)
     if cambio_token == 1:
-        CambiarToken(contrasenia, usuario)
+        salt = os.urandom(16)
+        # derive
+        kdf = PBKDF2HMAC(
+            algorithm=hashes.SHA256(),
+            length=32,
+            salt=salt,
+            iterations=480000,
+        )
+        key = kdf.derive(bytes(contrasenia.encode("utf-8")))
+
+        usuario["Contrasenia_derivada"] = key.decode('latin-1')
+        usuario["Salt"] = salt.decode('latin-1')
+
+        bd.save_store()
 
     return usuario["Nombre"], usuario["Correo"]
 
-def CambiarToken(contrasenia, usuario):
-    salt = os.urandom(16)
-    # derive
-    kdf = PBKDF2HMAC(
-        algorithm=hashes.SHA256(),
-        length=32,
-        salt=salt,
-        iterations=480000,
-    )
-    key = kdf.derive(bytes(contrasenia.encode("utf-8")))
-
-    usuario["Contrasenia_derivada"] = key.decode('latin-1')
-    usuario["Salt"] = salt.decode('latin-1')
 
 def BuscarConductor(conductores_ruta):
     while len(conductores_ruta) == 0:
