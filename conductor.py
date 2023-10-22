@@ -4,12 +4,9 @@ from cryptography.hazmat.primitives import padding
 from cryptography.hazmat.primitives.asymmetric import padding
 import random
 import string
-from cryptography.hazmat.primitives.asymmetric import rsa
 import time
-import os
 from cryptography.hazmat.primitives import padding as pd
 from cryptography.hazmat.primitives import serialization
-import json
 from base_de_pasajeros import BaseDePasajeros
 
 class Conductor:
@@ -81,7 +78,13 @@ class Conductor:
         print("He recibido correctamente tu dirección")
         
         path = "conductores/" + str(self.id) + "/pasajeros.json"
-        pasajero = {"Correo": correo_usuario, "Direccion": direccion_cifrada.decode("latin-1")}
+        ciphertext = self._public_key.encrypt(direccion,
+                padding.OAEP(
+                mgf=padding.MGF1(algorithm=hashes.SHA256()),
+                algorithm=hashes.SHA256(),
+                label=None
+            ))
+        pasajero = {"Correo": correo_usuario, "Direccion": ciphertext.decode("latin-1")}
         pasajeros = BaseDePasajeros()
         pasajeros.FILE_PATH = path
         pasajeros.load_store()
@@ -105,8 +108,7 @@ class Conductor:
 
         # Obtiene el MAC (Mensaje de Autenticación de Código)
         mac = h.finalize()
-        from cryptography.hazmat.primitives import padding
-        padder = padding.PKCS7(128).padder()
+        padder = pd.PKCS7(128).padder()
         matricula_bytes = matricula.encode()
         matricula_rellenada = padder.update(matricula_bytes) + padder.finalize()
 

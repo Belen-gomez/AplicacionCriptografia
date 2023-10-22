@@ -7,7 +7,7 @@
 import os
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
-from cryptography.exceptions import InvalidKey
+from cryptography.hazmat.primitives.kdf.scrypt import Scrypt
 from base_usuarios import BaseDeUsuarios
 from base_conductores import BaseDeConductores
 from excepciones import Excepcion
@@ -16,8 +16,6 @@ import re
 import random
 from comunicacion import Comunicacion
 import time
-from generadordatos import GeneradorDatos
-from usuario import Usuario
 from claves import Claves
 from base_de_pasajeros import BaseDePasajeros
 
@@ -80,11 +78,12 @@ def Registro():
     # Guardar la contraseña en una base de datos con el correo y el salt
     salt = os.urandom(16)
     # derive
-    kdf = PBKDF2HMAC(
-        algorithm=hashes.SHA256(),
-        length=32,
+    kdf = Scrypt(
         salt=salt,
-        iterations=480000,
+        length=32,
+        n=2**14,
+        r=8,
+        p=1,
     )
     key = kdf.derive(bytes(contrasenia.encode("utf-8")))
 
@@ -118,11 +117,12 @@ def InicioSesion():
     # verify
      
     for i in range(2):
-        kdf = PBKDF2HMAC(
-        algorithm=hashes.SHA256(),
-        length=32,
-        salt=salt.encode('latin-1'),
-        iterations=480000,
+        kdf = Scrypt(
+            salt=salt.encode('latin-1'),
+            length=32,
+            n=2**14,
+            r=8,
+            p=1,
         )
         try:
             kdf.verify(bytes(contrasenia.encode("latin-1")), key.encode('latin-1'))
@@ -138,11 +138,12 @@ def InicioSesion():
     if cambio_token == 1:
         salt = os.urandom(16)
         # derive
-        kdf = PBKDF2HMAC(
-            algorithm=hashes.SHA256(),
+        kdf = Scrypt(
+            salt=salt.encode('latin-1'),
             length=32,
-            salt=salt,
-            iterations=480000,
+            n=2**14,
+            r=8,
+            p=1,
         )
         key = kdf.derive(bytes(contrasenia.encode("utf-8")))
 

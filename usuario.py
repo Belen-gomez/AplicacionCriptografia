@@ -3,8 +3,8 @@ from cryptography.hazmat.primitives import hashes, hmac
 import os
 import time
 from cryptography.hazmat.primitives.asymmetric import padding
-from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.primitives import serialization
+from cryptography.hazmat.primitives import padding as pd
 
 class Usuario:
     def __init__(self, correo, nombre):
@@ -75,8 +75,7 @@ class Usuario:
 
         # Obtiene el MAC (Mensaje de Autenticación de Código)
         mac = h.finalize()
-        from cryptography.hazmat.primitives import padding
-        padder = padding.PKCS7(128).padder()
+        padder = pd.PKCS7(128).padder()
 
         # Rellena los datos
         direccion_rellenada = padder.update(direccion_bytes) + padder.finalize()
@@ -90,15 +89,14 @@ class Usuario:
         return ct, mac
     
     def descifrar_matricula(self, matricula_cifrada, mac_matricula):
+        print("matrícula cifrada: ", matricula_cifrada)
         cipher = Cipher(algorithms.AES(self.__clave_simetrica), modes.CBC(self.__iv))
         decryptor = cipher.decryptor()
         matricula_descifrado = decryptor.update(matricula_cifrada) + decryptor.finalize()
 
         # Quitamos el padding
-        from cryptography.hazmat.primitives import padding
-        unpadder = padding.PKCS7(128).unpadder()
+        unpadder = pd.PKCS7(128).unpadder()
         matricula = unpadder.update(matricula_descifrado) + unpadder.finalize()
         h = hmac.HMAC(self.__key_hmac, hashes.SHA256())
         h.update(matricula)
         h.verify(mac_matricula)
-        print("matricula", matricula)

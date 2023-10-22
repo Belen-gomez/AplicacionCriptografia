@@ -1,16 +1,9 @@
 [
   {
-    "Nombre": "Belen Gomez",
+    "Nombre": "bga78a@gmail.com",
     "Correo": "bga78a@gmail.com",
     "Telefono": "666666666",
-    "Contrasenia_derivada": "06cx\u00ab\u009d\u0012\u00a7\u007f\u00bdvGN8\u00be\u00bb\u001fy\u00f5\u001dc\u00c7\u00ec\u000bd\u00d2*\u00cf\u00a5\r_\u00cc",
-    "Salt": "h\u00fd\n\u0086c\u00a6a3\u00eb\u0005\u0015m \u00fa\u00ab\u00af"
-  },
-  {
-    "Nombre": "Celia Patricio",
-    "Correo": "celia@gmail.com",
-    "Telefono": "666666666",
-    "Contrasenia_derivada": "\u001eE\f\u009c\u00dd\u00c6<\u00faw\u00eb\u0002wj\u0086\u00de\f\u00cd\u0088G\u00bb\u00ff\u008c\u009d\u00a2h\u00d0P\u00ef\u00cd\u00c6\u009a\u0001",
-    "Salt": "\u0092?\u00db\n\u0091D.\u008as\u00e55\u00caj\u00a7\u007fa"
+    "Contrasenia_derivada": "\u001e\u0005\u00c4\u00fa.\u00f2W\u001c\u00a0\u00b4PXk\t\u0080\u00cd\u00ca\u00a5LG\u00a2\u00dd\u0017\u0014\"\u009dWE\u0005~A_",
+    "Salt": "aD:\u0011\u00c1\u0084\u00ac\u00b048\u008a\u00ff\u0001W\u00ea\u00ce"
   }
 ]

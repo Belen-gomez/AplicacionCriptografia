@@ -92,7 +92,7 @@
   {
     "id": 11,
     "nombre": "Marta Pascual",
-    "contador": 1,
+    "contador": 0,
     "consumo": 5.61,
     "ruta_origen": "madrid",
     "ruta_destino": "barcelona",
@@ -200,7 +200,7 @@
   {
     "id": 23,
     "nombre": "Angela Serrano",
-    "contador": 4,
+    "contador": 3,
     "consumo": 5,
     "ruta_origen": "madrid",
     "ruta_destino": "graz",
