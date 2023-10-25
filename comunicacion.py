@@ -8,6 +8,7 @@ import random
 import string
 from usuario import Usuario
 from conductor import Conductor
+from base_de_pasajeros import BaseDePasajeros
 
 class Comunicacion:
     
@@ -38,7 +39,7 @@ class Comunicacion:
         direccion_cifrada, mac_direccion = self.usuario.cifrar_direccion()
 
         #el conductor descifra el mensaje
-        self.conductor.descifrar_direccion(direccion_cifrada, mac_direccion, self.usuario.correo)
+        pasajero = self.conductor.descifrar_direccion(direccion_cifrada, mac_direccion, self.usuario.correo)
         time.sleep(2)
         print("Ahora te voy a enviar mi matricula")
 
@@ -51,7 +52,15 @@ class Comunicacion:
 
         conductor_sel["contador"] -= 1
 
+        path = "/DATOS/BELÉN/3º UNI/Criptografía/Practica_1/Criptografia/conductores/" + str(self.conductor.id) + "/pasajeros.json"
         conductores.save_store()
+        pasajeros = BaseDePasajeros()
+        pasajeros.FILE_PATH = path
+        pasajeros.load_store()
+        pasajeros.add_item(pasajero)
+        pasajeros.save_store()
+        time.sleep(1)
+        print("Ya estás apuntado para el viaje")
         print("¡Ya estamos listos para irnos!")
         
     

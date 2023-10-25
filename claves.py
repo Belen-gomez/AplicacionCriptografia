@@ -26,6 +26,8 @@ class Claves():
                 encoding=serialization.Encoding.PEM,
                 format=serialization.PublicFormat.SubjectPublicKeyInfo
                 )
-
-        bd.add_item({"Correo": self.id, "Clave_publica": pem.decode('latin-1')})
+        pem = pem.decode('latin-1')
+        pem = pem.replace("-----BEGIN PUBLIC KEY-----\n", "")
+        pem = pem.replace("\n-----END PUBLIC KEY-----\n", "")
+        bd.add_item({"Correo": self.id, "Clave_publica": pem})
 

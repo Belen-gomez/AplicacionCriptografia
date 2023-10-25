@@ -109,8 +109,8 @@ def InicioSesion():
     if usuario is None:
         print("El usuario no existe. Regístrate para poder usar la aplicación")
         print("----------------------Registro de usuarios----------------------")
-        Registro()
-        return
+        
+        return Registro()
     salt = usuario["Salt"]
     key = usuario["Contrasenia_derivada"]
     # verify
@@ -133,7 +133,7 @@ def InicioSesion():
                 raise Excepcion("Contraseña incorrecta. Has superado el numero de intentos")  
 
     print("Inicio de sesion correcto")
-    cambio_token = random.randint(1, 1)
+    cambio_token = random.randint(1, 10)
     if cambio_token == 1:
         salt = os.urandom(16)
         # derive

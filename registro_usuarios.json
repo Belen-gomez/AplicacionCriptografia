@@ -2,29 +2,8 @@
   {
     "Nombre": "Belen Gomez",
     "Correo": "bga78a@gmail.com",
-    "Telefono": "666666666",
-    "Contrasenia_derivada": "G\u00f0_\u00af\u00d2\u00f8w\u00fda~\u00fdjJ9\u00a1\u00a7\u0087\u00d3\u0010j\u009am\u0015\u00c8&\u00d1B\u00a2\u00b8^\u00aa\u00b5",
-    "Salt": "\u00ad\u0086\u0015\u00a0k\u0080\u0015\u00e8\u00d6\u00ac\u00bdY\u009e\u00da{\u0092"
-  },
-  {
-    "Nombre": "Celia Patricio",
-    "Correo": "celia@gmail.com",
-    "Telefono": "666666666",
-    "Contrasenia_derivada": "\u00cc\u00e6\u00ac\u00d0_\u00a0 \u00bc\u00e8\u00ff\u0090\u008eo\u008a\u007f(\u0096\u009eb\u00eb\u001b\u0084\u0002O\t\\H\u0098\u00ed\u00ad!8",
-    "Salt": "D\u00fa8\u000f1\u00bf\u00b0f`LZQc\u0089\u00f6\\"
-  },
-  {
-    "Nombre": "Pepe",
-    "Correo": "pepe@gmail.com",
-    "Telefono": "666666666",
-    "Contrasenia_derivada": "\u00e3\u00aa\u0017\\\u00cf\u00a6\u00b6\u00edtr\u00d7\u00a8\u00eeA33\u00bb\u00c8V\u00e0\u00a6 \u00cav\u00e2y\u00f4\u00c6\u00bd+\u00cb\u00d2",
-    "Salt": "\u0096m\u00c1\u009f'RnWX\u0017\u00b4q\u0086\u00ab\u00b2\u00f9"
-  },
-  {
-    "Nombre": "pedro",
-    "Correo": "pedro@gmail.com",
-    "Telefono": "666666666",
-    "Contrasenia_derivada": "\u008f\u0092z\u00eb\u00a2J\u00c7fx\u00dc\u0089wX\u008d\u0012d\u0015\u00cc\u0095\u00a8%|D[%\u00f21\u00ce\u00e5K\u00c5^",
-    "Salt": "*\u00f5\u00a5\u0014\u00a1\u0091\u00aa!\u00ff\u00f1w\u00e7\u0088\u00bd\u0018x"
+    "Telefono": "629155154",
+    "Contrasenia_derivada": "\u00fex\u008d0>\u00c6\u00db\u00be*\u007f\u008cl^N3\u00ddt\u00b0v~\u0098B\u00c9\u00d1\u00bf\u00fc\u0014\u00b9\u0098\u009c\u008af",
+    "Salt": "\u008e\u00b2G\u0082\u0081\u00fe\u00acNj\u00da<C\u00b2+\u00fa\u009c"
   }
 ]

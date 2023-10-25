@@ -8,6 +8,7 @@ import time
 from cryptography.hazmat.primitives import padding as pd
 from cryptography.hazmat.primitives import serialization
 from base_de_pasajeros import BaseDePasajeros
+import json
 
 class Conductor:
     def __init__(self, nombre, id):
@@ -87,32 +88,38 @@ class Conductor:
                 label=None
             ))
         pasajero = {"Correo": correo_usuario, "Direccion": ciphertext.decode("latin-1")}
-        pasajeros = BaseDePasajeros()
-        pasajeros.FILE_PATH = path
-        pasajeros.load_store()
-        pasajeros.add_item(pasajero)
-        pasajeros.save_store()
-        time.sleep(1)
-        print("Ya estás apuntado para el viaje")
+        
+        return pasajero
 
     def cifrar_matricula(self):
         print("--------- SISTEMA ---------")
         print("Cifrando matricula")
         time.sleep(2)
         print("--------- FIN ---------")
-        digitos = ''.join(random.choice(string.digits) for _ in range(4))
-        letras = ''.join(random.choice('BCDFGHJKLMNPQRSTVWXYZ') for _ in range(3))
-        matricula = digitos + letras
-        h = hmac.HMAC(self.__key_hmac, hashes.SHA256())
+        data_list = []
+        path = "/DATOS/BELÉN/3º UNI/Criptografía/Practica_1/Criptografia/conductores/" + str(self.id) + "/matricula.json"
+        with open(path, "r") as file:
+            data_list = json.load(file)
+        
+        matricula_cifrada= data_list[0]["Matricula"]
+        matricula = self.__private_key.decrypt(
+            matricula_cifrada.encode('latin-1'),
+            padding.OAEP(
+                mgf=padding.MGF1(algorithm=hashes.SHA256()),
+                algorithm=hashes.SHA256(),
+                label=None
+            )
+        )
+
+        h = hmac.HMAC(self.__key_hmac, hashes.SHA256()) 
 
         # Autentica el texto cifrado
-        h.update(matricula.encode())
+        h.update(matricula)
 
         # Obtiene el MAC (Mensaje de Autenticación de Código)
         mac = h.finalize()
         padder = pd.PKCS7(128).padder()
-        matricula_bytes = matricula.encode()
-        matricula_rellenada = padder.update(matricula_bytes) + padder.finalize()
+        matricula_rellenada = padder.update(matricula) + padder.finalize()
 
         # Ciframos la matrícula con la clave simétrica
         cipher = Cipher(algorithms.AES(self.__clave_simetrica), modes.CBC(self.__iv))
