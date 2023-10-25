@@ -75,6 +75,7 @@ class Usuario:
 
         # Obtiene el MAC (Mensaje de Autenticación de Código)
         mac = h.finalize()
+    
         padder = pd.PKCS7(128).padder()
 
         # Rellena los datos
@@ -82,11 +83,13 @@ class Usuario:
 
         # Ciframos la dirección con la clave del usuario
         cipher = Cipher(algorithms.AES(self.__clave_simetrica), modes.CBC(self.__iv))
-        encryptor = cipher.encryptor()
-        ct = encryptor.update(direccion_rellenada) + encryptor.finalize()
+        encryptor1 = cipher.encryptor()
+        ct = encryptor1.update(direccion_rellenada) + encryptor1.finalize()
 
-
-        return ct, mac
+        # Crear un nuevo encryptor para 'mac'
+        encryptor2 = cipher.encryptor()
+        ct_mac = encryptor2.update(mac) + encryptor2.finalize()
+        return ct, ct_mac
     
     def descifrar_matricula(self, matricula_cifrada, mac_matricula):
         print("matrícula cifrada: ", matricula_cifrada)

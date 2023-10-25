@@ -20,7 +20,7 @@ class Conductor:
         self.__key_hmac = None
 
     def key(self):
-        path = "conductores/" + str(self.id) + "/key.pem"
+        path = "/DATOS/BELÉN/3º UNI/Criptografía/Practica_1/Criptografia/conductores/" + str(self.id) + "/key.pem"
         with open(path, "rb") as key_file:
             private_key = serialization.load_pem_private_key(
                 key_file.read(),
@@ -66,18 +66,20 @@ class Conductor:
         
     def descifrar_direccion(self, direccion_cifrada, mac_direccion, correo_usuario):
         cipher = Cipher(algorithms.AES(self.__clave_simetrica), modes.CBC(self.__iv))
-        decryptor = cipher.decryptor()
-        direccion_descifrada = decryptor.update(direccion_cifrada) + decryptor.finalize()
+        decryptor1 = cipher.decryptor()
+        decryptor2 = cipher.decryptor()
+        direccion_descifrada = decryptor1.update(direccion_cifrada) + decryptor1.finalize()
+        mac_descrifrado = decryptor2.update(mac_direccion) + decryptor2.finalize()
 
         # Quitamos el padding
         unpadder = pd.PKCS7(128).unpadder()
         direccion = unpadder.update(direccion_descifrada) + unpadder.finalize()
         h = hmac.HMAC(self.__key_hmac, hashes.SHA256())
         h.update(direccion)
-        h.verify(mac_direccion)
+        h.verify(mac_descrifrado)
         print("He recibido correctamente tu dirección")
         
-        path = "conductores/" + str(self.id) + "/pasajeros.json"
+        path = "/DATOS/BELÉN/3º UNI/Criptografía/Practica_1/Criptografia/conductores/" + str(self.id) + "/pasajeros.json"
         ciphertext = self._public_key.encrypt(direccion,
                 padding.OAEP(
                 mgf=padding.MGF1(algorithm=hashes.SHA256()),

@@ -93,12 +93,11 @@ def Registro():
         print("----------------------Incio de sesion----------------------")
         InicioSesion()
     
-    
     nuevo_usuario={"Nombre": nombre, "Correo": correo, "Telefono": telefono, "Contrasenia_derivada": key.decode('latin-1'), "Salt": salt.decode('latin-1')}
     bd.add_item(nuevo_usuario)
-    path = "usuarios/" + correo + "/key.pem"
+    path = "/DATOS/BELÉN/3º UNI/Criptografía/Practica_1/Criptografia/usuarios/" + correo + "/key.pem"
     os.makedirs(os.path.dirname(path), exist_ok=True)
-    Claves(path).CrearClavePrivada()
+    Claves(path, correo).CrearClavePrivada()
 
     return nombre, correo
 
@@ -134,12 +133,12 @@ def InicioSesion():
                 raise Excepcion("Contraseña incorrecta. Has superado el numero de intentos")  
 
     print("Inicio de sesion correcto")
-    cambio_token = random.randint(1, 10)
+    cambio_token = random.randint(1, 1)
     if cambio_token == 1:
         salt = os.urandom(16)
         # derive
         kdf = Scrypt(
-            salt=salt.encode('latin-1'),
+            salt=salt,
             length=32,
             n=2**14,
             r=8,
@@ -166,18 +165,6 @@ def BuscarConductor(conductores_ruta):
             destino = input("¿A dónde quieres ir? ").lower()
         conductores_ruta = conductores.find_data_ruta(origen, destino)
     return conductores_ruta
-
-
-''' try:
-    os.remove("/DATOS/BELÉN/3º UNI/Criptografía/Practica_1/Criptografia/conductores.json")
-except:
-    pass
-
-conductores = BaseDeConductores()
-
-for i in range(1, random.randint(1, 25)):
-    conductor = GeneradorDatos(i)
-    conductores.add_item(conductor.__dict__) '''
 
 i = 0
 while True:
@@ -224,7 +211,7 @@ if contactar == "s":
     print("Se ha enviado un mensaje al conductor", conductor, "con tu petición de viaje. En breve se pondrá en contacto contigo")
     time.sleep(5)
 
-    path = "conductores/" + str(id) + "/pasajeros.json"
+    path = "/DATOS/BELÉN/3º UNI/Criptografía/Practica_1/Criptografia/conductores/" + str(id) + "/pasajeros.json"
     pasajeros = BaseDePasajeros()
     pasajeros.FILE_PATH = path
     pasajeros.load_store()

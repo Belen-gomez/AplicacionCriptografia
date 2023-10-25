@@ -1,0 +1,18 @@
+[
+  {
+    "Correo": "bga78a@gmail.com",
+    "Clave_publica": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsn6Of0TjGVROrjSwmNs1\nm3WlVrMtHmx28euRX9LhWJHYzltRKrUSPaNEzchWoWWoOQ2oUzII/ZhNbN61Ixxh\nT5Z/r1DvSOG7c2fgm1qvCkPVD+Tici905BK86z8eqZclgiVhpFwuv47+UAXOFVYs\nAC2m/G/tNnRGrarGMqP5mc2dznGbKBEBscuxPTKoF/71qUpfx51Z+lTbQD/rvKbA\ntkEiQQTK8Rg/pCYEfHf0+PlNnsu9tJek6tRilF1DEqBHwzPydLzKuS5KGnyen3sz\nezQqxNgq1C30QHC7nQ2jQVFTmxNH3NXs3bAf9u8yMYAU8Kofe+Mo8Mf1oHXZJe0U\nEQIDAQAB\n-----END PUBLIC KEY-----\n"
+  },
+  {
+    "Correo": "celia@gmail.com",
+    "Clave_publica": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3lMtbe3rsbosusT7Hkst\nxusqDLNR+tzmQJ0H+h7n6LQYCotml9IaNLnyFbU6eKZ6zZ+fOeitI/QfBTNgtLPr\nYYQ6OqNwbOwXe2VpUJ781dt1ayYPYWrZEKbKiByqS9CgwCWkECXoZSaMVZ+JEz/U\nurngGpqxWU5+AMbymr54US7Peo3Wpgy00qYrQhqZXG4JymvDOK7Ix5IsnI4FrAEJ\n2XJcKmnbwMppz6Q5Em4rF24A83dhJ9L4eL/tlwUYgwSqTSg1TYVSxvyEdQks4sp/\n4G0s3kdlc3CPZ8nHtc4+EmtMVTnWErKOAH2LriZVgpr36Hh7eEHbcnMNVKDAHEUG\nhQIDAQAB\n-----END PUBLIC KEY-----\n"
+  },
+  {
+    "Correo": "pepe@gmail.com",
+    "Clave_publica": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlp4h88FbrBkH5Uh7ibMa\nYPPu1Lz18VaQ2zxxsx00QQsWBCVKpAw4wGdQDDP1IygaUMvXzgKkA8M7gCbjEiMr\nlxvsSrggslgQrkgHoP1/tJOvO12/byHfrBrvuBI014BpAUkDzaEHcwKkzQpob6+w\n/RWAg3NFC6jgwHJ9ifZfGkTfaUfoknNl4/U+buVbqtLzTfglRV9P8rZRNHMjNnov\nHlzfxdxAFzjRYOr1M+LoPkCK1fntOf3h8WXcHH6INqhWUYNy6j0IDYzoIoRqIiQ5\nxNmqcLiK9hUk40R2IA8sKuWFPsgn6GjNAQHjLr1SQSWr9e8zuz1s1dbc0aWTILcj\n+QIDAQAB\n-----END PUBLIC KEY-----\n"
+  },
+  {
+    "Correo": "pedro@gmail.com",
+    "Clave_publica": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAotPKaMtrHfuT7YbyDyJN\ntJyOL7t8oCIJNMCiq70jp19xV4WQXo5aLQKr0GBeMfWRNqyQuEJtInbMwn42M4Wb\nCL/Y+J4OMLYIzBzljlRy9Bt9ncN7DCr3YQ2/KgHMJbhl1o+L6neRpMTpDTfVyjcH\nOaYH6GHPKWM1xjzp2rstoA6qW09ly+NPVQHI7jhiLw9cvdPguCvcGujJVmraRDwg\nfFv3yO6UvNqPI0q8mjSkbuyoQc/ttl+dztyAacPCI3Xlcre4JTkCfl74R91RP0UK\nn4mvqYspK/HDS44bTVxkjRJSFo1wLEAmVUD0FiQzj+jBMmzICRUbJ98oVgErhsAK\nOQIDAQAB\n-----END PUBLIC KEY-----\n"
+  }
+]
