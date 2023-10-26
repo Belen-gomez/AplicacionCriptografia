@@ -88,7 +88,6 @@ class Usuario:
         return ct, ct_mac
     
     def descifrar_matricula(self, matricula_cifrada, mac_matricula):
-        print("matrícula cifrada: ", matricula_cifrada)
         cipher = Cipher(algorithms.AES(self.__clave_simetrica), modes.CBC(self.__iv))
         decryptor = cipher.decryptor()
         matricula_descifrado = decryptor.update(matricula_cifrada) + decryptor.finalize()

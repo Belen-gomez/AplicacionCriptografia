@@ -14,7 +14,7 @@ class BaseDeConductores(BaseDeDatos):
     _data_list = []
     __ERROR_MESSAGE_PATH = "Wrong file or file path"
     __ERROR_JSON_DECODE = "JSON Decode Error - Wrong JSON Format"
-    FILE_PATH = os.path.dirname(__file__) + "\\Bases\\conductores.json"
+    FILE_PATH = os.path.dirname(__file__) + "/Bases/conductores.json"
     ID_FIELD = "id"
 
     def __init__(self):
