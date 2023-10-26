@@ -1,0 +1,7 @@
+Si se el código se ejecuta en pycharm:
+-Abrir 'Run'-> 'Edit Configurations'.
+-Marcar la casilla de 'Emulate terminal in output console'
+
+Instalar cryptography en caso de no tenerlo instalado.
+
+Ejecutar el archivo 'main.py'.
