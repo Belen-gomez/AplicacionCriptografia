@@ -1,5 +1,5 @@
-from Datos.base_conductores import BaseDeConductores
-from Datos.base_de_pasajeros import BaseDePasajeros
+from base_conductores import BaseDeConductores
+from base_de_pasajeros import BaseDePasajeros
 from comunicacion import Comunicacion
 import time
 import os

@@ -1,6 +1,6 @@
 import json
 import os
-from Datos.base_de_datos import BaseDeDatos
+from base_de_datos import BaseDeDatos
 
 class ClavesUsuarios(BaseDeDatos):
     """

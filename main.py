@@ -1,12 +1,12 @@
 import os
 from cryptography.hazmat.primitives.kdf.scrypt import Scrypt
-from Datos.base_usuarios import BaseDeUsuarios
+from base_usuarios import BaseDeUsuarios
 from gestion import Gestion
 from excepciones import Excepcion
 from Atributos.Validaciones import ValidarCampos
 import getpass
 import random
-from Claves.claves import Claves
+from claves import Claves
 import json
 
 def Registro():

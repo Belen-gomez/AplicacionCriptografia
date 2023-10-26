@@ -1,4 +1,4 @@
-from Datos.base_conductores import BaseDeConductores
+from base_conductores import BaseDeConductores
 import os
 import time
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
@@ -8,9 +8,9 @@ import random
 import string
 from usuarios.usuario import Usuario
 from conductores.conductor import Conductor
-from Datos.base_de_pasajeros import BaseDePasajeros
+from base_de_pasajeros import BaseDePasajeros
 import json
-from Datos.base_viajes import BaseDeViajes
+from base_viajes import BaseDeViajes
 
 class Comunicacion:
     
