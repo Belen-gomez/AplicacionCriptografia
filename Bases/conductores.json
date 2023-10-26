@@ -178,7 +178,7 @@
   {
     "id": 23,
     "nombre": "Angela Serrano",
-    "contador": 2,
+    "contador": 1,
     "consumo": 5,
     "ruta_origen": "madrid",
     "ruta_destino": "alicante"

@@ -164,8 +164,8 @@ try:
     with open(path, "r", encoding="utf-8", newline="") as file:
         data_list = json.load(file)
         respuesta = input("Quieres reservar un nuevo viaje (R) o ver tus viajes ya reservados (V)").lower()
-        while respuesta != "r" or respuesta != "v":
-                respuesta = input("Quieres reservar un nuevo viaje (R) o ver tus viajes ya reservados (V)").lower()
+        while respuesta != "r" and respuesta != "v":
+            respuesta = input("Quieres reservar un nuevo viaje (R) o ver tus viajes ya reservados (V)").lower()
         if respuesta == "r":
             reservas.reservar(correo_usuario, nombre)
         else:
