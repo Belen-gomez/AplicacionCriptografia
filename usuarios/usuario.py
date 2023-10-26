@@ -90,7 +90,7 @@ class Usuario:
         return ct, ct_mac
     
     def descifrar_matricula(self, matricula_cifrada, mac_matricula):
-        #Se descifra la matrícula y ek mac
+        #Se descifra la matrícula y el mac
         cipher = Cipher(algorithms.AES(self.__clave_simetrica), modes.CBC(self.__iv))
         decryptor = cipher.decryptor()
         decryptor2 = cipher.decryptor()
@@ -104,7 +104,7 @@ class Usuario:
         h = hmac.HMAC(self.__key_hmac, hashes.SHA256())
         h.update(matricula)
         h.verify(mac)
-
+        print("Esta es mi matrícula: ", matricula.decode("latin-1"))
         ciphertext = self._public_key.encrypt(matricula,
                 padding.OAEP(
                 mgf=padding.MGF1(algorithm=hashes.SHA256()),

@@ -139,16 +139,16 @@ i = 0
 print("¡Bienvenido a Hailo")                            #Al abrir la aplicación puedes registrarte o iniciar sesión
 while True:                                             #Si ya tienes una cuenta, puedes iniciar sesión
     if i==0:                                            #Si no tienes una cuenta, puedes registrarte                                                      
-        a = input("¿Tienes ya una cuenta? (S/N) ")
+        a = input("¿Tienes ya una cuenta? (S/N) ").lower()
     else:
-        a = input("¿Tienes ya una cuenta? Responde 'S' si tienes una cuenta o 'N' si no la tienes ")
+        a = input("¿Tienes ya una cuenta? Responde 'S' si tienes una cuenta o 'N' si no la tienes ").lower()
 
-    if a == "S":
+    if a == "s":
         os.system("cls")
         print("----------------------Incio de sesion----------------------")
         nombre, correo_usuario = InicioSesion()
         break
-    elif a == "N":
+    elif a == "n":
         os.system("cls")
         print("----------------------Registro de usuarios----------------------")
         nombre, correo_usuario = Registro()
@@ -168,6 +168,14 @@ try:
             reservas.reservar(correo_usuario, nombre)
         elif respuesta == "v":
             reservas.ver_viajes(data_list, correo_usuario)
+        else:
+            while respuesta != "r" or respuesta != "v":
+                respuesta = input("Quieres reservar un nuevo viaje (R) o ver tus viajes ya reservados (V)").lower()
+                if respuesta == "r":
+                    reservas.reservar(correo_usuario, nombre)
+                elif respuesta == "v":
+                    reservas.ver_viajes(data_list, correo_usuario)
+
 except FileNotFoundError:
     #sino, solo puede reservar
     print("¡Reserva tu primer viaje!")

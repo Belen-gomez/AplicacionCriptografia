@@ -101,12 +101,12 @@
     "contador": 5,
     "consumo": 6.16,
     "ruta_origen": "madrid",
-    "ruta_destino": "porto"
+    "ruta_destino": "oporto"
   },
   {
     "id": 14,
     "nombre": "Fernando Ruiz",
-    "contador": 3,
+    "contador": 2,
     "consumo": 5.94,
     "ruta_origen": "zaragoza",
     "ruta_destino": "salamanca"

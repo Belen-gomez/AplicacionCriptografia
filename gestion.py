@@ -10,34 +10,46 @@ from cryptography.hazmat.primitives import hashes
 class Gestion:
     def __init__(self):
         pass
-
+    
+    def Contactar(self, conductor, conductores_ruta):
+        for item in conductores_ruta:
+            if item["nombre"].lower() == conductor:
+                id = item["id"]
+        return id
+    
     def BuscarConductor(self, conductores_ruta):
         conductores = BaseDeConductores()
         while len(conductores_ruta) == 0:
-            opciones = input("No hay conductores para tu viaje. ¿Quieres probar con otro origen o destino? (S/N) ")
-            if opciones == "N":
-                print("Lamentamos que no hayas encontrado un conductor para tu viaje. ¡Vuelve pronto!")
-                exit()
-            elif opciones == "S":
+            opciones = input("¿Quieres probar con otro origen o destino? (S/N) ").lower()
+            if opciones == "s":
                 origen = input("¿Dónde quieres empezar tu viaje? ").lower()
                 destino = input("¿A dónde quieres ir? ").lower()
+            else:
+                print("Lamentamos que no hayas encontrado un conductor para tu viaje. ¡Vuelve pronto!")
+                exit()
             conductores_ruta = conductores.find_data_ruta(origen, destino)
-        return conductores_ruta
+        return conductores_ruta, origen, destino
 
     def reservar(self, correo_usuario, nombre):
         """
         Función para rerservar un viaje
         """
+        conductores = BaseDeConductores()
+        conductores.load_store()
+        print("Viajes disponibles")
+        for item in conductores._data_list:
+            print("Origen: ", item["ruta_origen"], " - Destino: ", item["ruta_destino"])
+            
         #Se pide el viaje
         origen = input("¿Dónde quieres empezar tu viaje? ").lower()
         destino = input("¿A dónde quieres ir? ").lower()
-
-        conductores = BaseDeConductores()
+       
         #Se buscan conductores que realicen ese viaje
         conductores_ruta = conductores.find_data_ruta(origen, destino)
         if len(conductores_ruta) == 0:
             #Si no hay conductores se solicita un viaje distinto
-            conductores_ruta = self.BuscarConductor(conductores_ruta)
+            print("No se ha encontrada un conductor para tu ruta ")
+            conductores_ruta, origen, destino = self.BuscarConductor(conductores_ruta)
 
         for item in conductores_ruta:
             print("El conductor", item["nombre"], "realiza tu mismo viaje. Le quedan ", item["contador"], "plaza(s) libre(s) y su coche consume",
@@ -45,12 +57,16 @@ class Gestion:
 
         #Se muestran los conductores y se permite al usuario elegir
         contactar = input("¿Quieres contactar con alguno de estos conductores? (S/N)").lower()
+
         if contactar == "s":
             conductor = input("¿Con cuál de ellos quieres contactar? (Introduce su nombre completo)").lower()
-            for item in conductores_ruta:
-                if item["nombre"].lower() == conductor:
-                    id = item["id"]
-            
+            id = self.Contactar(conductor, conductores_ruta)
+        
+            while not id:
+                print("No se ha encontrado el conductor")
+                conductor = input("¿Con cuál de ellos quieres contactar? (Introduce su nombre completo)").lower()
+                id = self.Contactar(conductor, conductores_ruta)
+                
             print("Se ha enviado un mensaje al conductor", conductor, "con tu petición de viaje. En breve se pondrá en contacto contigo")
             time.sleep(5)
 
@@ -95,6 +111,6 @@ class Gestion:
                 )
             )
             print(i)
-            print(" Origen:", item["Origen"],"\n", "Destino:", item["Destino"],"\n", "Conductor:", item["Conductor"],"\n", "Matricula:", matricula,"\n")
+            print(" Origen:", item["Origen"],"\n", "Destino:", item["Destino"],"\n", "Conductor:", item["Conductor"],"\n", "Matricula:", matricula.decode('latin-1'),"\n")
             i+=1
         print("¡Esperamos que disfrutes de tus viajes!")
