@@ -9,12 +9,16 @@ import string
 from usuario import Usuario
 from conductor import Conductor
 from base_de_pasajeros import BaseDePasajeros
+import json
+from base_viajes import BaseDeViajes
 
 class Comunicacion:
     
-    def __init__(self, nombre_conductor, id, correo, nombre_usuario):
+    def __init__(self, nombre_conductor, id, correo, nombre_usuario, origen, destino):
          self.usuario = self.crear_usuario(correo, nombre_usuario)
          self.conductor = self.crear_conductor(nombre_conductor, id)
+         self.origen = origen
+         self.destino = destino
 
     def crear_usuario(self, correo, nombre_usuario):
         usuario = Usuario(correo, nombre_usuario)
@@ -44,7 +48,7 @@ class Comunicacion:
         print("Ahora te voy a enviar mi matricula")
 
         matricula_cifrada, mac_matricula = self.conductor.cifrar_matricula()
-        self.usuario.descifrar_matricula(matricula_cifrada, mac_matricula)
+        matricula_cifrada = self.usuario.descifrar_matricula(matricula_cifrada, mac_matricula)
         
         conductores = BaseDeConductores()
 
@@ -60,6 +64,14 @@ class Comunicacion:
         pasajeros.add_item(pasajero)
         pasajeros.save_store()
         time.sleep(1)
+
+        viajes = BaseDeViajes()
+        path = "/DATOS/BELÉN/3º UNI/Criptografía/Practica_1/Criptografia/usuarios/" + self.usuario.correo + "/viajes.json"
+        viajes.FILE_PATH = path
+        viajes.load_store()
+        data_list = {"Origen": self.origen, "Destino": self.destino, "Conductor": self.conductor.nombre, "Matricula": matricula_cifrada.decode('latin-1')}
+        viajes.add_item(data_list)
+        viajes.save_store()
         print("Ya estás apuntado para el viaje")
         print("¡Ya estamos listos para irnos!")
         

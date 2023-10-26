@@ -54,9 +54,7 @@ class BaseDeDatos:
         except FileNotFoundError:
             # file is not found , so  init my data_list
             self._data_list = []
-        """except json.JSONDecodeError as ex:
-            #raise OrderManagementException(self.__ERROR_JSON_DECODE) from ex
-            print("JSONDecodeError")"""
+
 
     def add_item(self, item: any) -> None:
         """

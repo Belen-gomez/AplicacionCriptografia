@@ -103,3 +103,11 @@ class Usuario:
         h = hmac.HMAC(self.__key_hmac, hashes.SHA256())
         h.update(matricula)
         h.verify(mac_matricula)
+
+        ciphertext = self._public_key.encrypt(matricula,
+                padding.OAEP(
+                mgf=padding.MGF1(algorithm=hashes.SHA256()),
+                algorithm=hashes.SHA256(),
+                label=None
+            ))
+        return ciphertext

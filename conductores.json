@@ -200,7 +200,7 @@
   {
     "id": 23,
     "nombre": "Angela Serrano",
-    "contador": 3,
+    "contador": 2,
     "consumo": 5,
     "ruta_origen": "madrid",
     "ruta_destino": "graz",
