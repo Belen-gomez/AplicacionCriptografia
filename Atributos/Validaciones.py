@@ -5,19 +5,19 @@ class ValidarCampos:
     def __init__(self):
         pass
     
-    def ComprobarCorreo(dato):
+    def ComprobarCorreo(self, dato):
         regex = r"^[a-z0-9]+(\.[a-z0-9]+)*[@](\w+[.])+\w{2,3}$"
         myregex = re.compile(regex)
         res = myregex.fullmatch(dato)
         return res
  
-    def ComprobarTelefono(telefono):
+    def ComprobarTelefono(self, telefono):
         regex = r"^[67]{1}[0-9]{8}$"
         myregex = re.compile(regex)
         res = myregex.fullmatch(telefono)
         return res
     
-    def ComprobarConstrasenia(contrasenia):
+    def ComprobarConstrasenia(self, contrasenia):
         regex = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d\W]{8,}$"
         myregex = re.compile(regex)
         res = myregex.fullmatch(contrasenia)

@@ -14,26 +14,28 @@ class BaseDeConductores(BaseDeDatos):
     _data_list = []
     __ERROR_MESSAGE_PATH = "Wrong file or file path"
     __ERROR_JSON_DECODE = "JSON Decode Error - Wrong JSON Format"
-    FILE_PATH = os.path.dirname(__file__) + "/conductores.json"
+    FILE_PATH = os.path.dirname(__file__) + "\\Bases\\conductores.json"
     ID_FIELD = "id"
 
     def __init__(self):
         super(BaseDeDatos, self).__init__()
 
-    def find_data_ruta(self, origen, destino: any) -> any:
+    def find_data_ruta(self, origen, destino: any) :
         """
         find data
         """
+        self.load_store()
         item_found = []
         for item in self._data_list:
             if item["ruta_origen"] == origen and item["ruta_destino"] == destino and item["contador"] > 0:
                 item_found.append(item)
         return item_found
     
-    def find_data_id(self, id: any) -> any:
+    def find_data_id(self, id: any):
         """
         find data
         """
+        self.load_store()
         for item in self._data_list:
             if item["id"] == id:   
                 return item

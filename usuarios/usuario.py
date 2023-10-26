@@ -17,7 +17,7 @@ class Usuario:
        self.__key_hmac = None
 
     def key(self):
-        path = os.path.dirname(__file__) + self.correo + "/key.pem"
+        path = os.path.dirname(__file__) + "/"+ self.correo +  "/key.pem"
         with open(path, "rb") as key_file:
             private_key = serialization.load_pem_private_key(
                 key_file.read(),

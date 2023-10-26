@@ -11,7 +11,7 @@ class Gestion:
     def __init__(self):
         pass
 
-    def BuscarConductor(conductores_ruta):
+    def BuscarConductor(self, conductores_ruta):
         conductores = BaseDeConductores()
         while len(conductores_ruta) == 0:
             opciones = input("No hay conductores para tu viaje. ¿Quieres probar con otro origen o destino? (S/N) ")
@@ -63,7 +63,7 @@ class Gestion:
         else:
             print("Lamentamos que no hayas encontrado un conductor para tu viaje. ¡Vuelve pronto!")
 
-    def ver_viajes(data_list, correo_usuario):
+    def ver_viajes(self, data_list, correo_usuario):
         path = os.path.dirname(__file__) + "/usuarios/" + correo_usuario + "/key.pem"
         with open(path, "rb") as key_file:
             private_key = serialization.load_pem_private_key(

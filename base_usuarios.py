@@ -13,7 +13,7 @@ class BaseDeUsuarios(BaseDeDatos):
     _data_list = []
     __ERROR_MESSAGE_PATH = "Wrong file or file path"
     __ERROR_JSON_DECODE = "JSON Decode Error - Wrong JSON Format"
-    FILE_PATH =  os.path.dirname(__file__) + "/Bases/registro_usuarios.json"
+    FILE_PATH =  os.path.dirname(__file__) + "\\Bases\\registro_usuarios.json"
     ID_FIELD = "Correo"
 
     def __init__(self):

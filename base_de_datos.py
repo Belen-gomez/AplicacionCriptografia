@@ -13,8 +13,8 @@ class BaseDeDatos():
     _data_list = []
     __ERROR_MESSAGE_PATH = "Wrong file or file path"
     __ERROR_JSON_DECODE = "JSON Decode Error - Wrong JSON Format"
-    __FILE_PATH = ""
-    __ID_FIELD = ""
+    FILE_PATH = ""
+    ID_FIELD = ""
 
     def __init__(self):
         self.load_store()
@@ -27,7 +27,8 @@ class BaseDeDatos():
             #raise OrderManagementException(self.__ERROR_MESSAGE_PATH) from ex
             print("FileNotFoundError")
 
-    def find_data(self, data_to_find: any):
+    def find_data(self, data_to_find):
+        self.load_store()
         item_found = None
         for item in self._data_list:
             if item[self.ID_FIELD] == data_to_find:

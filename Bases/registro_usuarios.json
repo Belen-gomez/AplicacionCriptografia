@@ -1,0 +1,16 @@
+[
+  {
+    "Nombre": "Belen Gomez",
+    "Correo": "bga78a@gmail.com",
+    "Telefono": "628155152",
+    "Contrasenia_derivada": "{\u00e8\u00b7\u0086\u009a\u00c6\u00e4\u000b\u00d9\u00bf\tf\u00ee\u00ff\u00ed.\u0090\u00d0\u0005\u00ccE\u00a1\u000e~\u0011\u00c8\u0097\u00e8b\u00c61\u008e",
+    "Salt": "\u0004\u00fd\u00fbi}\u0010\u00c40\u00e8\u00a3;p>\u0091\u0001\u00af"
+  },
+  {
+    "Nombre": "Celia Patricio",
+    "Correo": "celia@gmail.com",
+    "Telefono": "666666666",
+    "Contrasenia_derivada": "\u00d2\u0014\u00c9\u00b1\u0089\u00fa1\u000f\u00c6[k\u00dc\u00ee1\u0089\u00a5G\u0007\u00fc\u00de\u00b5\u00f4\u00e1\u00be\u00d2\u0018\u00b1#Pl\u0011\u00a6",
+    "Salt": "?xz\u0087m:\u00dd\u00060\u001b\u00f0\u001e\u00f4\u00aa;X"
+  }
+]

@@ -2,7 +2,7 @@
   {
     "id": 1,
     "nombre": "Enrique Mendoza",
-    "contador": 2,
+    "contador": 1,
     "consumo": 7.46,
     "ruta_origen": "madrid",
     "ruta_destino": "alicante",

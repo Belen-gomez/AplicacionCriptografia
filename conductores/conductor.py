@@ -18,7 +18,7 @@ class Conductor:
         self.__key_hmac = None
 
     def key(self):
-        path = os.path.dirname(__file__) + str(self.id) + "/key.pem"
+        path = os.path.dirname(__file__) +"/"+ str(self.id) + "/key.pem"
         with open(path, "rb") as key_file:
             private_key = serialization.load_pem_private_key(
                 key_file.read(),
@@ -89,7 +89,7 @@ class Conductor:
         time.sleep(2)
         print("--------- FIN ---------")
         data_list = []
-        path = os.path.dirname(__file__) + str(self.id) + "/matricula.json"
+        path = os.path.dirname(__file__) +"/"+ str(self.id) + "/matricula.json"
         with open(path, "r") as file:
             data_list = json.load(file)
         
