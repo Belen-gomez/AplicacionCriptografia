@@ -14,11 +14,11 @@ class BaseDeConductores(BaseDeDatos):
     _data_list = []
     __ERROR_MESSAGE_PATH = "Wrong file or file path"
     __ERROR_JSON_DECODE = "JSON Decode Error - Wrong JSON Format"
-    FILE_PATH = "/DATOS/BELÉN/3º UNI/Criptografía/Practica_1/Criptografia/conductores.json"
+    FILE_PATH = os.path.dirname(__file__) + "/conductores.json"
     ID_FIELD = "id"
 
-    def __innit__(self):
-        super(BaseDeDatos, self).__innit__()
+    def __init__(self):
+        super(BaseDeDatos, self).__init__()
 
     def find_data_ruta(self, origen, destino: any) -> any:
         """

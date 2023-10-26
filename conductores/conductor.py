@@ -1,12 +1,10 @@
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.primitives import hashes, hmac
 from cryptography.hazmat.primitives.asymmetric import padding
-import random
-import string
 import time
+import os
 from cryptography.hazmat.primitives import padding as pd
 from cryptography.hazmat.primitives import serialization
-from base_de_pasajeros import BaseDePasajeros
 import json
 
 class Conductor:
@@ -20,16 +18,12 @@ class Conductor:
         self.__key_hmac = None
 
     def key(self):
-        path = "/DATOS/BELÉN/3º UNI/Criptografía/Practica_1/Criptografia/conductores/" + str(self.id) + "/key.pem"
+        path = os.path.dirname(__file__) + str(self.id) + "/key.pem"
         with open(path, "rb") as key_file:
             private_key = serialization.load_pem_private_key(
                 key_file.read(),
                 password=None,
             )
-        ''' private_key = rsa.generate_private_key(
-            public_exponent=65537,
-            key_size=2048,
-        )'''
         self._public_key = private_key.public_key()
 
         return private_key
@@ -79,7 +73,6 @@ class Conductor:
         h.verify(mac_descrifrado)
         print("He recibido correctamente tu dirección")
         
-        path = "/DATOS/BELÉN/3º UNI/Criptografía/Practica_1/Criptografia/conductores/" + str(self.id) + "/pasajeros.json"
         ciphertext = self._public_key.encrypt(direccion,
                 padding.OAEP(
                 mgf=padding.MGF1(algorithm=hashes.SHA256()),
@@ -96,7 +89,7 @@ class Conductor:
         time.sleep(2)
         print("--------- FIN ---------")
         data_list = []
-        path = "/DATOS/BELÉN/3º UNI/Criptografía/Practica_1/Criptografia/conductores/" + str(self.id) + "/matricula.json"
+        path = os.path.dirname(__file__) + str(self.id) + "/matricula.json"
         with open(path, "r") as file:
             data_list = json.load(file)
         

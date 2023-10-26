@@ -17,16 +17,12 @@ class Usuario:
        self.__key_hmac = None
 
     def key(self):
-        path = "/DATOS/BELÉN/3º UNI/Criptografía/Practica_1/Criptografia/usuarios/" + self.correo + "/key.pem"
+        path = os.path.dirname(__file__) + self.correo + "/key.pem"
         with open(path, "rb") as key_file:
             private_key = serialization.load_pem_private_key(
                 key_file.read(),
                 password=None,
             )
-        ''' private_key = rsa.generate_private_key(
-            public_exponent=65537,
-            key_size=2048,
-        )'''
         self._public_key = private_key.public_key()
 
         return private_key

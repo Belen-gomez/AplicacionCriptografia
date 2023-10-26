@@ -1,4 +1,4 @@
-from base_conductores import BaseDeConductores
+from Datos.base_conductores import BaseDeConductores
 import os
 import time
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
@@ -6,11 +6,11 @@ from cryptography.hazmat.primitives import hashes, hmac
 from cryptography.hazmat.primitives import padding
 import random
 import string
-from usuario import Usuario
-from conductor import Conductor
-from base_de_pasajeros import BaseDePasajeros
+from usuarios.usuario import Usuario
+from conductores.conductor import Conductor
+from Datos.base_de_pasajeros import BaseDePasajeros
 import json
-from base_viajes import BaseDeViajes
+from Datos.base_viajes import BaseDeViajes
 
 class Comunicacion:
     
@@ -56,7 +56,7 @@ class Comunicacion:
 
         conductor_sel["contador"] -= 1
 
-        path = "/DATOS/BELÉN/3º UNI/Criptografía/Practica_1/Criptografia/conductores/" + str(self.conductor.id) + "/pasajeros.json"
+        path = os.path.dirname(__file__) + "/conductores/" + str(self.conductor.id) + "/pasajeros.json"
         conductores.save_store()
         pasajeros = BaseDePasajeros()
         pasajeros.FILE_PATH = path
@@ -66,7 +66,7 @@ class Comunicacion:
         time.sleep(1)
 
         viajes = BaseDeViajes()
-        path = "/DATOS/BELÉN/3º UNI/Criptografía/Practica_1/Criptografia/usuarios/" + self.usuario.correo + "/viajes.json"
+        path = os.path.dirname(__file__) + "/usuarios/" + self.usuario.correo + "/viajes.json"
         viajes.FILE_PATH = path
         viajes.load_store()
         data_list = {"Origen": self.origen, "Destino": self.destino, "Conductor": self.conductor.nombre, "Matricula": matricula_cifrada.decode('latin-1')}

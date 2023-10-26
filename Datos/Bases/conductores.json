@@ -2,7 +2,7 @@
   {
     "id": 1,
     "nombre": "Enrique Mendoza",
-    "contador": 1,
+    "contador": 2,
     "consumo": 7.46,
     "ruta_origen": "madrid",
     "ruta_destino": "alicante",
@@ -200,7 +200,7 @@
   {
     "id": 23,
     "nombre": "Angela Serrano",
-    "contador": 2,
+    "contador": 3,
     "consumo": 5,
     "ruta_origen": "madrid",
     "ruta_destino": "graz",

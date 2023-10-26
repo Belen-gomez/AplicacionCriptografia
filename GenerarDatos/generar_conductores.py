@@ -14,28 +14,10 @@ class GeneradorDatos:
         self.id = id
         self.nombre = self.nombre_completo()
         self.contador = random.randint(1, 6)
-        ''' self.matricula = self.matricula_encode()[0]
-        self.salt = self.matricula_encode()[1] '''
         self.consumo = random.uniform(5, 8).__round__(2)
         self.ruta_origen = self.ruta_origen()
         self.ruta_destino = self.ruta_destino()
         self.public_key = None
-
-    ''' def matricula_encode(self):
-        digitos = ''.join(random.choice(string.digits) for _ in range(4))
-        letras = ''.join(random.choice('BCDFGHJKLMNPQRSTVWXYZ') for _ in range(3))
-        matricula = digitos + letras
-        salt = os.urandom(16)
-        # derive
-        kdf = PBKDF2HMAC(
-            algorithm=hashes.SHA256(),
-            length=32,
-            salt=salt,
-            iterations=480000,
-        )
-        matricula_derivada = kdf.derive(matricula.encode("utf-8"))
-
-        return base64.b64encode(matricula_derivada).decode('utf-8'),  base64.b64encode(salt).decode('utf-8') '''
 
     def public_key(self):
         private_key = rsa.generate_private_key(
