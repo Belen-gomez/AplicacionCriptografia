@@ -11,7 +11,7 @@
   {
     "id": 2,
     "nombre": "Fernando Guerrero",
-    "contador": 2,
+    "contador": 1,
     "consumo": 7.33,
     "ruta_origen": "bilbao",
     "ruta_destino": "valencia",
