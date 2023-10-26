@@ -9,6 +9,9 @@ class Claves():
         self.id = id
     
     def CrearClavePrivada(self):
+        """
+        Crea la clave privada del los usuarios cuando se registran. Depués se guarda la clave pública en una base datos pública.
+        """
         private_key = rsa.generate_private_key(
                     public_exponent=65537,
                     key_size=2048,

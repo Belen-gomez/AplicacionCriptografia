@@ -2,20 +2,18 @@
   {
     "id": 1,
     "nombre": "Enrique Mendoza",
-    "contador": 0,
+    "contador": 2,
     "consumo": 7.46,
     "ruta_origen": "madrid",
-    "ruta_destino": "alicante",
-    "public_key": null
+    "ruta_destino": "alicante"
   },
   {
     "id": 2,
     "nombre": "Fernando Guerrero",
-    "contador": 1,
+    "contador": 2,
     "consumo": 7.33,
     "ruta_origen": "bilbao",
-    "ruta_destino": "valencia",
-    "public_key": null
+    "ruta_destino": "valencia"
   },
   {
     "id": 3,
@@ -23,8 +21,7 @@
     "contador": 3,
     "consumo": 6.83,
     "ruta_origen": "oporto",
-    "ruta_destino": "oviedo",
-    "public_key": null
+    "ruta_destino": "oviedo"
   },
   {
     "id": 4,
@@ -32,8 +29,7 @@
     "contador": 6,
     "consumo": 5.34,
     "ruta_origen": "salamanca",
-    "ruta_destino": "graz",
-    "public_key": null
+    "ruta_destino": "graz"
   },
   {
     "id": 5,
@@ -41,8 +37,7 @@
     "contador": 3,
     "consumo": 7.43,
     "ruta_origen": "graz",
-    "ruta_destino": "alicante",
-    "public_key": null
+    "ruta_destino": "alicante"
   },
   {
     "id": 6,
@@ -50,8 +45,7 @@
     "contador": 4,
     "consumo": 6.99,
     "ruta_origen": "gijon",
-    "ruta_destino": "oviedo",
-    "public_key": null
+    "ruta_destino": "oviedo"
   },
   {
     "id": 7,
@@ -59,8 +53,7 @@
     "contador": 6,
     "consumo": 5.04,
     "ruta_origen": "granada",
-    "ruta_destino": "vigo",
-    "public_key": null
+    "ruta_destino": "vigo"
   },
   {
     "id": 8,
@@ -68,8 +61,7 @@
     "contador": 4,
     "consumo": 6.63,
     "ruta_origen": "oporto",
-    "ruta_destino": "madrid",
-    "public_key": null
+    "ruta_destino": "madrid"
   },
   {
     "id": 9,
@@ -77,8 +69,7 @@
     "contador": 6,
     "consumo": 6.24,
     "ruta_origen": "oporto",
-    "ruta_destino": "santander",
-    "public_key": null
+    "ruta_destino": "santander"
   },
   {
     "id": 10,
@@ -86,8 +77,7 @@
     "contador": 1,
     "consumo": 7.59,
     "ruta_origen": "lisboa",
-    "ruta_destino": "santander",
-    "public_key": null
+    "ruta_destino": "santander"
   },
   {
     "id": 11,
@@ -95,8 +85,7 @@
     "contador": 0,
     "consumo": 5.61,
     "ruta_origen": "madrid",
-    "ruta_destino": "barcelona",
-    "public_key": null
+    "ruta_destino": "barcelona"
   },
   {
     "id": 12,
@@ -104,8 +93,7 @@
     "contador": 4,
     "consumo": 6.93,
     "ruta_origen": "oporto",
-    "ruta_destino": "salamanca",
-    "public_key": null
+    "ruta_destino": "salamanca"
   },
   {
     "id": 13,
@@ -113,8 +101,7 @@
     "contador": 5,
     "consumo": 6.16,
     "ruta_origen": "madrid",
-    "ruta_destino": "porto",
-    "public_key": null
+    "ruta_destino": "porto"
   },
   {
     "id": 14,
@@ -122,8 +109,7 @@
     "contador": 3,
     "consumo": 5.94,
     "ruta_origen": "zaragoza",
-    "ruta_destino": "salamanca",
-    "public_key": null
+    "ruta_destino": "salamanca"
   },
   {
     "id": 15,
@@ -131,8 +117,7 @@
     "contador": 4,
     "consumo": 7.18,
     "ruta_origen": "lisboa",
-    "ruta_destino": "santander",
-    "public_key": null
+    "ruta_destino": "santander"
   },
   {
     "id": 16,
@@ -140,8 +125,7 @@
     "contador": 3,
     "consumo": 5.43,
     "ruta_origen": "zaragoza",
-    "ruta_destino": "oporto",
-    "public_key": null
+    "ruta_destino": "oporto"
   },
   {
     "id": 17,
@@ -149,8 +133,7 @@
     "contador": 1,
     "consumo": 6.42,
     "ruta_origen": "oporto",
-    "ruta_destino": "valencia",
-    "public_key": null
+    "ruta_destino": "valencia"
   },
   {
     "id": 18,
@@ -158,8 +141,7 @@
     "contador": 1,
     "consumo": 5.56,
     "ruta_origen": "valladolid",
-    "ruta_destino": "oviedo",
-    "public_key": null
+    "ruta_destino": "oviedo"
   },
   {
     "id": 19,
@@ -167,8 +149,7 @@
     "contador": 2,
     "consumo": 7.59,
     "ruta_origen": "bilbao",
-    "ruta_destino": "zaragoza",
-    "public_key": null
+    "ruta_destino": "zaragoza"
   },
   {
     "id": 20,
@@ -176,8 +157,7 @@
     "contador": 2,
     "consumo": 7.64,
     "ruta_origen": "madrid",
-    "ruta_destino": "cordoba",
-    "public_key": null
+    "ruta_destino": "cordoba"
   },
   {
     "id": 21,
@@ -185,8 +165,7 @@
     "contador": 4,
     "consumo": 7.18,
     "ruta_origen": "barcelona",
-    "ruta_destino": "oporto",
-    "public_key": null
+    "ruta_destino": "oporto"
   },
   {
     "id": 22,
@@ -194,16 +173,14 @@
     "contador": 2,
     "consumo": 7.09,
     "ruta_origen": "gijon",
-    "ruta_destino": "bilbao",
-    "public_key": null
+    "ruta_destino": "bilbao"
   },
   {
     "id": 23,
     "nombre": "Angela Serrano",
-    "contador": 3,
+    "contador": 2,
     "consumo": 5,
     "ruta_origen": "madrid",
-    "ruta_destino": "graz",
-    "public_key": null
+    "ruta_destino": "alicante"
   }
 ]

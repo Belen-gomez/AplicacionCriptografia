@@ -17,6 +17,7 @@ class Usuario:
        self.__key_hmac = None
 
     def key(self):
+        #Se recupera su clave privada
         path = os.path.dirname(__file__) + "/"+ self.correo +  "/key.pem"
         with open(path, "rb") as key_file:
             private_key = serialization.load_pem_private_key(
@@ -28,6 +29,7 @@ class Usuario:
         return private_key
     
     def cifrado_simetrico(self, public_key_conductor):
+        #El usuario genera las claves de la comunicación y las encripta con la clave pública del conductor
         key = os.urandom(32)
         key_hmac = os.urandom(32)
         iv = os.urandom(16)
@@ -61,10 +63,10 @@ class Usuario:
         print("Cifrando direccion")
         time.sleep(2)
         print("--------- FIN ---------")
+
         # Crea una instancia de HMAC con SHA256 y la clave generada
         h = hmac.HMAC(self.__key_hmac, hashes.SHA256())
         # Autentica el texto cifrado
-        # Asegúrate de que 'direccion' es una cadena de bytes
         direccion_bytes = direccion.encode()
 
         h.update(direccion_bytes)
@@ -73,7 +75,6 @@ class Usuario:
         mac = h.finalize()
     
         padder = pd.PKCS7(128).padder()
-
         # Rellena los datos
         direccion_rellenada = padder.update(direccion_bytes) + padder.finalize()
 
@@ -84,20 +85,25 @@ class Usuario:
 
         # Crear un nuevo encryptor para 'mac'
         encryptor2 = cipher.encryptor()
+        #Se encripta el mac
         ct_mac = encryptor2.update(mac) + encryptor2.finalize()
         return ct, ct_mac
     
     def descifrar_matricula(self, matricula_cifrada, mac_matricula):
+        #Se descifra la matrícula y ek mac
         cipher = Cipher(algorithms.AES(self.__clave_simetrica), modes.CBC(self.__iv))
         decryptor = cipher.decryptor()
+        decryptor2 = cipher.decryptor()
         matricula_descifrado = decryptor.update(matricula_cifrada) + decryptor.finalize()
+        mac = decryptor2.update(mac_matricula) + decryptor2.finalize()
 
         # Quitamos el padding
         unpadder = pd.PKCS7(128).unpadder()
         matricula = unpadder.update(matricula_descifrado) + unpadder.finalize()
+        #Se comprueba que la dirección no ha sido manipulada
         h = hmac.HMAC(self.__key_hmac, hashes.SHA256())
         h.update(matricula)
-        h.verify(mac_matricula)
+        h.verify(mac)
 
         ciphertext = self._public_key.encrypt(matricula,
                 padding.OAEP(

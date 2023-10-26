@@ -2,6 +2,9 @@ import re
 import getpass
 
 class ValidarCampos:
+    """
+    Clase que contiene las funciones para validar los campos de los usuarios
+    """
     def __init__(self):
         pass
     

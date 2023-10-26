@@ -25,19 +25,25 @@ class Gestion:
         return conductores_ruta
 
     def reservar(self, correo_usuario, nombre):
+        """
+        Función para rerservar un viaje
+        """
+        #Se pide el viaje
         origen = input("¿Dónde quieres empezar tu viaje? ").lower()
         destino = input("¿A dónde quieres ir? ").lower()
 
         conductores = BaseDeConductores()
-
+        #Se buscan conductores que realicen ese viaje
         conductores_ruta = conductores.find_data_ruta(origen, destino)
         if len(conductores_ruta) == 0:
+            #Si no hay conductores se solicita un viaje distinto
             conductores_ruta = self.BuscarConductor(conductores_ruta)
 
         for item in conductores_ruta:
             print("El conductor", item["nombre"], "realiza tu mismo viaje. Le quedan ", item["contador"], "plaza(s) libre(s) y su coche consume",
                 item["consumo"], "litros por cada 100 km")
 
+        #Se muestran los conductores y se permite al usuario elegir
         contactar = input("¿Quieres contactar con alguno de estos conductores? (S/N)").lower()
         if contactar == "s":
             conductor = input("¿Con cuál de ellos quieres contactar? (Introduce su nombre completo)").lower()
@@ -54,9 +60,11 @@ class Gestion:
             pasajeros.load_store()
             lista = pasajeros.find_data_correo(correo_usuario)
             if len(lista) != 0:
+                #Si ya se ha reservado un viaje con ese conductor se muestra un mensaje
                 print("Ya has contactado con este conductor y has reservado un viaje. ¡Seguro que os lo pasáis genial!")
                 exit()
 
+            #Se llama a la clase comunicación
             conversacion = Comunicacion(conductor, id, correo_usuario, nombre, origen, destino)
             conversacion.enviar_mensaje()
 
@@ -64,13 +72,17 @@ class Gestion:
             print("Lamentamos que no hayas encontrado un conductor para tu viaje. ¡Vuelve pronto!")
 
     def ver_viajes(self, data_list, correo_usuario):
+        """
+        Función para mostrarle los viajes al usuario
+        """
+        #Se descifra la matrícula
         path = os.path.dirname(__file__) + "/usuarios/" + correo_usuario + "/key.pem"
         with open(path, "rb") as key_file:
             private_key = serialization.load_pem_private_key(
                 key_file.read(),
                 password=None,
             )
-        print("Estos son tus viajes reservados:")
+        print("Estos son tus viajes reservados:")    #Se muestran todos los viajes
         i = 1
         for item in data_list:
             matricula_cifrada = item["Matricula"]

@@ -18,6 +18,7 @@ class Conductor:
         self.__key_hmac = None
 
     def key(self):
+        #Se recupera su clave privada
         path = os.path.dirname(__file__) +"/"+ str(self.id) + "/key.pem"
         with open(path, "rb") as key_file:
             private_key = serialization.load_pem_private_key(
@@ -29,6 +30,8 @@ class Conductor:
         return private_key
     
     def cifrado_simetrico(self, clave_cifrada, iv_cifrado, clave_hmac):
+        #El conductor desencriota las claves de la comunicación con su clave privada
+
         key = self.__private_key.decrypt(
             clave_cifrada,
             padding.OAEP(
@@ -59,16 +62,23 @@ class Conductor:
 
         
     def descifrar_direccion(self, direccion_cifrada, mac_direccion, correo_usuario):
+        #Desecripta la dirección y el mac
         cipher = Cipher(algorithms.AES(self.__clave_simetrica), modes.CBC(self.__iv))
         decryptor1 = cipher.decryptor()
         decryptor2 = cipher.decryptor()
         direccion_descifrada = decryptor1.update(direccion_cifrada) + decryptor1.finalize()
         mac_descrifrado = decryptor2.update(mac_direccion) + decryptor2.finalize()
-
+       
         # Quitamos el padding
         unpadder = pd.PKCS7(128).unpadder()
         direccion = unpadder.update(direccion_descifrada) + unpadder.finalize()
+        #Se comprueba que la dirección no ha sido manipulada
         h = hmac.HMAC(self.__key_hmac, hashes.SHA256())
+        #Descomentar para comprobar que sucede si se manipula el hash
+        '''  nueva_direccion = "calle prueba 10"
+        nueva_direccion = nueva_direccion.encode()
+        h.update(nueva_direccion) '''
+        
         h.update(direccion)
         h.verify(mac_descrifrado)
         print("He recibido correctamente tu dirección")
@@ -89,10 +99,12 @@ class Conductor:
         time.sleep(2)
         print("--------- FIN ---------")
         data_list = []
+        #se recupera la matricula
         path = os.path.dirname(__file__) +"/"+ str(self.id) + "/matricula.json"
         with open(path, "r") as file:
             data_list = json.load(file)
         
+        #se desencripta con la clave privada del conductor
         matricula_cifrada= data_list[0]["Matricula"]
         matricula = self.__private_key.decrypt(
             matricula_cifrada.encode('latin-1'),
@@ -103,6 +115,7 @@ class Conductor:
             )
         )
 
+        #se crea hash 
         h = hmac.HMAC(self.__key_hmac, hashes.SHA256()) 
 
         # Autentica el texto cifrado
@@ -118,5 +131,8 @@ class Conductor:
         encryptor = cipher.encryptor()
         ct = encryptor.update(matricula_rellenada) + encryptor.finalize()
 
-
-        return ct, mac
+        # Crear un nuevo encryptor para 'mac'
+        encryptor2 = cipher.encryptor()
+        #Se encripta el mac
+        ct_mac = encryptor2.update(mac) + encryptor2.finalize()
+        return ct, ct_mac
