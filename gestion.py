@@ -12,22 +12,25 @@ class Gestion:
         pass
     
     def Contactar(self, conductor, conductores_ruta):
+        id_c = None
         for item in conductores_ruta:
             if item["nombre"].lower() == conductor:
-                id = item["id"]
-        return id
+                id_c = item["id"]
+        return id_c
     
     def BuscarConductor(self, conductores_ruta):
         conductores = BaseDeConductores()
         while len(conductores_ruta) == 0:
-            opciones = input("¿Quieres probar con otro origen o destino? (S/N) ").lower()
+            opciones = input("No se ha encontrado esa información. ¿Quieres probar con otro origen o destino? (S/N) ").lower()
             if opciones == "s":
                 origen = input("¿Dónde quieres empezar tu viaje? ").lower()
                 destino = input("¿A dónde quieres ir? ").lower()
-            else:
+                conductores_ruta = conductores.find_data_ruta(origen, destino)
+            elif opciones == "n":
                 print("Lamentamos que no hayas encontrado un conductor para tu viaje. ¡Vuelve pronto!")
                 exit()
-            conductores_ruta = conductores.find_data_ruta(origen, destino)
+            else:
+                conductores_ruta = {}
         return conductores_ruta, origen, destino
 
     def reservar(self, correo_usuario, nombre):
@@ -38,7 +41,8 @@ class Gestion:
         conductores.load_store()
         print("Viajes disponibles")
         for item in conductores._data_list:
-            print("Origen: ", item["ruta_origen"], " - Destino: ", item["ruta_destino"])
+            if item["contador"] != 0:
+                print("Origen: ", item["ruta_origen"], " - Destino: ", item["ruta_destino"])
             
         #Se pide el viaje
         origen = input("¿Dónde quieres empezar tu viaje? ").lower()
@@ -48,7 +52,6 @@ class Gestion:
         conductores_ruta = conductores.find_data_ruta(origen, destino)
         if len(conductores_ruta) == 0:
             #Si no hay conductores se solicita un viaje distinto
-            print("No se ha encontrada un conductor para tu ruta ")
             conductores_ruta, origen, destino = self.BuscarConductor(conductores_ruta)
 
         for item in conductores_ruta:
@@ -57,13 +60,14 @@ class Gestion:
 
         #Se muestran los conductores y se permite al usuario elegir
         contactar = input("¿Quieres contactar con alguno de estos conductores? (S/N)").lower()
-
+        while contactar != "s" and contactar != "n":
+            contactar = input("¿Quieres contactar con alguno de estos conductores? (S/N)").lower()
+            
         if contactar == "s":
             conductor = input("¿Con cuál de ellos quieres contactar? (Introduce su nombre completo)").lower()
             id = self.Contactar(conductor, conductores_ruta)
         
             while not id:
-                print("No se ha encontrado el conductor")
                 conductor = input("¿Con cuál de ellos quieres contactar? (Introduce su nombre completo)").lower()
                 id = self.Contactar(conductor, conductores_ruta)
                 
