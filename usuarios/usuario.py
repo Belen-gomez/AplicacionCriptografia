@@ -6,6 +6,7 @@ from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives import padding as pd
 
+
 class Usuario:
     def __init__(self, correo, nombre):
        self.nombre = nombre
@@ -14,7 +15,7 @@ class Usuario:
        self.__private_key = self.key()
        self.__clave_simetrica = None
        self.__iv = None
-       self.__key_hmac = None
+       #self.__key_hmac = None
 
     def key(self):
         #Se recupera su clave privada
@@ -31,7 +32,7 @@ class Usuario:
     def cifrado_simetrico(self, public_key_conductor):
         #El usuario genera las claves de la comunicación y las encripta con la clave pública del conductor
         key = os.urandom(32)
-        key_hmac = os.urandom(32)
+        ''' key_hmac = os.urandom(32) '''
         iv = os.urandom(16)
 
         ciphertext = public_key_conductor.encrypt(key,
@@ -46,16 +47,16 @@ class Usuario:
                   algorithm=hashes.SHA256(),
                   label=None
               ))
-        ciphertext_hmac = public_key_conductor.encrypt(key_hmac,
+        ''' ciphertext_hmac = public_key_conductor.encrypt(key_hmac,
                   padding.OAEP(
                       mgf=padding.MGF1(algorithm=hashes.SHA256()),
                       algorithm=hashes.SHA256(),
                       label=None
-                  ))
+                  )) '''
         self.__clave_simetrica = key
         self.__iv = iv
-        self.__key_hmac = key_hmac
-        return ciphertext, ciphertext_iv, ciphertext_hmac
+        '''  self.__key_hmac = key_hmac '''
+        return ciphertext, ciphertext_iv 
         
     def cifrar_direccion(self):
         direccion = input("¿Donde te recojo? ")
@@ -65,7 +66,7 @@ class Usuario:
         print("--------- FIN ---------")
 
         # Crea una instancia de HMAC con SHA256 y la clave generada
-        h = hmac.HMAC(self.__key_hmac, hashes.SHA256())
+        h = hmac.HMAC(self.__clave_simetrica, hashes.SHA256())
         # Autentica el texto cifrado
         direccion_bytes = direccion.encode()
 
@@ -84,26 +85,45 @@ class Usuario:
         ct = encryptor1.update(direccion_rellenada) + encryptor1.finalize()
 
         # Crear un nuevo encryptor para 'mac'
-        encryptor2 = cipher.encryptor()
+        #encryptor2 = cipher.encryptor()
         #Se encripta el mac
-        ct_mac = encryptor2.update(mac) + encryptor2.finalize()
-        return ct, ct_mac
+        #ct_mac = encryptor2.update(mac) + encryptor2.finalize()
+        sing_mac = self.__private_key.sign(
+                    mac,
+                    padding.PSS(
+                        mgf=padding.MGF1(hashes.SHA256()),
+                        salt_length=padding.PSS.MAX_LENGTH
+                    ),
+                    hashes.SHA256()
+)
+        return ct, sing_mac
     
-    def descifrar_matricula(self, matricula_cifrada, mac_matricula):
+    def descifrar_matricula(self, matricula_cifrada, sign_matricula, public_key_conductor):
         #Se descifra la matrícula y el mac
         cipher = Cipher(algorithms.AES(self.__clave_simetrica), modes.CBC(self.__iv))
         decryptor = cipher.decryptor()
-        decryptor2 = cipher.decryptor()
+        #decryptor2 = cipher.decryptor()
         matricula_descifrado = decryptor.update(matricula_cifrada) + decryptor.finalize()
-        mac = decryptor2.update(mac_matricula) + decryptor2.finalize()
+        #mac = decryptor2.update(mac_matricula) + decryptor2.finalize()
 
         # Quitamos el padding
         unpadder = pd.PKCS7(128).unpadder()
         matricula = unpadder.update(matricula_descifrado) + unpadder.finalize()
         #Se comprueba que la dirección no ha sido manipulada
-        h = hmac.HMAC(self.__key_hmac, hashes.SHA256())
+        h = hmac.HMAC(self.__clave_simetrica, hashes.SHA256())
         h.update(matricula)
-        h.verify(mac)
+        mac = h.finalize()
+
+        public_key_conductor.verify(
+                    sign_matricula,
+                    mac,
+                    padding.PSS(
+                        mgf=padding.MGF1(hashes.SHA256()),
+                        salt_length=padding.PSS.MAX_LENGTH
+                    ),
+                    hashes.SHA256()
+        )
+
         print("Esta es mi matrícula: ", matricula.decode("latin-1"))
         ciphertext = self._public_key.encrypt(matricula,
                 padding.OAEP(

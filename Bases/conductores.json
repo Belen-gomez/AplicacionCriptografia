@@ -146,7 +146,7 @@
   {
     "id": 19,
     "nombre": "Manuel Ortega",
-    "contador": 2,
+    "contador": 1,
     "consumo": 7.59,
     "ruta_origen": "bilbao",
     "ruta_destino": "zaragoza"
@@ -170,7 +170,7 @@
   {
     "id": 22,
     "nombre": "Rafael Ortiz",
-    "contador": 2,
+    "contador": 1,
     "consumo": 7.09,
     "ruta_origen": "gijon",
     "ruta_destino": "bilbao"
@@ -178,7 +178,7 @@
   {
     "id": 23,
     "nombre": "Angela Serrano",
-    "contador": 1,
+    "contador": 0,
     "consumo": 5,
     "ruta_origen": "madrid",
     "ruta_destino": "alicante"

@@ -15,7 +15,7 @@ class Conductor:
         self.__private_key = self.key()
         self.__clave_simetrica = None
         self.__iv = None
-        self.__key_hmac = None
+        #self.__key_hmac = None
 
     def key(self):
         #Se recupera su clave privada
@@ -29,7 +29,7 @@ class Conductor:
 
         return private_key
     
-    def cifrado_simetrico(self, clave_cifrada, iv_cifrado, clave_hmac):
+    def cifrado_simetrico(self, clave_cifrada, iv_cifrado):
         #El conductor desencriota las claves de la comunicación con su clave privada
 
         key = self.__private_key.decrypt(
@@ -48,39 +48,51 @@ class Conductor:
                 label=None
             )
         )
-        key_hmac = self.__private_key.decrypt(
+        '''  key_hmac = self.__private_key.decrypt(
             clave_hmac,
             padding.OAEP(
                 mgf=padding.MGF1(algorithm=hashes.SHA256()),
                 algorithm=hashes.SHA256(),
                 label=None
             )
-        )
+        ) '''
         self.__clave_simetrica = key
         self.__iv = iv
-        self.__key_hmac = key_hmac
+        ''' self.__key_hmac = key_hmac '''
 
         
-    def descifrar_direccion(self, direccion_cifrada, mac_direccion, correo_usuario):
+    def descifrar_direccion(self, direccion_cifrada, sign_direccion, correo_usuario, usuario_public_key):
+
         #Desecripta la dirección y el mac
         cipher = Cipher(algorithms.AES(self.__clave_simetrica), modes.CBC(self.__iv))
         decryptor1 = cipher.decryptor()
-        decryptor2 = cipher.decryptor()
+        #decryptor2 = cipher.decryptor()
         direccion_descifrada = decryptor1.update(direccion_cifrada) + decryptor1.finalize()
-        mac_descrifrado = decryptor2.update(mac_direccion) + decryptor2.finalize()
+
+        #mac_descrifrado = decryptor2.update(mac_direccion) + decryptor2.finalize()
        
         # Quitamos el padding
         unpadder = pd.PKCS7(128).unpadder()
         direccion = unpadder.update(direccion_descifrada) + unpadder.finalize()
         #Se comprueba que la dirección no ha sido manipulada
-        h = hmac.HMAC(self.__key_hmac, hashes.SHA256())
+        h = hmac.HMAC(self.__clave_simetrica, hashes.SHA256())
         #Descomentar para comprobar que sucede si se manipula el hash
         '''  nueva_direccion = "calle prueba 10"
         nueva_direccion = nueva_direccion.encode()
         h.update(nueva_direccion) '''
         
         h.update(direccion)
-        h.verify(mac_descrifrado)
+        mac = h.finalize()
+        usuario_public_key.verify(
+                    sign_direccion,
+                    mac,
+                    padding.PSS(
+                        mgf=padding.MGF1(hashes.SHA256()),
+                        salt_length=padding.PSS.MAX_LENGTH
+                    ),
+                    hashes.SHA256()
+        )
+        #h.verify(mac_descrifrado)
         print("He recibido correctamente tu dirección")
         
         ciphertext = self._public_key.encrypt(direccion,
@@ -116,7 +128,7 @@ class Conductor:
         )
 
         #se crea hash 
-        h = hmac.HMAC(self.__key_hmac, hashes.SHA256()) 
+        h = hmac.HMAC(self.__clave_simetrica, hashes.SHA256()) 
 
         # Autentica el texto cifrado
         h.update(matricula)
@@ -132,7 +144,15 @@ class Conductor:
         ct = encryptor.update(matricula_rellenada) + encryptor.finalize()
 
         # Crear un nuevo encryptor para 'mac'
-        encryptor2 = cipher.encryptor()
+        #encryptor2 = cipher.encryptor()
         #Se encripta el mac
-        ct_mac = encryptor2.update(mac) + encryptor2.finalize()
-        return ct, ct_mac
+        #ct_mac = encryptor2.update(mac) + encryptor2.finalize()
+        sign_mac = self.__private_key.sign(
+                    mac,
+                    padding.PSS(
+                        mgf=padding.MGF1(hashes.SHA256()),
+                        salt_length=padding.PSS.MAX_LENGTH
+                    ),
+                    hashes.SHA256()
+)
+        return ct, sign_mac

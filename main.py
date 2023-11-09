@@ -1,4 +1,7 @@
+from tkinter import *
 import os
+import tkinter
+from PIL import ImageTk, Image
 from cryptography.hazmat.primitives.kdf.scrypt import Scrypt
 from base_usuarios import BaseDeUsuarios
 from gestion import Gestion
@@ -136,7 +139,22 @@ def InicioSesion():
     return usuario["Nombre"], usuario["Correo"]
 
 i = 0
-print("¡Bienvenido a Hailo")                            #Al abrir la aplicación puedes registrarte o iniciar sesión
+ventana = tkinter.Tk()
+ventana.title("Hailo")
+ventana.geometry("600x600")
+ventana.resizable(False, False)
+ventana.config(bg='#ADAFE1')
+bienvenido = tkinter.Label(ventana, text = "Bienvenido", font=("Rockwell Nova Extra Bold", 25))  
+img = Image.open( os.path.dirname(__file__) +"/logo.png")
+img = ImageTk.PhotoImage(img)
+label = tkinter.Label(ventana, image=img)
+label.pack()
+bienvenido.pack(fill = tkinter.X, pady = 50)
+button_inicio = Button(ventana, text="Inicio de sesion", command= InicioSesion)
+button_registro = Button(ventana, text="Registro", command= Registro)
+button_registro.place(x=250, y=300)
+button_inicio.place(x=250, y=400)
+ventana.mainloop()                          #Al abrir la aplicación puedes registrarte o iniciar sesión
 while True:                                             #Si ya tienes una cuenta, puedes iniciar sesión
     if i==0:                                            #Si no tienes una cuenta, puedes registrarte                                                      
         a = input("¿Tienes ya una cuenta? (S/N) ").lower()
