@@ -141,20 +141,30 @@ def InicioSesion():
 i = 0
 ventana = tkinter.Tk()
 ventana.title("Hailo")
-ventana.geometry("600x600")
+ventana.geometry("550x650")
 ventana.resizable(False, False)
 ventana.config(bg='#ADAFE1')
-bienvenido = tkinter.Label(ventana, text = "Bienvenido", font=("Rockwell Nova Extra Bold", 25))  
+bienvenido = tkinter.Label(ventana, text = "Bienvenido a Hailo", font=("Rockwell Nova Extra Bold", 25), fg= '#2b0d48')  
+eslogan = tkinter.Label(ventana, text = "¿Viajamos juntos?", font=("Rockwell Nova Extra Bold", 25), fg= '#2b0d48',  bg='#ADAFE1')  
 img = Image.open( os.path.dirname(__file__) +"/logo.png")
+img = img.resize((200, 200), Image.ANTIALIAS)
 img = ImageTk.PhotoImage(img)
-label = tkinter.Label(ventana, image=img)
-label.pack()
-bienvenido.pack(fill = tkinter.X, pady = 50)
-button_inicio = Button(ventana, text="Inicio de sesion", command= InicioSesion)
-button_registro = Button(ventana, text="Registro", command= Registro)
-button_registro.place(x=250, y=300)
-button_inicio.place(x=250, y=400)
-ventana.mainloop()                          #Al abrir la aplicación puedes registrarte o iniciar sesión
+label = tkinter.Label(ventana, image=img, bg='#ADAFE1')
+bienvenido.pack(fill = tkinter.X, pady = 20)
+label.pack(fill = tkinter.BOTH)
+eslogan.pack(fill = tkinter.BOTH, pady = 40)
+inicio = tkinter.Label(ventana, text = "¿Tienes ya una cuenta?", font=("Segoe UI", 15), fg= '#2b0d48', bg='#ADAFE1')  
+registro = tkinter.Label(ventana, text = "¿Todavía no has empezado esta aventura?", font=("Segoe UI", 15), fg= '#2b0d48', bg='#ADAFE1')  
+button_inicio = Button(ventana, text="Inicio de sesion", command= InicioSesion, font=("Segoe UI", 10))
+button_registro = Button(ventana, text="Registro", command= Registro, font=("Segoe UI", 10))
+inicio.pack(fill = tkinter.BOTH, pady = 10)
+button_inicio.pack(pady = 10)
+registro.pack(fill = tkinter.BOTH, pady = 10)
+button_registro.pack(pady = 10)
+ventana.protocol("WM_DELETE_WINDOW", ventana.destroy) 
+ventana.mainloop()   
+
+                                                          #Al abrir la aplicación puedes registrarte o iniciar sesión
 while True:                                             #Si ya tienes una cuenta, puedes iniciar sesión
     if i==0:                                            #Si no tienes una cuenta, puedes registrarte                                                      
         a = input("¿Tienes ya una cuenta? (S/N) ").lower()
@@ -193,3 +203,4 @@ except FileNotFoundError:
     #sino, solo puede reservar
     print("¡Reserva tu primer viaje!")
     reservas.reservar(correo_usuario, nombre)
+
