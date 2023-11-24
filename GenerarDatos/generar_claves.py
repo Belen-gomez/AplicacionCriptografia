@@ -3,13 +3,15 @@ from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.backends import default_backend
 import os
 from claves_conductores import ClavesConductores
+from base_conductores import BaseDeConductores 
 import json
 import random
 import string
-from cryptography.hazmat.primitives import hashes, hmac
-import os
-import time
+from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.asymmetric import padding
+from cryptography import x509
+from cryptography.x509.oid import NameOID
+import datetime
 
 def CrearMatricula():
     """Crea las matrículas de los conductores y las guarda encriptadas en un json"""

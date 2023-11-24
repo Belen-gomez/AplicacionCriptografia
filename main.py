@@ -70,13 +70,17 @@ def Registro():
         nombre, correo = InicioSesion()
         return nombre, correo
 
+   
+   
+    #se crea una clave privada para el usuario y se almacena de forma segura. La clave pública se guarda en una base de datos
+    print("Adios")
+    path = os.path.dirname(__file__) + "/usuarios/" + correo
+    os.makedirs(path, exist_ok=True)
+    print("hola")
+    Claves(path, correo, telefono).CrearClavePrivada()
     #se guarda el usuario en la base de datos
     nuevo_usuario={"Nombre": nombre, "Correo": correo, "Telefono": telefono, "Contrasenia_derivada": key.decode('latin-1'), "Salt": salt.decode('latin-1')}
     bd.add_item(nuevo_usuario)
-    #se crea una clave privada para el usuario y se almacena de forma segura. La clave pública se guarda en una base de datos
-    path = os.path.dirname(__file__) + "/usuarios/" + correo + "/key.pem"
-    os.makedirs(os.path.dirname(path), exist_ok=True)
-    Claves(path, correo).CrearClavePrivada()
 
     return nombre, correo
 
@@ -138,7 +142,7 @@ def InicioSesion():
 
     return usuario["Nombre"], usuario["Correo"]
 
-i = 0
+'''
 ventana = tkinter.Tk()
 ventana.title("Hailo")
 ventana.geometry("550x650")
@@ -162,9 +166,9 @@ button_inicio.pack(pady = 10)
 registro.pack(fill = tkinter.BOTH, pady = 10)
 button_registro.pack(pady = 10)
 ventana.protocol("WM_DELETE_WINDOW", ventana.destroy) 
-ventana.mainloop()   
+ventana.mainloop()   ''' 
 
-                                                          #Al abrir la aplicación puedes registrarte o iniciar sesión
+i = 0                                                         #Al abrir la aplicación puedes registrarte o iniciar sesión
 while True:                                             #Si ya tienes una cuenta, puedes iniciar sesión
     if i==0:                                            #Si no tienes una cuenta, puedes registrarte                                                      
         a = input("¿Tienes ya una cuenta? (S/N) ").lower()
