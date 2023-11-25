@@ -5,6 +5,8 @@ import time
 from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives import padding as pd
+from cryptography import x509
+from cryptography.hazmat.backends import default_backend
 
 
 class Usuario:
@@ -28,6 +30,47 @@ class Usuario:
         self._public_key = private_key.public_key()
 
         return private_key
+    
+    def ObtenerCertificados(self):
+        with open(os.path.dirname(__file__) + "/../AC/ac_raiz/certificado.pem", "rb") as f:
+            certificado_raiz_pem = f.read()
+        certificado_raiz = x509.load_pem_x509_certificate(certificado_raiz_pem, default_backend())
+
+        with open(os.path.dirname(__file__) + "/../AC/ac_usuario/certificado.pem", "rb") as f:
+            certificado_ac_conductor_pem = f.read()
+        certificado_ac_conductor = x509.load_pem_x509_certificate(certificado_ac_conductor_pem, default_backend())
+
+        with open(os.path.dirname(__file__) + "/"+ self.correo + "/certificado.pem", "rb") as f:
+            certificado_conductor_pem = f.read()
+        certificado_conductor = x509.load_pem_x509_certificate(certificado_conductor_pem, default_backend())
+    
+        return certificado_raiz, certificado_ac_conductor, certificado_conductor
+    
+    def VerificarCertificados(self, ac_raiz, ac_conductor, conductor):
+        #Se verifica la cadena de certificados
+        try:
+            ac_raiz.public_key().verify(
+                ac_conductor.signature,
+                ac_conductor.tbs_certificate_bytes,
+                padding.PKCS1v15(),
+                hashes.SHA256(),
+            )
+            ac_conductor.public_key().verify(
+                conductor.signature,
+                conductor.tbs_certificate_bytes,
+                padding.PKCS1v15(),
+                hashes.SHA256(),
+            )
+            return True
+        except Exception as e:
+            print(f"Error al verificar la cadena de certificados: {e}")
+            print("Detalles de la AC raiz:")
+            print(ac_raiz)
+            print("Detalles de la AC conductor:")
+            print(ac_conductor)
+            print("Detalles del certificado del conductor:")
+            print(conductor)
+            return False
     
     def cifrado_simetrico(self, public_key_conductor):
         #El usuario genera las claves de la comunicación y las encripta con la clave pública del conductor
@@ -95,10 +138,13 @@ class Usuario:
                         salt_length=padding.PSS.MAX_LENGTH
                     ),
                     hashes.SHA256()
-)
-        return ct, sing_mac
+
+        )
+        ac_raiz, ac_usuario , usuario = self.ObtenerCertificados()
+
+        return ct, sing_mac, ac_raiz, ac_usuario , usuario
     
-    def descifrar_matricula(self, matricula_cifrada, sign_matricula, public_key_conductor):
+    def descifrar_matricula(self, matricula_cifrada, sign_matricula, public_key_conductor, ac_raiz, ac_conductor, conductor):
         #Se descifra la matrícula y el mac
         cipher = Cipher(algorithms.AES(self.__clave_simetrica), modes.CBC(self.__iv))
         decryptor = cipher.decryptor()
@@ -123,7 +169,7 @@ class Usuario:
                     ),
                     hashes.SHA256()
         )
-
+        self.VerificarCertificados(ac_raiz, ac_conductor, conductor)
         print("Esta es mi matrícula: ", matricula.decode("latin-1"))
         ciphertext = self._public_key.encrypt(matricula,
                 padding.OAEP(

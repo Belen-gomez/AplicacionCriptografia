@@ -58,7 +58,7 @@
   {
     "id": 8,
     "nombre": "Antonio Mendoza",
-    "contador": 4,
+    "contador": 3,
     "consumo": 6.63,
     "ruta_origen": "oporto",
     "ruta_destino": "madrid"
@@ -106,7 +106,7 @@
   {
     "id": 14,
     "nombre": "Fernando Ruiz",
-    "contador": 2,
+    "contador": 1,
     "consumo": 5.94,
     "ruta_origen": "zaragoza",
     "ruta_destino": "salamanca"
@@ -138,7 +138,7 @@
   {
     "id": 18,
     "nombre": "Pilar Moreno",
-    "contador": 1,
+    "contador": 0,
     "consumo": 5.56,
     "ruta_origen": "valladolid",
     "ruta_destino": "oviedo"
@@ -154,7 +154,7 @@
   {
     "id": 20,
     "nombre": "Manuela Castro",
-    "contador": 2,
+    "contador": 1,
     "consumo": 7.64,
     "ruta_origen": "madrid",
     "ruta_destino": "cordoba"
@@ -170,7 +170,7 @@
   {
     "id": 22,
     "nombre": "Rafael Ortiz",
-    "contador": 1,
+    "contador": 0,
     "consumo": 7.09,
     "ruta_origen": "gijon",
     "ruta_destino": "bilbao"

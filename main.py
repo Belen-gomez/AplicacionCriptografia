@@ -18,7 +18,19 @@ def Registro():
     """
     Función que registra a un usuario en la aplicación
     """
+    ventana_registro = tkinter.Tk()
+    ventana_registro.geometry("550x650")
+    ventana_registro.resizable(False, False)
+    ventana_registro.config(bg='#ADAFE1')
+    titulo = tkinter.Label(ventana_registro, text = "Registro", font=("Rockwell Nova Extra Bold", 25), fg= '#2b0d48')  
+    titulo.pack(fill = tkinter.X, pady = 20)
+    ventana_registro.title("Registro")
+    label_nombre = tkinter.Label(ventana_registro, text = "Nombre completo: ", font=("Rockwell Nova Bold", 20), fg= '#2b0d48',  bg='#ADAFE1') 
+    entrada = Entry(ventana_registro) 
     validaciones = ValidarCampos()
+    label_nombre.pack(fill = tkinter.BOTH, pady = 10)
+    entrada.pack(fill = tkinter.BOTH, pady = 10)
+
     nombre = input("Introducir nombre completo: ")
     correo = input("Introducir correo: ")
     res_correo = validaciones.ComprobarCorreo(correo)
@@ -81,7 +93,7 @@ def Registro():
     #se guarda el usuario en la base de datos
     nuevo_usuario={"Nombre": nombre, "Correo": correo, "Telefono": telefono, "Contrasenia_derivada": key.decode('latin-1'), "Salt": salt.decode('latin-1')}
     bd.add_item(nuevo_usuario)
-
+    ventana_registro.mainloop()
     return nombre, correo
 
 def InicioSesion():
@@ -142,7 +154,7 @@ def InicioSesion():
 
     return usuario["Nombre"], usuario["Correo"]
 
-'''
+
 ventana = tkinter.Tk()
 ventana.title("Hailo")
 ventana.geometry("550x650")
@@ -166,7 +178,7 @@ button_inicio.pack(pady = 10)
 registro.pack(fill = tkinter.BOTH, pady = 10)
 button_registro.pack(pady = 10)
 ventana.protocol("WM_DELETE_WINDOW", ventana.destroy) 
-ventana.mainloop()   ''' 
+ventana.mainloop()
 
 i = 0                                                         #Al abrir la aplicación puedes registrarte o iniciar sesión
 while True:                                             #Si ya tienes una cuenta, puedes iniciar sesión
