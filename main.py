@@ -11,10 +11,11 @@ import getpass
 import random
 from claves import Claves
 import json
-from tkinter import messagebox
 import sys
 
-def ComprobarConstraseña(correo, contrasenia):
+contador = 0
+
+def ComprobarConstraseña(correo, contrasenia, ventana_inicio):
     bd = BaseDeUsuarios()
     usuario = bd.find_data(correo)
     ventana_error = tkinter.Tk()
@@ -27,35 +28,43 @@ def ComprobarConstraseña(correo, contrasenia):
         error.pack(fill = tkinter.BOTH, pady = 20) 
         button_registro = Button(ventana_error, text="Ir al registro", command= Registro, font=("Segoe UI", 10))
         button_registro.pack(pady= 10)
-        ventana_error.mainloop()                                                             #Si el usuario no está registrado se le redirige al registro
+        ventana_inicio.destroy()                                                            #Si el usuario no está registrado se le redirige al registro
         return
     
     salt = usuario["Salt"]
     key = usuario["Contrasenia_derivada"]
 
     # Se verifica la contraseña que la contraseña es la misma que la que estaba almacenada.
-    for i in range(2): 
+    #for i in range(2): 
         #Se tienen tres intentos para introducir bien la contraseña                                                                   
-        kdf = Scrypt(                            
-            salt=salt.encode('latin-1'),
-            length=32,
-            n=2**14,
-            r=8,
-            p=1,
-        )
-        try:
-            kdf.verify(bytes(contrasenia.encode("latin-1")), key.encode('latin-1'))
-            break
-        except:                                                                              
-            error = tkinter.Label(ventana_error, text = "Contraseña incorrecta", font=("Rockwell Nova Bold", 12), fg= '#2b0d48',  bg='white')
-            error.pack(fill = tkinter.BOTH, pady = 20) 
-            button_aceptar = Button(ventana_error, text="Aceptar", command= ventana_error.destroy, font=("Segoe UI", 10))
-            button_aceptar.pack(pady= 10)
-            print(i)
+    kdf = Scrypt(                            
+        salt=salt.encode('latin-1'),
+        length=32,
+        n=2**14,
+        r=8,
+        p=1,
+    )
+    try:
+        global contador
+        contador += 1
+        kdf.verify(bytes(contrasenia.encode("latin-1")), key.encode('latin-1'))
+        
+    except:  
+        if contador == 3:
+                error = tkinter.Label(ventana_error, text = "Contraseña incorrecta.\n Has superado el \n numero de intentos", font=("Rockwell Nova Bold", 12), fg= '#2b0d48',  bg='white')
+                error.pack(fill = tkinter.BOTH, pady = 10) 
+                button_aceptar = Button(ventana_error, text="Aceptar", command= ventana_error.destroy, font=("Segoe UI", 10))
+                button_aceptar.pack(pady= 10)
+                ventana_inicio.destroy()
+                return                                                                              
+        error = tkinter.Label(ventana_error, text = "Contraseña incorrecta", font=("Rockwell Nova Bold", 12), fg= '#2b0d48',  bg='white')
+        error.pack(fill = tkinter.BOTH, pady = 20) 
+        button_aceptar = Button(ventana_error, text="Aceptar", command= ventana_error.destroy, font=("Segoe UI", 10))
+        button_aceptar.pack(pady= 10)
+        #ventana_error.mainloop()
+        return
             #ventana_error.mainloop()
-            if i == 1:
-                raise Excepcion("Contraseña incorrecta. Has superado el numero de intentos")  
-
+           
     #El 50% de las veces que se inicia sesión se cambia el token de la contraseña
     cambio_token = random.randint(1, 2)
     if cambio_token == 1:
@@ -74,9 +83,11 @@ def ComprobarConstraseña(correo, contrasenia):
         usuario["Salt"] = salt.decode('latin-1')
 
         bd.save_store()
+    ventana_error.destroy()
+    Cuenta(usuario["Nombre"], usuario["Correo"], ventana_inicio)
 
 
-def Validar_campos(nombre, correo, telefono, contrasenia, contrasenia2):
+def Validar_campos(nombre, correo, telefono, contrasenia, contrasenia2, ventana_registro):
     validaciones = ValidarCampos()
     ventana_error = tkinter.Tk()
     ventana_error.title("Error")
@@ -121,15 +132,16 @@ def Validar_campos(nombre, correo, telefono, contrasenia, contrasenia2):
         button_aceptar.pack(pady= 10)
         ventana_error.mainloop()   
         return
-    ventana_error.destroy()
     bd = BaseDeUsuarios()
     #Si el usuario ya estaba registrado se le redirige al inico de sesión
     if bd.find_data(correo) is not None:
-        print("El usuario ya existe. Inicia sesion con tu cuenta")
-        print("----------------------Incio de sesion----------------------")
-        nombre, correo = InicioSesion()
-        return nombre, correo
-
+        error = tkinter.Label(ventana_error, text = "El usuario ya está registrado", font=("Rockwell Nova Bold", 12), fg= '#2b0d48',  bg='white')
+        error.pack(fill = tkinter.BOTH, pady = 20) 
+        button_registro = Button(ventana_error, text="Ir al inicio de sesion", command= InicioSesion, font=("Segoe UI", 10))
+        button_registro.pack(pady= 10)
+        ventana_registro.destroy()
+        return #nombre, correo
+    ventana_error.destroy()
     # Guardar la contraseña derivada en una base de datos con el correo y el salt
     salt = os.urandom(16)
     # Se deriva la contraseña
@@ -149,12 +161,14 @@ def Validar_campos(nombre, correo, telefono, contrasenia, contrasenia2):
     #se guarda el usuario en la base de datos
     nuevo_usuario={"Nombre": nombre, "Correo": correo, "Telefono": telefono, "Contrasenia_derivada": key.decode('latin-1'), "Salt": salt.decode('latin-1')}
     bd.add_item(nuevo_usuario)
+    Cuenta(nombre, correo, ventana_registro)
     return
 
 def Registro():
     """
     Función que registra a un usuario en la aplicación
-    """        
+    """ 
+               
     ventana_registro = tkinter.Tk()
     ventana_registro.geometry("550x650+50+50")
     ventana_registro.resizable(False, False)
@@ -190,7 +204,7 @@ def Registro():
     label_contrasenia2.pack(fill = tkinter.BOTH, pady = 3)
     entrada_contrasenia2.pack(fill = tkinter.BOTH, pady = 10, padx= 70, ipady= 5)
     
-    button_aceptar = Button(ventana_registro, text="Aceptar", command= lambda: Validar_campos(entrada_nombre.get(), entrada_correo.get(), entrada_telefono.get(), entrada_contrasenia1.get(), entrada_contrasenia2.get()), font=("Segoe UI", 10))
+    button_aceptar = Button(ventana_registro, text="Aceptar", command= lambda: Validar_campos(entrada_nombre.get(), entrada_correo.get(), entrada_telefono.get(), entrada_contrasenia1.get(), entrada_contrasenia2.get(), ventana_registro), font=("Segoe UI", 10))
     button_volver = Button(ventana_registro, text="Volver", command= ventana_registro.destroy, font=("Segoe UI", 10))
     button_aceptar.pack(side="left", pady= 10, padx= 150)
     button_volver.pack(side="left",pady = 10)
@@ -217,7 +231,7 @@ def InicioSesion():
     entrada_correo.pack(fill = tkinter.BOTH, pady = 10, padx= 70, ipady= 5)
     label_contrasenia1.pack(fill = tkinter.BOTH, pady = 3)
     entrada_contrasenia1.pack(fill = tkinter.BOTH, pady = 10, padx= 70, ipady= 5)
-    button_aceptar = Button(ventana_inicio, text="Aceptar", command= lambda: ComprobarConstraseña(entrada_correo.get(), entrada_contrasenia1.get()), font=("Segoe UI", 10))
+    button_aceptar = Button(ventana_inicio, text="Aceptar", command= lambda: ComprobarConstraseña(entrada_correo.get(), entrada_contrasenia1.get(), ventana_inicio), font=("Segoe UI", 10))
     button_volver = Button(ventana_inicio, text="Volver", command= ventana_inicio.destroy, font=("Segoe UI", 10))
     button_aceptar.pack(pady= 10, padx= 150)
     button_volver.pack(pady = 10)
@@ -225,6 +239,36 @@ def InicioSesion():
     
     return #usuario["Nombre"], usuario["Correo"]
 
+def Cuenta(nombre, correo_usuario, ventana_cerrar):
+    ventana_cerrar.destroy()
+    ventana_cuenta = tkinter.Tk()
+    ventana_cuenta.title("Tu cuenta")
+    ventana_cuenta.geometry("550x650+50+50")
+    ventana_cuenta.resizable(False, False)
+    ventana_cuenta.config(bg='#ADAFE1')
+    bienvenido = tkinter.Label(ventana_cuenta, text = "Bienvenido "+ nombre, font=("Rockwell Nova Extra Bold", 25), fg= '#2b0d48') 
+    bienvenido.pack(fill = tkinter.X, pady = 20) 
+    path =  os.path.dirname(__file__) + "/usuarios/" + correo_usuario + "/viajes.json"
+    reservas = Gestion()
+    try: 
+    #Si el usuario tiene viajes, puede reservar o ver sus viajes
+        with open(path, "r", encoding="utf-8", newline="") as file:
+            data_list = json.load(file)
+            label_elegir = tkinter.Label(ventana_cuenta, text = "¿Quieres reservar un nuevo viaje \n o ver tus viajes ya reservados? ", font=("Rockwell Nova Bold", 15), fg= '#2b0d48',  bg='#ADAFE1') 
+            button_reservar = Button(ventana_cuenta, text="Reservar viaje", command= lambda: reservas.reservar(correo_usuario, nombre, ventana_cuenta), font=("Segoe UI", 10))
+            button_ver = Button(ventana_cuenta, text="Ver viajes", command= lambda: reservas.ver_viajes(data_list, correo_usuario), font=("Segoe UI", 10))
+            label_elegir.pack(fill = tkinter.BOTH, pady = 3)
+            button_reservar.pack(pady= 10, padx= 150)
+            button_ver.pack(pady = 10)
+            ventana_cuenta.mainloop()
+
+
+    except FileNotFoundError:
+        #sino, solo puede reservar
+        ventana_cuenta.destroy()
+        reservas.reservar(correo_usuario, nombre)
+        
+    return
 
 ventana = tkinter.Tk()
 ventana.title("Hailo")

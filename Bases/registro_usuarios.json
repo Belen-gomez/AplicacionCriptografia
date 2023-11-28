@@ -3,7 +3,21 @@
     "Nombre": "Belen ",
     "Correo": "bga78a@gmail.com",
     "Telefono": "666666666",
-    "Contrasenia_derivada": "V\u0004A^%\u000f\u009ef\u008c\u008c\u001f\u00cc)x\u0014cC W\u00de.\u00e0\u0096\u00fb\u00f4\u0093\u00d1\u00bf\u008f\u00c2\u00ea\u0090",
-    "Salt": "F\u00de\u00fd\u00f4*\u0006\u008b\u00d0\u00bb\u00b7x\u00c7^\u00fe\u00d8?"
+    "Contrasenia_derivada": "\u00f9Y\u00ce\u00e9>q\u00c3JOK\u00f6\u0089M\u00b8b\u0018\u00f5\u0005C\n\u00d7\u00a5\u00b6K\u00fc\u0010\u00ff\u000e\u00fcV>\u00b0",
+    "Salt": "\u00b7M\u00fdp\u0011p?:*\u0096[+\u00a7t\u00b0\u00cb"
+  },
+  {
+    "Nombre": "celia",
+    "Correo": "celia@gmail.com",
+    "Telefono": "666666666",
+    "Contrasenia_derivada": "\u00c4\u00ddc=\u00e4\u0081\b\u00e8\u00bb\u00b98\u001f|\u00b8\u00cc;\u0091~g\u00f4\u00d3\u001a\u00b9\u00d8\u007fx)\u00edN\u00b7H\u00f3",
+    "Salt": "lA$&\u00fe\u008bQ\u000f\u009b\u0096o\u00c2\t\u00fc\u0015\u0006"
+  },
+  {
+    "Nombre": "luis",
+    "Correo": "luis@gmail.com",
+    "Telefono": "666666666",
+    "Contrasenia_derivada": "\u0090\u00ee\u00eb\u00d3\u00ce\u0088}4n\u00d9\u009e\u008d\u00c1\u00bao\u0080\u0006\u00ef\u00ed\u00f6\u00a9\u00f7\u009d%aGnT\u0018S\u00bb\u00ba",
+    "Salt": "\u008b\u00f7\u0096\u001a\u001f\u0098,H\u00f7GI\u00f52\bCm"
   }
 ]

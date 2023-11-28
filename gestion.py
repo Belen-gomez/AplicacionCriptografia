@@ -6,6 +6,8 @@ import os
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography.hazmat.primitives import hashes
+import tkinter
+from tkinter import *
     
 class Gestion:
     def __init__(self):
@@ -33,21 +35,50 @@ class Gestion:
                 conductores_ruta = {}
         return conductores_ruta, origen, destino
 
-    def reservar(self, correo_usuario, nombre):
+    def reservar(self, correo_usuario, nombre, ventana_cuenta = None):
         """
         Función para rerservar un viaje
         """
+        if ventana_cuenta is not None:
+            ventana_cuenta.destroy()
+        ventana_reservar = tkinter.Tk()
+        ventana_reservar.title("Reservar")
+        ventana_reservar.geometry("550x750+50+0")
+        ventana_reservar.resizable(False, False)
+        ventana_reservar.config(bg='#ADAFE1')
+
+        label_reservar = tkinter.Label(ventana_reservar, text = "Reservar", font=("Rockwell Nova Extra Bold", 25), fg= '#2b0d48')      #Se muestran todos los viajes
+        label_reservar.pack(fill = tkinter.X, pady=10)
+
         conductores = BaseDeConductores()
         conductores.load_store()
-        print("Viajes disponibles")
+        label_disponibles = tkinter.Label(ventana_reservar, text = "Estos son los viajes disponibles", font=("Rockwell Nova Bold", 12),fg= '#2b0d48',  bg='#ADAFE1')
+        label_disponibles.pack(padx= 5)
+        lista = []
         for item in conductores._data_list:
-            if item["contador"] != 0:
-                print("Origen: ", item["ruta_origen"], " - Destino: ", item["ruta_destino"])
+            if item["ruta_origen"]+item["ruta_destino"] not in lista:
+                if item["contador"] != 0:
+                    label_viaje = tkinter.Label(ventana_reservar, text = "Origen: " + item["ruta_origen"] +" Destino: " + item["ruta_destino"], font=("Segoe UI", 10), fg= '#2b0d48', bg='#ADAFE1')
+                    label_viaje.pack(padx= 5)
+                    lista.append(item["ruta_origen"]+item["ruta_destino"])
+                #print("Origen: ", item["ruta_origen"], " - Destino: ", item["ruta_destino"])
             
         #Se pide el viaje
-        origen = input("¿Dónde quieres empezar tu viaje? ").lower()
-        destino = input("¿A dónde quieres ir? ").lower()
-       
+        label_origen = tkinter.Label(ventana_reservar, text = "¿Dónde quieres empezar tu viaje?", font=("Rockwell Nova Bold", 10),fg= '#2b0d48',  bg='#ADAFE1')
+        label_origen.pack(pady= 15)
+        entrada_origen = Entry(ventana_reservar)
+        entrada_origen.pack(fill = tkinter.BOTH, pady = 10, padx= 70, ipady= 5)
+
+        label_destino = tkinter.Label(ventana_reservar, text = "¿A dónde quieres ir?", font=("Rockwell Nova Bold", 10),fg= '#2b0d48',  bg='#ADAFE1')
+        label_destino.pack(pady= 10)
+        entrada_origen = Entry(ventana_reservar)
+        entrada_origen.pack(fill = tkinter.BOTH, pady = 10, padx= 70, ipady= 5)
+
+        button_buscar = Button(ventana_reservar, text="Buscar", command= ventana_reservar.destroy, font=("Segoe UI", 10))
+        button_volver = Button(ventana_reservar, text="Volver", command= ventana_reservar.destroy, font=("Segoe UI", 10))
+        button_buscar.pack(side="left", pady= 10, padx= 150)
+        button_volver.pack(side="left",pady = 10)
+        ventana_reservar.mainloop()
         #Se buscan conductores que realicen ese viaje
         conductores_ruta = conductores.find_data_ruta(origen, destino)
         if len(conductores_ruta) == 0:
@@ -95,6 +126,11 @@ class Gestion:
         """
         Función para mostrarle los viajes al usuario
         """
+        ventana_viajes = tkinter.Tk()
+        ventana_viajes.title("Tus viajes")
+        ventana_viajes.geometry("550x650+50+50")
+        ventana_viajes.resizable(False, False)
+        ventana_viajes.config(bg='#ADAFE1')
         #Se descifra la matrícula
         path = os.path.dirname(__file__) + "/usuarios/" + correo_usuario + "/key.pem"
         with open(path, "rb") as key_file:
@@ -102,7 +138,8 @@ class Gestion:
                 key_file.read(),
                 password=None,
             )
-        print("Estos son tus viajes reservados:")    #Se muestran todos los viajes
+        label_viajes = tkinter.Label(ventana_viajes, text = "Estos son tus viajes", font=("Rockwell Nova Extra Bold", 25), fg= '#2b0d48')      #Se muestran todos los viajes
+        label_viajes.pack(fill = tkinter.X, pady=10)
         i = 1
         for item in data_list:
             matricula_cifrada = item["Matricula"]
@@ -114,7 +151,12 @@ class Gestion:
                     label=None
                 )
             )
-            print(i)
-            print(" Origen:", item["Origen"],"\n", "Destino:", item["Destino"],"\n", "Conductor:", item["Conductor"],"\n", "Matricula:", matricula.decode('latin-1'),"\n")
+            lviaje = tkinter.Label(ventana_viajes, text = "Viaje: " + str(i) + "\n Origen: " + item["Origen"] + "\nDestino: " + item["Destino"] + "\n Conductor: " + item["Conductor"] +"\n Matricula: " + matricula.decode('latin-1') +"\n", font=("Rockwell Nova Bold", 12),fg= '#2b0d48',  bg='#ADAFE1')
+            lviaje.pack(pady = 10, padx= 5)
+            button_volver = Button(ventana_viajes, text="Volver", command= ventana_viajes.destroy, font=("Segoe UI", 10))
+            button_volver.pack(pady = 10)
+            #print(i)
+            #print(" Origen:", item["Origen"],"\n", "Destino:", item["Destino"],"\n", "Conductor:", item["Conductor"],"\n", "Matricula:", matricula.decode('latin-1'),"\n")
             i+=1
-        print("¡Esperamos que disfrutes de tus viajes!")
+        ventana_viajes.mainloop()
+        #print("¡Esperamos que disfrutes de tus viajes!")

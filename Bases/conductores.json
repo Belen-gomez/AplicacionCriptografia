@@ -44,8 +44,8 @@
     "nombre": "Laura Santos",
     "contador": 4,
     "consumo": 6.99,
-    "ruta_origen": "gijon",
-    "ruta_destino": "oviedo"
+    "ruta_origen": "granada",
+    "ruta_destino": "vigo"
   },
   {
     "id": 7,
@@ -68,8 +68,8 @@
     "nombre": "Lucia Perez",
     "contador": 6,
     "consumo": 6.24,
-    "ruta_origen": "oporto",
-    "ruta_destino": "santander"
+    "ruta_origen": "bilbao",
+    "ruta_destino": "valencia"
   },
   {
     "id": 10,
@@ -124,8 +124,8 @@
     "nombre": "Elena Guerrero",
     "contador": 3,
     "consumo": 5.43,
-    "ruta_origen": "zaragoza",
-    "ruta_destino": "oporto"
+    "ruta_origen": "madrid",
+    "ruta_destino": "alicante"
   },
   {
     "id": 17,
@@ -178,7 +178,7 @@
   {
     "id": 23,
     "nombre": "Angela Serrano",
-    "contador": 6,
+    "contador": 5,
     "consumo": 5,
     "ruta_origen": "madrid",
     "ruta_destino": "alicante"
