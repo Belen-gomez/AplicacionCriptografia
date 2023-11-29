@@ -23,12 +23,14 @@ def ComprobarConstraseña(correo, contrasenia, ventana_inicio):
     ventana_error.geometry("300x150")
     ventana_error.config(bg='#ADAFE1')
     ventana_error.resizable(False, False)
+    global contador
     if usuario is None:  
         error = tkinter.Label(ventana_error, text = "El usuario no está registrado", font=("Rockwell Nova Bold", 12), fg= '#2b0d48',  bg='white')
         error.pack(fill = tkinter.BOTH, pady = 20) 
         button_registro = Button(ventana_error, text="Ir al registro", command= Registro, font=("Segoe UI", 10))
         button_registro.pack(pady= 10)
-        ventana_inicio.destroy()                                                         #Si el usuario no está registrado se le redirige al registro
+        ventana_inicio.destroy()  
+        contador = 0                                                    #Si el usuario no está registrado se le redirige al registro
         return
     
     salt = usuario["Salt"]
@@ -45,7 +47,6 @@ def ComprobarConstraseña(correo, contrasenia, ventana_inicio):
         p=1,
     )
     try:
-        global contador
         contador += 1
         kdf.verify(bytes(contrasenia.encode("latin-1")), key.encode('latin-1'))
         

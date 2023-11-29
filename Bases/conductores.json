@@ -122,7 +122,7 @@
   {
     "id": 16,
     "nombre": "Elena Guerrero",
-    "contador": 3,
+    "contador": 2,
     "consumo": 5.43,
     "ruta_origen": "madrid",
     "ruta_destino": "alicante"

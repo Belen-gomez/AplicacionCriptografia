@@ -150,7 +150,7 @@ class Gestion:
         """
         ventana_viajes = tkinter.Tk()
         ventana_viajes.title("Tus viajes")
-        ventana_viajes.geometry("550x650+50+50")
+        ventana_viajes.geometry("550x800+50+0")
         ventana_viajes.resizable(False, False)
         ventana_viajes.config(bg='#ADAFE1')
         #Se descifra la matrícula
