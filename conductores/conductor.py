@@ -137,7 +137,6 @@ class Conductor:
         )
         self.VerificarCertificados(ac_raiz, ac_usuario, usuario)
         #h.verify(mac_descrifrado)
-        print("He recibido correctamente tu dirección")
         
         ciphertext = self._public_key.encrypt(direccion,
                 padding.OAEP(
@@ -150,10 +149,6 @@ class Conductor:
         return pasajero
 
     def cifrar_matricula(self):
-        print("--------- SISTEMA ---------")
-        print("Cifrando matricula")
-        time.sleep(2)
-        print("--------- FIN ---------")
         data_list = []
         #se recupera la matricula
         path = os.path.dirname(__file__) +"/"+ str(self.id) + "/matricula.json"

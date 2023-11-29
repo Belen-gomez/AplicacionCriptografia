@@ -101,13 +101,7 @@ class Usuario:
         '''  self.__key_hmac = key_hmac '''
         return ciphertext, ciphertext_iv 
         
-    def cifrar_direccion(self):
-        direccion = input("¿Donde te recojo? ")
-        print("--------- SISTEMA ---------")
-        print("Cifrando direccion")
-        time.sleep(2)
-        print("--------- FIN ---------")
-
+    def cifrar_direccion(self, direccion: str):
         # Crea una instancia de HMAC con SHA256 y la clave generada
         h = hmac.HMAC(self.__clave_simetrica, hashes.SHA256())
         # Autentica el texto cifrado
@@ -170,11 +164,10 @@ class Usuario:
                     hashes.SHA256()
         )
         self.VerificarCertificados(ac_raiz, ac_conductor, conductor)
-        print("Esta es mi matrícula: ", matricula.decode("latin-1"))
         ciphertext = self._public_key.encrypt(matricula,
                 padding.OAEP(
                 mgf=padding.MGF1(algorithm=hashes.SHA256()),
                 algorithm=hashes.SHA256(),
                 label=None
             ))
-        return ciphertext
+        return ciphertext, matricula.decode("latin-1")

@@ -28,7 +28,7 @@ def ComprobarConstraseña(correo, contrasenia, ventana_inicio):
         error.pack(fill = tkinter.BOTH, pady = 20) 
         button_registro = Button(ventana_error, text="Ir al registro", command= Registro, font=("Segoe UI", 10))
         button_registro.pack(pady= 10)
-        ventana_inicio.destroy()                                                            #Si el usuario no está registrado se le redirige al registro
+        ventana_inicio.destroy()                                                         #Si el usuario no está registrado se le redirige al registro
         return
     
     salt = usuario["Salt"]
@@ -181,6 +181,7 @@ def Registro():
     label_correo = tkinter.Label(ventana_registro, text = "Correo: ", font=("Rockwell Nova Bold", 15), fg= '#2b0d48',  bg='#ADAFE1') 
     label_telefono = tkinter.Label(ventana_registro, text = "Telefono: ", font=("Rockwell Nova Bold", 15), fg= '#2b0d48',  bg='#ADAFE1') 
     label_contrasenia1 = tkinter.Label(ventana_registro, text = "Contraseña: ", font=("Rockwell Nova Bold", 15), fg= '#2b0d48',  bg='#ADAFE1') 
+    label_requisitos = tkinter.Label(ventana_registro, text = "Mínimo 8 caracteres, una mayúscula, una minúscula y un número", font=("Segoe UI", 10), fg= '#2b0d48', bg='#ADAFE1')
     label_contrasenia2 = tkinter.Label(ventana_registro, text = "Repite la contraseña: ", font=("Rockwell Nova Bold", 15), fg= '#2b0d48',  bg='#ADAFE1') 
     
     entrada_nombre = Entry(ventana_registro)
@@ -199,6 +200,7 @@ def Registro():
     entrada_telefono.pack(fill = tkinter.BOTH, pady = 10, padx= 70, ipady= 5)
 
     label_contrasenia1.pack(fill = tkinter.BOTH, pady = 3)
+    label_requisitos.pack(fill = tkinter.BOTH, pady = 3)
     entrada_contrasenia1.pack(fill = tkinter.BOTH, pady = 10, padx= 70, ipady= 5)
 
     label_contrasenia2.pack(fill = tkinter.BOTH, pady = 3)
@@ -206,8 +208,8 @@ def Registro():
     
     button_aceptar = Button(ventana_registro, text="Aceptar", command= lambda: Validar_campos(entrada_nombre.get(), entrada_correo.get(), entrada_telefono.get(), entrada_contrasenia1.get(), entrada_contrasenia2.get(), ventana_registro), font=("Segoe UI", 10))
     button_volver = Button(ventana_registro, text="Volver", command= ventana_registro.destroy, font=("Segoe UI", 10))
-    button_aceptar.pack(side="left", pady= 10, padx= 150)
-    button_volver.pack(side="left",pady = 10)
+    button_volver.pack(side="left", pady= 10, padx= 150)
+    button_aceptar.pack(side="left",pady = 10)
     ventana_registro.mainloop()
     return #nombre, correo
 
@@ -233,8 +235,8 @@ def InicioSesion():
     entrada_contrasenia1.pack(fill = tkinter.BOTH, pady = 10, padx= 70, ipady= 5)
     button_aceptar = Button(ventana_inicio, text="Aceptar", command= lambda: ComprobarConstraseña(entrada_correo.get(), entrada_contrasenia1.get(), ventana_inicio), font=("Segoe UI", 10))
     button_volver = Button(ventana_inicio, text="Volver", command= ventana_inicio.destroy, font=("Segoe UI", 10))
-    button_aceptar.pack(pady= 10, padx= 150)
-    button_volver.pack(pady = 10)
+    button_volver.pack(pady= 10, padx= 150)
+    button_aceptar.pack(pady = 10)
     ventana_inicio.mainloop()
     
     return #usuario["Nombre"], usuario["Correo"]
@@ -261,9 +263,7 @@ def Cuenta(nombre, correo_usuario, ventana_cerrar):
             button_reservar.pack(pady= 10, padx= 150)
             button_ver.pack(pady = 10)
             ventana_cuenta.mainloop()
-
-
-    except FileNotFoundError:
+    except:
         #sino, solo puede reservar
         ventana_cuenta.destroy()
         reservas.reservar(correo_usuario, nombre)

@@ -13,27 +13,86 @@ class Gestion:
     def __init__(self):
         pass
     
-    def Contactar(self, conductor, conductores_ruta):
+    def Contactar(self, origen, destino, conductor, conductores_ruta, correo_usuario, nombre, ventana_conductor, ventana_reserva ):
         id_c = None
+        ventana_error = tkinter.Tk()
+        ventana_error.title("Error")
+        ventana_error.geometry("300x150")
+        ventana_error.config(bg='#ADAFE1')
+        ventana_error.resizable(False, False)
         for item in conductores_ruta:
             if item["nombre"].lower() == conductor:
                 id_c = item["id"]
-        return id_c
-    
-    def BuscarConductor(self, conductores_ruta):
+        if not id_c:
+            error = tkinter.Label(ventana_error, text = "No existe ese conductor", font=("Rockwell Nova Bold", 12), fg= '#2b0d48',  bg='white')
+            error.pack(fill = tkinter.BOTH, pady = 20)
+            button_aceptar = Button(ventana_error, text="Aceptar", command= ventana_error.destroy, font=("Segoe UI", 10))
+            button_aceptar.pack(pady= 10)
+            ventana_error.mainloop() 
+            return
+        
+        path = os.path.dirname(__file__) + "/conductores/" + str(id_c) + "/pasajeros.json"
+        pasajeros = BaseDePasajeros()
+        pasajeros.FILE_PATH = path
+        pasajeros.load_store()
+        lista = pasajeros.find_data_correo(correo_usuario)
+        if len(lista) != 0:
+            label_mensaje = Label(ventana_error, text = "Ya has reservado este viaje", font=("Rockwell Nova Bold", 12), fg= '#2b0d48',  bg='#ADAFE1')
+            label_mensaje.pack(fill = tkinter.BOTH, pady = 20)
+            button_aceptar = Button(ventana_error, text="Aceptar", command= ventana_error.destroy, font=("Segoe UI", 10))
+            button_aceptar.pack(pady= 10)
+            ventana_error.mainloop()
+            return
+
+        #Se llama a la clase comunicación
+        conversacion = Comunicacion(conductor, id_c, correo_usuario, nombre, origen, destino)
+        label_mensaje = Label(ventana_error, text = "Se ha enviado un mensaje al conductor\n" + conductor +" con tu petición de viaje. \n En breve se pondrá en contacto contigo", font=("Rockwell Nova Bold", 10), fg= '#2b0d48',  bg='#ADAFE1')
+        label_mensaje.pack(fill = tkinter.BOTH, pady = 15)
+        button_aceptar = Button(ventana_error, text="Aceptar", command= lambda: [ventana_conductor.destroy(), ventana_reserva.destroy(), ventana_error.destroy(), conversacion.enviar_mensaje()], font=("Segoe UI", 10))
+        button_aceptar.pack(pady= 10)
+        ventana_error.mainloop()
+        #time.sleep(5)   
+        return 
+    #def cerrarVentanas(self, ventana1, ventana2, )
+    def Buscar(self,origen, destino, correo_usuario, nombre, ventana_reserva):
         conductores = BaseDeConductores()
-        while len(conductores_ruta) == 0:
-            opciones = input("No se ha encontrado esa información. ¿Quieres probar con otro origen o destino? (S/N) ").lower()
-            if opciones == "s":
-                origen = input("¿Dónde quieres empezar tu viaje? ").lower()
-                destino = input("¿A dónde quieres ir? ").lower()
-                conductores_ruta = conductores.find_data_ruta(origen, destino)
-            elif opciones == "n":
-                print("Lamentamos que no hayas encontrado un conductor para tu viaje. ¡Vuelve pronto!")
-                exit()
-            else:
-                conductores_ruta = {}
-        return conductores_ruta, origen, destino
+        conductores.load_store()
+        conductores_ruta = conductores.find_data_ruta(origen, destino)
+        ventana_error = tkinter.Tk()
+        ventana_error.title("Error")
+        ventana_error.geometry("300x150")
+        ventana_error.config(bg='#ADAFE1')
+        ventana_error.resizable(False, False)
+        if len(conductores_ruta) == 0:
+            #Si no hay conductores se solicita un viaje distinto
+            error = tkinter.Label(ventana_error, text = "No hay conductores disponibles \n para tu viaje.\n", font=("Rockwell Nova Bold", 12), fg= '#2b0d48',  bg='white')
+            error.pack(fill = tkinter.BOTH, pady = 20)
+            button_aceptar = Button(ventana_error, text="Aceptar", command= ventana_error.destroy, font=("Segoe UI", 10))
+            button_aceptar.pack(pady= 10)
+            ventana_error.mainloop() 
+            return
+        ventana_error.destroy()
+        ventana_conductores = tkinter.Tk()
+        ventana_conductores.title("Conductores disponibles")
+        ventana_conductores.geometry("550x650+50+50")
+        ventana_conductores.config(bg='#ADAFE1')
+        ventana_conductores.resizable(False, False)
+        label_disponibles = tkinter.Label(ventana_conductores, text = "Conductores \n disponibles", font=("Rockwell Nova Extra Bold", 25), fg= '#2b0d48')      #Se muestran todos los viajes
+        label_disponibles.pack(fill = tkinter.X, pady=10)
+        for item in conductores_ruta:
+            label_conductor = tkinter.Label(ventana_conductores, text = "Conductor: " + item["nombre"] + " Plazas libres: " + str(item["contador"])+ " Consumo: "+
+                str(item["consumo"]), font=("Rockwell Nova Bold", 10),fg= '#2b0d48',  bg='#ADAFE1')
+            label_conductor.pack(pady = 10, padx= 5)
+        label_contactar = tkinter.Label(ventana_conductores, text = "¿Con cuál de ellos quieres contactar? ", font=("Rockwell Nova Bold", 12),fg= '#2b0d48',  bg='#ADAFE1')
+        label_contactar.pack(pady= 10)
+
+        entrada_conductor = Entry(ventana_conductores)
+        entrada_conductor.pack(fill = tkinter.BOTH, pady = 10, padx= 70, ipady= 5)
+
+        boton = tkinter.Button(ventana_conductores, text = "Contactar", command= lambda: self.Contactar(origen, destino, entrada_conductor.get().lower(), conductores_ruta, correo_usuario, nombre, ventana_conductores, ventana_reserva))
+        boton.pack(pady= 10) 
+        ventana_conductores.mainloop()       
+
 
     def reservar(self, correo_usuario, nombre, ventana_cuenta = None):
         """
@@ -43,7 +102,7 @@ class Gestion:
             ventana_cuenta.destroy()
         ventana_reservar = tkinter.Tk()
         ventana_reservar.title("Reservar")
-        ventana_reservar.geometry("550x750+50+0")
+        ventana_reservar.geometry("550x800+50+0")
         ventana_reservar.resizable(False, False)
         ventana_reservar.config(bg='#ADAFE1')
 
@@ -61,66 +120,29 @@ class Gestion:
                     label_viaje = tkinter.Label(ventana_reservar, text = "Origen: " + item["ruta_origen"] +" Destino: " + item["ruta_destino"], font=("Segoe UI", 10), fg= '#2b0d48', bg='#ADAFE1')
                     label_viaje.pack(padx= 5)
                     lista.append(item["ruta_origen"]+item["ruta_destino"])
-                #print("Origen: ", item["ruta_origen"], " - Destino: ", item["ruta_destino"])
-            
-        #Se pide el viaje
+                
         label_origen = tkinter.Label(ventana_reservar, text = "¿Dónde quieres empezar tu viaje?", font=("Rockwell Nova Bold", 10),fg= '#2b0d48',  bg='#ADAFE1')
         label_origen.pack(pady= 15)
+        label_sorigen = tkinter.Label(ventana_reservar, text = "Escribe un origen", font=("Segoe UI", 10), fg= '#2b0d48', bg='#ADAFE1')
+        label_viaje.pack(padx= 5)
+        label_sorigen.pack(padx= 5)
         entrada_origen = Entry(ventana_reservar)
         entrada_origen.pack(fill = tkinter.BOTH, pady = 10, padx= 70, ipady= 5)
 
         label_destino = tkinter.Label(ventana_reservar, text = "¿A dónde quieres ir?", font=("Rockwell Nova Bold", 10),fg= '#2b0d48',  bg='#ADAFE1')
         label_destino.pack(pady= 10)
-        entrada_origen = Entry(ventana_reservar)
-        entrada_origen.pack(fill = tkinter.BOTH, pady = 10, padx= 70, ipady= 5)
+        label_sdestino = tkinter.Label(ventana_reservar, text = "Escribe un destino", font=("Segoe UI", 10), fg= '#2b0d48', bg='#ADAFE1')
+        label_sdestino.pack()
+        entrada_destino = Entry(ventana_reservar)
+        entrada_destino.pack(fill = tkinter.BOTH, pady = 10, padx= 70, ipady= 5)
 
-        button_buscar = Button(ventana_reservar, text="Buscar", command= ventana_reservar.destroy, font=("Segoe UI", 10))
+        button_buscar = Button(ventana_reservar, text="Buscar", command= lambda: self.Buscar(entrada_origen.get().lower(), entrada_destino.get().lower(), correo_usuario, nombre, ventana_reservar), font=("Segoe UI", 10))
         button_volver = Button(ventana_reservar, text="Volver", command= ventana_reservar.destroy, font=("Segoe UI", 10))
-        button_buscar.pack(side="left", pady= 10, padx= 150)
-        button_volver.pack(side="left",pady = 10)
+        button_volver.pack(side="left", pady= 10, padx= 150)
+        button_buscar.pack(side="left",pady = 10)
         ventana_reservar.mainloop()
         #Se buscan conductores que realicen ese viaje
-        conductores_ruta = conductores.find_data_ruta(origen, destino)
-        if len(conductores_ruta) == 0:
-            #Si no hay conductores se solicita un viaje distinto
-            conductores_ruta, origen, destino = self.BuscarConductor(conductores_ruta)
-
-        for item in conductores_ruta:
-            print("El conductor", item["nombre"], "realiza tu mismo viaje. Le quedan ", item["contador"], "plaza(s) libre(s) y su coche consume",
-                item["consumo"], "litros por cada 100 km")
-
-        #Se muestran los conductores y se permite al usuario elegir
-        contactar = input("¿Quieres contactar con alguno de estos conductores? (S/N)").lower()
-        while contactar != "s" and contactar != "n":
-            contactar = input("¿Quieres contactar con alguno de estos conductores? (S/N)").lower()
-            
-        if contactar == "s":
-            conductor = input("¿Con cuál de ellos quieres contactar? (Introduce su nombre completo)").lower()
-            id = self.Contactar(conductor, conductores_ruta)
         
-            while not id:
-                conductor = input("¿Con cuál de ellos quieres contactar? (Introduce su nombre completo)").lower()
-                id = self.Contactar(conductor, conductores_ruta)
-                
-            print("Se ha enviado un mensaje al conductor", conductor, "con tu petición de viaje. En breve se pondrá en contacto contigo")
-            time.sleep(5)
-
-            path = os.path.dirname(__file__) + "/conductores/" + str(id) + "/pasajeros.json"
-            pasajeros = BaseDePasajeros()
-            pasajeros.FILE_PATH = path
-            pasajeros.load_store()
-            lista = pasajeros.find_data_correo(correo_usuario)
-            if len(lista) != 0:
-                #Si ya se ha reservado un viaje con ese conductor se muestra un mensaje
-                print("Ya has contactado con este conductor y has reservado un viaje. ¡Seguro que os lo pasáis genial!")
-                exit()
-
-            #Se llama a la clase comunicación
-            conversacion = Comunicacion(conductor, id, correo_usuario, nombre, origen, destino)
-            conversacion.enviar_mensaje()
-
-        else:
-            print("Lamentamos que no hayas encontrado un conductor para tu viaje. ¡Vuelve pronto!")
 
     def ver_viajes(self, data_list, correo_usuario):
         """
@@ -153,10 +175,11 @@ class Gestion:
             )
             lviaje = tkinter.Label(ventana_viajes, text = "Viaje: " + str(i) + "\n Origen: " + item["Origen"] + "\nDestino: " + item["Destino"] + "\n Conductor: " + item["Conductor"] +"\n Matricula: " + matricula.decode('latin-1') +"\n", font=("Rockwell Nova Bold", 12),fg= '#2b0d48',  bg='#ADAFE1')
             lviaje.pack(pady = 10, padx= 5)
-            button_volver = Button(ventana_viajes, text="Volver", command= ventana_viajes.destroy, font=("Segoe UI", 10))
-            button_volver.pack(pady = 10)
+            i+=1
+        button_volver = Button(ventana_viajes, text="Volver", command= ventana_viajes.destroy, font=("Segoe UI", 10))
+        button_volver.pack(pady = 10)
             #print(i)
             #print(" Origen:", item["Origen"],"\n", "Destino:", item["Destino"],"\n", "Conductor:", item["Conductor"],"\n", "Matricula:", matricula.decode('latin-1'),"\n")
-            i+=1
+           
         ventana_viajes.mainloop()
         #print("¡Esperamos que disfrutes de tus viajes!")
