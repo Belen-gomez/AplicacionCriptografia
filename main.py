@@ -141,7 +141,7 @@ def Validar_campos(nombre, correo, telefono, contrasenia, contrasenia2, ventana_
         button_registro = Button(ventana_error, text="Ir al inicio de sesion", command= InicioSesion, font=("Segoe UI", 10))
         button_registro.pack(pady= 10)
         ventana_registro.destroy()
-        return #nombre, correo
+        return
     ventana_error.destroy()
     # Guardar la contraseña derivada en una base de datos con el correo y el salt
     salt = os.urandom(16)
@@ -158,7 +158,7 @@ def Validar_campos(nombre, correo, telefono, contrasenia, contrasenia2, ventana_
     #se crea una clave privada para el usuario y se almacena de forma segura. La clave pública se guarda en una base de datos
     path = os.path.dirname(__file__) + "/usuarios/" + correo
     os.makedirs(path, exist_ok=True)
-    Claves(path, correo, telefono).CrearClavePrivada()
+    Claves(path, correo, nombre).CrearClavePrivada()
     #se guarda el usuario en la base de datos
     nuevo_usuario={"Nombre": nombre, "Correo": correo, "Telefono": telefono, "Contrasenia_derivada": key.decode('latin-1'), "Salt": salt.decode('latin-1')}
     bd.add_item(nuevo_usuario)
@@ -240,7 +240,7 @@ def InicioSesion():
     button_aceptar.pack(pady = 10)
     ventana_inicio.mainloop()
     
-    return #usuario["Nombre"], usuario["Correo"]
+    return 
 
 def Cuenta(nombre, correo_usuario, ventana_cerrar):
     ventana_cerrar.destroy()

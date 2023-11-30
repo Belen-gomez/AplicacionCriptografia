@@ -80,10 +80,11 @@ class Gestion:
         label_disponibles = tkinter.Label(ventana_conductores, text = "Conductores \n disponibles", font=("Rockwell Nova Extra Bold", 25), fg= '#2b0d48')      #Se muestran todos los viajes
         label_disponibles.pack(fill = tkinter.X, pady=10)
         for item in conductores_ruta:
-            label_conductor = tkinter.Label(ventana_conductores, text = "Conductor: " + item["nombre"] + " Plazas libres: " + str(item["contador"])+ " Consumo: "+
+            label_conductor = tkinter.Label(ventana_conductores, text = "Conductor: " + item["nombre"] + ".     Plazas libres: " + str(item["contador"])+ ".    Consumo: "+
                 str(item["consumo"]), font=("Rockwell Nova Bold", 10),fg= '#2b0d48',  bg='#ADAFE1')
             label_conductor.pack(pady = 10, padx= 5)
         label_contactar = tkinter.Label(ventana_conductores, text = "¿Con cuál de ellos quieres contactar? ", font=("Rockwell Nova Bold", 12),fg= '#2b0d48',  bg='#ADAFE1')
+        label_requisitos = tkinter.Label(ventana_conductores, text = "Introduce el nombre completo", font=("Segoe UI", 10), fg= '#2b0d48', bg='#ADAFE1')
         label_contactar.pack(pady= 10)
 
         entrada_conductor = Entry(ventana_conductores)
@@ -117,7 +118,7 @@ class Gestion:
         for item in conductores._data_list:
             if item["ruta_origen"]+item["ruta_destino"] not in lista:
                 if item["contador"] != 0:
-                    label_viaje = tkinter.Label(ventana_reservar, text = "Origen: " + item["ruta_origen"] +" Destino: " + item["ruta_destino"], font=("Segoe UI", 10), fg= '#2b0d48', bg='#ADAFE1')
+                    label_viaje = tkinter.Label(ventana_reservar, text = "Origen: " + item["ruta_origen"] +"            Destino: " + item["ruta_destino"], font=("Segoe UI", 10), fg= '#2b0d48', bg='#ADAFE1')
                     label_viaje.pack(padx= 5)
                     lista.append(item["ruta_origen"]+item["ruta_destino"])
                 

@@ -48,7 +48,7 @@ class Comunicacion:
             matricula_cifrada, matricula = self.usuario.descifrar_matricula(matricula_cifrada, sign_matricula, self.conductor._public_key, ac_raiz, ac_conductor, conductor)
             chat_area.insert(tkinter.END, "Conductor: Ahora te voy a enviar mi matricula\n",  'conductor')
             time.sleep(2)
-            chat_area.insert(tkinter.END, "Conductor: Esta es mi matrícula" + matricula + "\n", 'conductor')
+            chat_area.insert(tkinter.END, "Conductor: Esta es mi matrícula " + matricula + "\n", 'conductor')
             conductores = BaseDeConductores()
             conductor_sel = conductores.find_data_id(self.conductor.id)
             conductor_sel["contador"] -= 1
@@ -102,19 +102,5 @@ class Comunicacion:
         send_button.pack()
 
         window.mainloop()
-
-       
-        #Se pide la dirección al usuario y se cifra con la clave simétrica
-        
-
-        #el conductor descifra el mensaje
-       
-        #print("Ahora te voy a enviar mi matricula")
-
-        #El conductor manda su matrícula cifrada y el usuario la descifra
-        
-        
-        #Se modifica el contandar del conductor
-       
         
     

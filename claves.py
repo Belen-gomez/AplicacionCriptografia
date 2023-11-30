@@ -2,17 +2,17 @@ from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.backends import default_backend
 from claves_usuarios import ClavesUsuarios
-from base_conductores import BaseDeConductores
 from cryptography import x509
 from cryptography.x509.oid import NameOID
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives import serialization
 from AC.ac_usuario.ac_usuarios import AC_usuario
+
 class Claves():
-    def __init__(self, path, id, telefono):
+    def __init__(self, path, id, nombre):
         self.path = path
         self.id = id
-        self.telefono = telefono
+        self.nombre = nombre
     
     def CrearClavePrivada(self):
         """
@@ -29,6 +29,7 @@ class Claves():
                 format=serialization.PrivateFormat.PKCS8,
                 encryption_algorithm=serialization.NoEncryption()
             ))
+
         public_key = private_key.public_key()
         bd = ClavesUsuarios()
         pem = public_key.public_bytes(
@@ -44,7 +45,7 @@ class Claves():
             # Provide various details about who we are.
             x509.NameAttribute(NameOID.EMAIL_ADDRESS, self.id),
             x509.NameAttribute(NameOID.COUNTRY_NAME, "ES"),
-            x509.NameAttribute(NameOID.SERIAL_NUMBER, self.telefono),
+            x509.NameAttribute(NameOID.SURNAME, self.nombre),
             x509.NameAttribute(NameOID.COMMON_NAME, "hailo.com"),
         ])).add_extension(
             x509.SubjectAlternativeName([
@@ -57,7 +58,6 @@ class Claves():
 
         usuario = AC_usuario()
         certificado = usuario.verificar_firma_csr(csr, public_key)
-        print(certificado)
 
         with open(self.path + "/certificado.pem", "wb") as f:
             f.write(certificado.public_bytes(serialization.Encoding.PEM))

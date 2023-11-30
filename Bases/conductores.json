@@ -34,7 +34,7 @@
   {
     "id": 5,
     "nombre": "Laura Pascual",
-    "contador": 3,
+    "contador": 2,
     "consumo": 7.43,
     "ruta_origen": "graz",
     "ruta_destino": "alicante"
@@ -50,7 +50,7 @@
   {
     "id": 7,
     "nombre": "Sandra Ortega",
-    "contador": 6,
+    "contador": 5,
     "consumo": 5.04,
     "ruta_origen": "granada",
     "ruta_destino": "vigo"
@@ -114,7 +114,7 @@
   {
     "id": 15,
     "nombre": "Fernando Castro",
-    "contador": 4,
+    "contador": 3,
     "consumo": 7.18,
     "ruta_origen": "lisboa",
     "ruta_destino": "santander"
@@ -138,7 +138,7 @@
   {
     "id": 18,
     "nombre": "Pilar Moreno",
-    "contador": 1,
+    "contador": 0,
     "consumo": 5.56,
     "ruta_origen": "valladolid",
     "ruta_destino": "oviedo"
@@ -162,7 +162,7 @@
   {
     "id": 21,
     "nombre": "Nuria Soto",
-    "contador": 3,
+    "contador": 1,
     "consumo": 7.18,
     "ruta_origen": "barcelona",
     "ruta_destino": "oporto"
@@ -178,7 +178,7 @@
   {
     "id": 23,
     "nombre": "Angela Serrano",
-    "contador": 4,
+    "contador": 3,
     "consumo": 5,
     "ruta_origen": "madrid",
     "ruta_destino": "alicante"

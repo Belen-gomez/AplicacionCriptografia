@@ -7,7 +7,11 @@ from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives import padding as pd
 from cryptography import x509
 from cryptography.hazmat.backends import default_backend
-
+from cryptography.x509.oid import NameOID
+import datetime
+from AC.ac_raiz.ac_raiz import AC_raiz
+from AC.ac_usuario.ac_usuarios import AC_usuario
+ahora = datetime.datetime.now()
 
 class Usuario:
     def __init__(self, correo, nombre):
@@ -17,8 +21,30 @@ class Usuario:
        self.__private_key = self.key()
        self.__clave_simetrica = None
        self.__iv = None
-       #self.__key_hmac = None
+    
+    def GenerarSolicitudCertificado(self):
+        csr = x509.CertificateSigningRequestBuilder().subject_name(x509.Name([
+            # Provide various details about who we are.
+            x509.NameAttribute(NameOID.EMAIL_ADDRESS, self.id),
+            x509.NameAttribute(NameOID.COUNTRY_NAME, "ES"),
+            x509.NameAttribute(NameOID.SURNAME, self.nombre),
+            x509.NameAttribute(NameOID.COMMON_NAME, "hailo.com"),
+        ])).add_extension(
+            x509.SubjectAlternativeName([
+                # Describe what sites we want this certificate for.
+                x509.DNSName("hailo.com"),
+                x509.DNSName("www.hailo.com"),
+                x509.DNSName("subdomain.hailo.com"),
+            ]),
+            critical=False, ).sign(self.private_key, hashes.SHA256())
+        usuario = AC_usuario()
+        certificado = usuario.verificar_firma_csr(csr, self._public_key)
 
+        with open(os.path.dirname(__file__) + "/"+ self.correo + "/certificado.pem", "wb") as f:
+            f.write(certificado.public_bytes(serialization.Encoding.PEM))
+
+        return certificado
+    
     def key(self):
         #Se recupera su clave privada
         path = os.path.dirname(__file__) + "/"+ self.correo +  "/key.pem"
@@ -32,19 +58,19 @@ class Usuario:
         return private_key
     
     def ObtenerCertificados(self):
-        with open(os.path.dirname(__file__) + "/../AC/ac_raiz/certificado.pem", "rb") as f:
-            certificado_raiz_pem = f.read()
-        certificado_raiz = x509.load_pem_x509_certificate(certificado_raiz_pem, default_backend())
+        raiz = AC_raiz()
+        certificado_raiz = raiz.certificado
 
-        with open(os.path.dirname(__file__) + "/../AC/ac_usuario/certificado.pem", "rb") as f:
-            certificado_ac_conductor_pem = f.read()
-        certificado_ac_conductor = x509.load_pem_x509_certificate(certificado_ac_conductor_pem, default_backend())
-
+        ac_usuario = AC_usuario()
+        certificado_ac_usuario = ac_usuario.certificado
+        
         with open(os.path.dirname(__file__) + "/"+ self.correo + "/certificado.pem", "rb") as f:
-            certificado_conductor_pem = f.read()
-        certificado_conductor = x509.load_pem_x509_certificate(certificado_conductor_pem, default_backend())
+            certificado_usuario_pem = f.read()
+        certificado_usuario = x509.load_pem_x509_certificate(certificado_usuario_pem, default_backend())
+        if certificado_usuario.not_valid_after < ahora:
+            certificado_usuario = self.GenerarSolicitudCertificado()
     
-        return certificado_raiz, certificado_ac_conductor, certificado_conductor
+        return certificado_raiz, certificado_ac_usuario, certificado_usuario
     
     def VerificarCertificados(self, ac_raiz, ac_conductor, conductor):
         #Se verifica la cadena de certificados
@@ -75,7 +101,6 @@ class Usuario:
     def cifrado_simetrico(self, public_key_conductor):
         #El usuario genera las claves de la comunicación y las encripta con la clave pública del conductor
         key = os.urandom(32)
-        ''' key_hmac = os.urandom(32) '''
         iv = os.urandom(16)
 
         ciphertext = public_key_conductor.encrypt(key,
@@ -90,28 +115,13 @@ class Usuario:
                   algorithm=hashes.SHA256(),
                   label=None
               ))
-        ''' ciphertext_hmac = public_key_conductor.encrypt(key_hmac,
-                  padding.OAEP(
-                      mgf=padding.MGF1(algorithm=hashes.SHA256()),
-                      algorithm=hashes.SHA256(),
-                      label=None
-                  )) '''
+    
         self.__clave_simetrica = key
         self.__iv = iv
-        '''  self.__key_hmac = key_hmac '''
         return ciphertext, ciphertext_iv 
         
     def cifrar_direccion(self, direccion: str):
-        # Crea una instancia de HMAC con SHA256 y la clave generada
-        h = hmac.HMAC(self.__clave_simetrica, hashes.SHA256())
-        # Autentica el texto cifrado
-        direccion_bytes = direccion.encode()
-
-        h.update(direccion_bytes)
-
-        # Obtiene el MAC (Mensaje de Autenticación de Código)
-        mac = h.finalize()
-    
+        direccion_bytes = direccion.encode()    
         padder = pd.PKCS7(128).padder()
         # Rellena los datos
         direccion_rellenada = padder.update(direccion_bytes) + padder.finalize()
@@ -121,12 +131,9 @@ class Usuario:
         encryptor1 = cipher.encryptor()
         ct = encryptor1.update(direccion_rellenada) + encryptor1.finalize()
 
-        # Crear un nuevo encryptor para 'mac'
-        #encryptor2 = cipher.encryptor()
-        #Se encripta el mac
-        #ct_mac = encryptor2.update(mac) + encryptor2.finalize()
+        # Se firma la dirección con la clave privada del usuario
         sing_mac = self.__private_key.sign(
-                    mac,
+                    direccion.encode(),
                     padding.PSS(
                         mgf=padding.MGF1(hashes.SHA256()),
                         salt_length=padding.PSS.MAX_LENGTH
@@ -139,24 +146,19 @@ class Usuario:
         return ct, sing_mac, ac_raiz, ac_usuario , usuario
     
     def descifrar_matricula(self, matricula_cifrada, sign_matricula, public_key_conductor, ac_raiz, ac_conductor, conductor):
-        #Se descifra la matrícula y el mac
+        #Se descifra la matrícula
         cipher = Cipher(algorithms.AES(self.__clave_simetrica), modes.CBC(self.__iv))
         decryptor = cipher.decryptor()
-        #decryptor2 = cipher.decryptor()
         matricula_descifrado = decryptor.update(matricula_cifrada) + decryptor.finalize()
-        #mac = decryptor2.update(mac_matricula) + decryptor2.finalize()
 
         # Quitamos el padding
         unpadder = pd.PKCS7(128).unpadder()
         matricula = unpadder.update(matricula_descifrado) + unpadder.finalize()
-        #Se comprueba que la dirección no ha sido manipulada
-        h = hmac.HMAC(self.__clave_simetrica, hashes.SHA256())
-        h.update(matricula)
-        mac = h.finalize()
 
+        #Se verifica la integridad del mensaje y la firma
         public_key_conductor.verify(
                     sign_matricula,
-                    mac,
+                    matricula,
                     padding.PSS(
                         mgf=padding.MGF1(hashes.SHA256()),
                         salt_length=padding.PSS.MAX_LENGTH
