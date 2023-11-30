@@ -1,0 +1,3 @@
+Instalar cryptography en caso de no tenerlo instalado.
+
+Ejecutar el archivo 'main.py'.
