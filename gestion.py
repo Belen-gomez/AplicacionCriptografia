@@ -1,7 +1,6 @@
 from base_conductores import BaseDeConductores
 from base_de_pasajeros import BaseDePasajeros
 from comunicacion import Comunicacion
-import time
 import os
 from cryptography.hazmat.primitives import serialization
 from cryptography.hazmat.primitives.asymmetric import padding
@@ -51,9 +50,9 @@ class Gestion:
         button_aceptar = Button(ventana_error, text="Aceptar", command= lambda: [ventana_conductor.destroy(), ventana_reserva.destroy(), ventana_error.destroy(), conversacion.enviar_mensaje()], font=("Segoe UI", 10))
         button_aceptar.pack(pady= 10)
         ventana_error.mainloop()
-        #time.sleep(5)   
+
         return 
-    #def cerrarVentanas(self, ventana1, ventana2, )
+    
     def Buscar(self,origen, destino, correo_usuario, nombre, ventana_reserva):
         conductores = BaseDeConductores()
         conductores.load_store()
@@ -86,6 +85,7 @@ class Gestion:
         label_contactar = tkinter.Label(ventana_conductores, text = "¿Con cuál de ellos quieres contactar? ", font=("Rockwell Nova Bold", 12),fg= '#2b0d48',  bg='#ADAFE1')
         label_requisitos = tkinter.Label(ventana_conductores, text = "Introduce el nombre completo", font=("Segoe UI", 10), fg= '#2b0d48', bg='#ADAFE1')
         label_contactar.pack(pady= 10)
+        label_requisitos.pack(pady = 10)
 
         entrada_conductor = Entry(ventana_conductores)
         entrada_conductor.pack(fill = tkinter.BOTH, pady = 10, padx= 70, ipady= 5)
@@ -142,8 +142,6 @@ class Gestion:
         button_volver.pack(side="left", pady= 10, padx= 150)
         button_buscar.pack(side="left",pady = 10)
         ventana_reservar.mainloop()
-        #Se buscan conductores que realicen ese viaje
-        
 
     def ver_viajes(self, data_list, correo_usuario):
         """
@@ -154,6 +152,7 @@ class Gestion:
         ventana_viajes.geometry("550x800+50+0")
         ventana_viajes.resizable(False, False)
         ventana_viajes.config(bg='#ADAFE1')
+
         #Se descifra la matrícula
         path = os.path.dirname(__file__) + "/usuarios/" + correo_usuario + "/key.pem"
         with open(path, "rb") as key_file:
@@ -178,9 +177,5 @@ class Gestion:
             lviaje.pack(pady = 10, padx= 5)
             i+=1
         button_volver = Button(ventana_viajes, text="Volver", command= ventana_viajes.destroy, font=("Segoe UI", 10))
-        button_volver.pack(pady = 10)
-            #print(i)
-            #print(" Origen:", item["Origen"],"\n", "Destino:", item["Destino"],"\n", "Conductor:", item["Conductor"],"\n", "Matricula:", matricula.decode('latin-1'),"\n")
-           
+        button_volver.pack(pady = 10)          
         ventana_viajes.mainloop()
-        #print("¡Esperamos que disfrutes de tus viajes!")

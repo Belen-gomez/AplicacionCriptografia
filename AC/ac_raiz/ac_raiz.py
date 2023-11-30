@@ -47,7 +47,6 @@ class AC_raiz():
                 csr.signature,
                 csr.tbs_certrequest_bytes,
                 padding.PKCS1v15(),
-                # Esto debería coincidir con el algoritmo utilizado para firmar la CSR
                 hashes.SHA256(),
             )
             return self.OtorgarCertificado(csr, public_key_solicitante)

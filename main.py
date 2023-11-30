@@ -5,13 +5,10 @@ from PIL import ImageTk, Image
 from cryptography.hazmat.primitives.kdf.scrypt import Scrypt
 from base_usuarios import BaseDeUsuarios
 from gestion import Gestion
-from excepciones import Excepcion
 from Atributos.Validaciones import ValidarCampos
-import getpass
 import random
 from claves import Claves
 import json
-import sys
 
 contador = 0
 
@@ -35,10 +32,7 @@ def ComprobarConstraseña(correo, contrasenia, ventana_inicio):
     
     salt = usuario["Salt"]
     key = usuario["Contrasenia_derivada"]
-
-    # Se verifica la contraseña que la contraseña es la misma que la que estaba almacenada.
-    #for i in range(2): 
-        #Se tienen tres intentos para introducir bien la contraseña                                                                   
+                                                                 
     kdf = Scrypt(                            
         salt=salt.encode('latin-1'),
         length=32,
@@ -62,9 +56,7 @@ def ComprobarConstraseña(correo, contrasenia, ventana_inicio):
         error.pack(fill = tkinter.BOTH, pady = 20) 
         button_aceptar = Button(ventana_error, text="Aceptar", command= ventana_error.destroy, font=("Segoe UI", 10))
         button_aceptar.pack(pady= 10)
-        #ventana_error.mainloop()
         return
-            #ventana_error.mainloop()
            
     #El 50% de las veces que se inicia sesión se cambia el token de la contraseña
     cambio_token = random.randint(1, 2)
@@ -212,7 +204,7 @@ def Registro():
     button_volver.pack(side="left", pady= 10, padx= 150)
     button_aceptar.pack(side="left",pady = 10)
     ventana_registro.mainloop()
-    return #nombre, correo
+    return
 
 def InicioSesion():
     """
@@ -295,44 +287,3 @@ registro.pack(fill = tkinter.BOTH, pady = 10)
 button_registro.pack(pady = 10)
 ventana.protocol("WM_DELETE_WINDOW", ventana.destroy) 
 ventana.mainloop()
-
-''' i = 0                                                         #Al abrir la aplicación puedes registrarte o iniciar sesión
-while True:                                             #Si ya tienes una cuenta, puedes iniciar sesión
-    if i==0:                                            #Si no tienes una cuenta, puedes registrarte                                                      
-        a = input("¿Tienes ya una cuenta? (S/N) ").lower()
-    else:
-        a = input("¿Tienes ya una cuenta? Responde 'S' si tienes una cuenta o 'N' si no la tienes ").lower()
-
-    if a == "s":
-        os.system("cls")
-        print("----------------------Incio de sesion----------------------")
-        nombre, correo_usuario = InicioSesion()
-        break
-    elif a == "n":
-        os.system("cls")
-        print("----------------------Registro de usuarios----------------------")
-        nombre, correo_usuario = Registro()
-        break
-    i+=1
-
-os.system("cls")
-print("¡Bienvenido a Hailo", nombre, "!")
-path =  os.path.dirname(__file__) + "/usuarios/" + correo_usuario + "/viajes.json"
-reservas = Gestion()
-try: 
-    #Si el usuario tiene viajes, puede reservar o ver sus viajes
-    with open(path, "r", encoding="utf-8", newline="") as file:
-        data_list = json.load(file)
-        respuesta = input("Quieres reservar un nuevo viaje (R) o ver tus viajes ya reservados (V)").lower()
-        while respuesta != "r" and respuesta != "v":
-            respuesta = input("Quieres reservar un nuevo viaje (R) o ver tus viajes ya reservados (V)").lower()
-        if respuesta == "r":
-            reservas.reservar(correo_usuario, nombre)
-        else:
-            reservas.ver_viajes(data_list, correo_usuario)
-
-except FileNotFoundError:
-    #sino, solo puede reservar
-    print("¡Reserva tu primer viaje!")
-    reservas.reservar(correo_usuario, nombre) '''
-

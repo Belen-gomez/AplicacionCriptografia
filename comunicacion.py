@@ -36,10 +36,10 @@ class Comunicacion:
         user_msg = msg_entry.get()
         chat_area.insert(tkinter.END, "Usuario: " + user_msg + "\n", 'usuario')
         msg_entry.delete(0, tkinter.END)
-        if "Seguro que nos lo pasaremos genial!" not in chat_area.get('1.0', tkinter.END):
-            chat_area.insert(tkinter.END, "Conductor: Seguro que nos lo pasaremos genial!\n", 'conductor')
-        elif "Por favor, introduce la dirección del punto de encuentro." not in chat_area.get('1.0', tkinter.END):
-            chat_area.insert(tkinter.END, "Conductor: Por favor, introduce la dirección del punto de encuentro.\n", 'conductor')
+        if "¡Seguro que nos lo pasaremos genial! ¿Has utilizado alguna vez Hailo?" not in chat_area.get('1.0', tkinter.END):
+            chat_area.insert(tkinter.END, "Conductor: ¡Seguro que nos lo pasaremos genial! ¿Has utilizado alguna vez Hailo?\n", 'conductor')
+        elif "Entoces dime tu dirección para saber donde recogerte." not in chat_area.get('1.0', tkinter.END):
+            chat_area.insert(tkinter.END, "Conductor: Entoces dime tu dirección para saber donde recogerte.\n", 'conductor')
             
         else:
             direccion_cifrada, sign_direccion, ac_raiz, ac_usuario, usuario = self.usuario.cifrar_direccion(msg_entry.get())

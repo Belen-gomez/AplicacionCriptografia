@@ -3,7 +3,6 @@ from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.backends import default_backend
 import os
 from claves_conductores import ClavesConductores
-from base_conductores import BaseDeConductores 
 import json
 import random
 import string
@@ -11,7 +10,7 @@ from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.asymmetric import padding
 from cryptography import x509
 from cryptography.x509.oid import NameOID
-import datetime
+from base_de_datos import BaseDeDatos
 
 def CrearMatricula():
     """Crea las matrículas de los conductores y las guarda encriptadas en un json"""
@@ -74,3 +73,60 @@ def GenerarClavePrivada():
                 format=serialization.PrivateFormat.PKCS8,
                 encryption_algorithm=serialization.NoEncryption()
             ))
+def GuardarClavesPublicasAC():
+    """A partir de la clave privada de cada conductor, se genera la pública y se guarda en un json público"""
+    bd =BaseDeDatos()
+    bd.ID_FIELD = "AC"
+    bd.FILE_PATH = "/DATOS/BELÉN/3º UNI/Criptografía/Practica_1/Criptografia/Bases/claves_ac.json"
+
+    path = "/DATOS/BELÉN/3º UNI/Criptografía/Practica_1/Criptografia/AC/ac_raiz/key.pem"
+    with open(path, "rb") as key_file:
+        private_key = serialization.load_pem_private_key(
+            key_file.read(),
+            password=None,
+        )
+    public_key = private_key.public_key()
+    pem = public_key.public_bytes(
+        encoding=serialization.Encoding.PEM,
+        format=serialization.PublicFormat.SubjectPublicKeyInfo
+    )
+    pem = pem.decode('latin-1')
+    pem = pem.replace("-----BEGIN PUBLIC KEY-----\n", "")
+    pem = pem.replace("\n-----END PUBLIC KEY-----\n", "")
+    # Guardar la clave pública en un archivo JSON
+    bd.add_item({"AC": "ac_raiz", "Clave_publica": pem})
+
+    path = "/DATOS/BELÉN/3º UNI/Criptografía/Practica_1/Criptografia/AC/ac_conductor/key.pem"
+    with open(path, "rb") as key_file:
+        private_key = serialization.load_pem_private_key(
+            key_file.read(),
+            password=None,
+        )
+    public_key = private_key.public_key()
+    pem = public_key.public_bytes(
+        encoding=serialization.Encoding.PEM,
+        format=serialization.PublicFormat.SubjectPublicKeyInfo
+    )
+    pem = pem.decode('latin-1')
+    pem = pem.replace("-----BEGIN PUBLIC KEY-----\n", "")
+    pem = pem.replace("\n-----END PUBLIC KEY-----\n", "")
+    # Guardar la clave pública en un archivo JSON
+    bd.add_item({"AC": "ac_conductor", "Clave_publica": pem})
+
+    path = "/DATOS/BELÉN/3º UNI/Criptografía/Practica_1/Criptografia/AC/ac_usuario/key.pem"
+    with open(path, "rb") as key_file:
+        private_key = serialization.load_pem_private_key(
+            key_file.read(),
+            password=None,
+        )
+    public_key = private_key.public_key()
+    pem = public_key.public_bytes(
+        encoding=serialization.Encoding.PEM,
+        format=serialization.PublicFormat.SubjectPublicKeyInfo
+    )
+    pem = pem.decode('latin-1')
+    pem = pem.replace("-----BEGIN PUBLIC KEY-----\n", "")
+    pem = pem.replace("\n-----END PUBLIC KEY-----\n", "")
+    # Guardar la clave pública en un archivo JSON
+    bd.add_item({"AC": "ac_usuario", "Clave_publica": pem})
+GuardarClavesPublicasAC()

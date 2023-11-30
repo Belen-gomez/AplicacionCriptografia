@@ -48,7 +48,6 @@ class AC_conductor():
                 csr.signature,
                 csr.tbs_certrequest_bytes,
                 padding.PKCS1v15(),
-                # Esto debería coincidir con el algoritmo utilizado para firmar la CSR
                 hashes.SHA256(),
             )
             return self.OtorgarCertificado(csr, public_key_solicitante)
@@ -72,7 +71,6 @@ class AC_conductor():
         ).not_valid_before(
             datetime.datetime.utcnow()
         ).not_valid_after(
-            # El certificado será válido por 10 días
             datetime.datetime.utcnow() + datetime.timedelta(days=730)
         ).add_extension(
             x509.SubjectAlternativeName([x509.DNSName(u"localhost")]),
@@ -87,7 +85,6 @@ class AC_conductor():
         public_key = key.public_key()
         
         csr = x509.CertificateSigningRequestBuilder().subject_name(x509.Name([
-        # Provide various details about who we are.
         x509.NameAttribute(NameOID.BUSINESS_CATEGORY, "Conductor"),
         x509.NameAttribute(NameOID.COUNTRY_NAME, "ES"),
         x509.NameAttribute(NameOID.STATE_OR_PROVINCE_NAME, "Madrid"),
@@ -95,7 +92,6 @@ class AC_conductor():
         x509.NameAttribute(NameOID.COMMON_NAME, "hailo.com"),
         ])).add_extension(
             x509.SubjectAlternativeName([
-            # Describe what sites we want this certificate for.
             x509.DNSName("hailo.com"),
             x509.DNSName("www.hailo.com"),
             x509.DNSName("subdomain.hailo.com"),
